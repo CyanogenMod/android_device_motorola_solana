@@ -225,9 +225,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/solana/prebuilt/imgtec/libusc.so:system/lib/libusc.so \
     device/motorola/solana/prebuilt/imgtec/libdrm.so:system/lib/libdrm.so \
 
-FRAMEWORKS_BASE_SUBDIRS += \
-    $(addsuffix /java, omapmmlib)
-
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
 
@@ -250,19 +247,21 @@ endif
 PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel
 
+# stuff specific to ti OMAP4 hardware
 $(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
 $(call inherit-product, hardware/ti/camera/camera.mk)
 $(call inherit-product, hardware/ti/wpan/ti-wpan-products.mk)
 #$(call inherit-product-if-exists, vendor/google/google-vendor.mk)
-#$(call inherit-product, hardware/ti/wpan/tools/FM/Android.mk)
+$(call inherit-product-if-exists, vendor/verizon/solana-verizon-vendor.mk)
+
 
 $(call inherit-product-if-exists, vendor/motorola/solana/solana-vendor.mk)
-$(call inherit-product-if-exists, vendor/cm/config/common_full_phone.mk)
+
 
 # stuff common to all Motorola phones -- disabled for Sandbox
 #$(call inherit-product, device/motorola/common/common_hijack.mk)
 
-$(call inherit-product, build/target/product/full_base.mk)
+$(call inherit-product, build/target/product/full_base_telephony.mk)
 
 PRODUCT_NAME := full_solana
 PRODUCT_DEVICE := solana
