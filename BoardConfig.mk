@@ -35,6 +35,7 @@ BOARD_PAGE_SIZE := 0x4096
 
 # Storage / Sharing
 BOARD_VOLD_MAX_PARTITIONS := 30
+BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/usb_mass_storage/lun%d/file"
 BOARD_CUSTOM_USB_CONTROLLER := ../../device/motorola/solana/UsbController.cpp
 
@@ -69,6 +70,7 @@ ifdef BOARD_USES_AUDIO_LEGACY
     COMMON_GLOBAL_CFLAGS += -DBOARD_USES_AUDIO_LEGACY
 endif
 TARGET_PROVIDES_LIBAUDIO := true
+BOARD_USE_MOTO_DOCK_HACK := true
 
 
 # Bluetooth

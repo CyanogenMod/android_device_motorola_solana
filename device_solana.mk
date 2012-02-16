@@ -110,14 +110,15 @@ PRODUCT_PACKAGES += \
     Camera \
     Superuser \
     su \
-    Usb
+    Usb \
+    FileManager \
+    MusicFX \
+    DockAudio \
 
 
 PRODUCT_PACKAGES += \
     librs_jni \
     com.android.future.usb.accessory \
-    FileManager \
-    MusicFX \
     libjni_pinyinime \
 
 
