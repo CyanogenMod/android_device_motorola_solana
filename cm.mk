@@ -28,7 +28,6 @@ PRODUCT_RELEASE_NAME := Droid3
 
 UTC_DATE := $(shell date +%s)
 DATE := $(shell date +%Y%m%d)
-ACT_DATE := $(shell date +%F/%R)
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
    BUILD_ID=${MOTOROLA_SOFTWARE_VERSION} \
