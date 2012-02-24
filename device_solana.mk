@@ -38,6 +38,13 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     camera.omap4
 
+# camerafix (till source can be worked out)
+PRODUCT_COPY_FILES += \
+    device/motorola/solana/prebuilt/camerafix/camera.omap4.so:system/lib/hw/camera.omap4.so \
+    device/motorola/solana/prebuilt/camerafix/libcamera.so:system/lib/libcamera.so \
+    device/motorola/solana/prebuilt/camerafix/libomxcameraadapter.so:system/lib/libomxcameraadapter.so \
+    device/motorola/solana/prebuilt/camerafix/libtiutils.so:system/lib/libtiutils.so \
+
 PRODUCT_PACKAGES += \
     audio.primary.solana \
     audio_policy.solana \
