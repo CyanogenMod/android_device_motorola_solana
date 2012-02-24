@@ -282,4 +282,4 @@ ro.ril.disable.power.collaspe=1
 pm.sleep_mode=1
 
 ro.rommanager.developerid=Hashcode
-ro.modversion=Droid3-ICS-Alpha7
+ro.modversion=Droid3-ICS-Beta1
