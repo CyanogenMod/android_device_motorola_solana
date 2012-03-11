@@ -40,6 +40,7 @@ PRODUCT_PACKAGES += \
 
 # camerafix (till source can be worked out)
 PRODUCT_COPY_FILES += \
+    device/motorola/solana/prebuilt/camerafix/TICameraCameraProperties.xml:system/etc/TICameraCameraProperties.xml \
     device/motorola/solana/prebuilt/camerafix/camera.omap4.so:system/lib/hw/camera.omap4.so \
     device/motorola/solana/prebuilt/camerafix/libcamera.so:system/lib/libcamera.so \
     device/motorola/solana/prebuilt/camerafix/libomxcameraadapter.so:system/lib/libomxcameraadapter.so \
@@ -179,6 +180,8 @@ PRODUCT_COPY_FILES += \
     frameworks/base/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
 
 
+# Removed for camera fix
+#    device/motorola/solana/prebuilt/etc/TICameraCameraProperties.xml:system/etc/TICameraCameraProperties.xml \
 # Prebuilts
 PRODUCT_COPY_FILES += \
     device/motorola/solana/prebuilt/bin/battd:system/bin/battd \
@@ -186,7 +189,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/solana/prebuilt/bin/hijack.log_dump:system/bin/hijack.log_dump \
     device/motorola/solana/prebuilt/bin/mount_ext3.sh:system/bin/mount_ext3.sh \
     device/motorola/solana/prebuilt/bin/strace:system/bin/strace \
-    device/motorola/solana/prebuilt/etc/TICameraCameraProperties.xml:system/etc/TICameraCameraProperties.xml \
     device/motorola/solana/prebuilt/etc/gps.conf:system/etc/gps.conf \
     device/motorola/solana/prebuilt/etc/media_profiles.xml:system/etc/media_profiles.xml \
     device/motorola/solana/prebuilt/etc/vold.fstab:system/etc/vold.fstab \
