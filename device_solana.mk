@@ -136,7 +136,7 @@ PRODUCT_PACKAGES += \
 
 # WirelessTether
 PRODUCT_COPY_FILES += \
-    device/motorola/solana/prebuilt/app/wifi_tether_v3_1-beta11.apk:system/app/wifi_tether_v3_1-beta11.apk \
+    device/motorola/solana/prebuilt/app/wifi_tether_v3_1-beta14.apk:system/app/wifi_tether_v3_1-beta14.apk \
     device/motorola/solana/prebuilt/lib/libwtnativetask.so:system/lib/libwtnativetask.so \
 
 
