@@ -22,11 +22,12 @@
 #include <linux/memblock.h>
 #include <plat/omap_device.h>
 #include <plat/omap_hwmod.h>
-#include "plat-remoteproc.h"
 #include <plat/dsp.h>
 #include <plat/io.h>
-#include "cm2_44xx.h"
-#include "cm-regbits-44xx.h"
+
+#include "include/remoteproc/plat-remoteproc.h"
+#include "include/mach-omap2/cm2_44xx.h"
+#include "include/mach-omap2/cm-regbits-44xx.h"
 
 #define OMAP4430_CM_M3_M3_CLKCTRL (OMAP4430_CM2_BASE + OMAP4430_CM2_CORE_INST \
 		+ OMAP4_CM_DUCATI_DUCATI_CLKCTRL_OFFSET)

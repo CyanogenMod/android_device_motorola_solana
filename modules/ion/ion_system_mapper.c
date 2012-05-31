@@ -20,7 +20,8 @@
 #include <linux/mm.h>
 #include <linux/slab.h>
 #include <linux/vmalloc.h>
-#include "ion_priv.h"
+
+#include "include/ion/ion_priv.h"
 /*
  * This mapper is valid for any heap that allocates memory that already has
  * a kernel mapping, this includes vmalloc'd memory, kmalloc'd memory,

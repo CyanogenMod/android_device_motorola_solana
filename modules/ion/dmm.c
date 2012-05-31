@@ -24,7 +24,7 @@
 #include <linux/errno.h>
 #include <linux/slab.h>
 
-#include "dmm.h"
+#include "include/tiler/dmm.h"
 
 #undef __DEBUG__
 

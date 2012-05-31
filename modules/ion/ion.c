@@ -26,11 +26,11 @@
 #include <asm/mach/map.h>
 #include <asm/page.h>
 
-#include "ion.h"
-#include "ion_priv.h"
-#include "tiler.h"
-#include "linux-omap_ion.h"
-#include "omap_ion_priv.h"
+#include "include/ion/ion.h"
+#include "include/ion/ion_priv.h"
+#include "include/tiler/tiler.h"
+#include "include/ion/linux-omap_ion.h"
+#include "include/ion/omap_ion_priv.h"
 
 #define DEBUG
 
@@ -2063,13 +2063,13 @@ int omap_ion_remove(struct platform_device *pdev)
  * published by the Free Software Foundation.
  */
 
-#include "ion.h"
+#include "include/ion/ion.h"
 #include <linux/memblock.h>
-#include "linux-omap_ion.h"
+#include "include/ion/linux-omap_ion.h"
 #include <linux/platform_device.h>
 #include <linux/bootmem.h>
 
-#include "mach-omap4_ion.h"
+#include "include/ion/mach-omap4_ion.h"
 
 static struct ion_platform_data omap4_ion_data = {
 	.nr = 3,

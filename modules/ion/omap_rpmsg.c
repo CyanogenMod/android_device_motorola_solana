@@ -21,23 +21,23 @@
 
 #include <linux/init.h>
 #include <linux/bootmem.h>
-#include "virtio.h"
-#include "virtio_config.h"
+#include "include/virtio/virtio.h"
+#include "include/virtio/virtio_config.h"
 #include <linux/virtio_ids.h>
 #include <linux/interrupt.h>
-#include "virtio_ring.h"
-#include "linux-rpmsg.h"
+#include "include/virtio/virtio_ring.h"
+#include "include/rpmsg/linux-rpmsg.h"
 #include <linux/err.h>
 #include <linux/slab.h>
 #include <linux/notifier.h>
 #include <linux/memblock.h>
-#include "linux-remoteproc.h"
+#include "include/remoteproc/linux-remoteproc.h"
 #include <asm/io.h>
 
-#include "plat-rpmsg.h"
+#include "include/rpmsg/plat-rpmsg.h"
 #include <plat/mailbox.h>
-#include "plat-remoteproc.h"
-#include "mach-omap4_ion.h"
+#include "include/remoteproc/plat-remoteproc.h"
+#include "include/ion/mach-omap4_ion.h"
 
 struct omap_rpmsg_vproc {
 	struct virtio_device vdev;

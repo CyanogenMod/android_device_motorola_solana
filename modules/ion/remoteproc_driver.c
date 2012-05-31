@@ -34,12 +34,12 @@
 #include <linux/io.h>
 #include <linux/list.h>
 #include <linux/debugfs.h>
-#include "linux-remoteproc.h"
+#include "include/remoteproc/linux-remoteproc.h"
 #include <linux/pm_runtime.h>
 #include <linux/uaccess.h>
 #include <linux/elf.h>
 #include <linux/elfcore.h>
-#include "plat-remoteproc.h"
+#include "include/remoteproc/plat-remoteproc.h"
 
 /* list of available remote processors on this board */
 static LIST_HEAD(rprocs);

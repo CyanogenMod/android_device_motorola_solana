@@ -21,16 +21,16 @@
 
 #include <linux/kernel.h>
 #include <linux/module.h>
-#include <linux/virtio.h>
+#include "include/virtio/virtio.h"
 #include <linux/virtio_ids.h>
-#include <linux/virtio_config.h>
+#include "include/virtio/virtio_config.h"
 #include <linux/scatterlist.h>
 #include <linux/slab.h>
 #include <linux/idr.h>
 #include <linux/jiffies.h>
 #include <linux/sched.h>
 #include <linux/wait.h>
-#include "linux-rpmsg.h"
+#include "include/rpmsg/linux-rpmsg.h"
 
 /**
  * struct virtproc_info - virtual remote processor info

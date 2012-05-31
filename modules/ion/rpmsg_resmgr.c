@@ -16,12 +16,12 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/firmware.h>
-#include "virtio.h"
+#include "include/virtio/virtio.h"
 #include <linux/slab.h>
-#include "linux-rpmsg.h"
+#include "include/rpmsg/linux-rpmsg.h"
 #include <linux/delay.h>
 #include <linux/idr.h>
-#include "linux-remoteproc.h"
+#include "include/remoteproc/linux-remoteproc.h"
 #include <linux/clk.h>
 #include <linux/regulator/consumer.h>
 #include <linux/regulator/driver.h>
@@ -30,14 +30,14 @@
 #include <linux/err.h>
 #include <linux/list.h>
 #include <linux/debugfs.h>
-#include "rpmsg_resmgr.h"
+#include "include/rpmsg/rpmsg_resmgr.h"
 #include <linux/pm_runtime.h>
 #include <plat/dmtimer.h>
-#include "plat-rpres.h"
+#include "include/remoteproc/plat-rpres.h"
 #include <plat/clock.h>
 #include <plat/dma.h>
 #include <plat/i2c.h>
-#include "omap_hwmod.h"
+#include "include/mach-omap2/omap_hwmod.h"
 
 #define NAME_SIZE	50
 #define REGULATOR_MAX	1

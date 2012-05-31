@@ -140,16 +140,17 @@
 
 #include <plat/common.h>
 #include <plat/cpu.h>
-#include "clockdomains.h"
-#include "powerdomains.h"
 #include <plat/clock.h>
-#include "omap_hwmod.h"
 #include <plat/omap_device.h>
 #include <plat/prcm.h>
 
 #include <mach/emif.h>
-#include "cm44xx.h"
-#include "prm44xx.h"
+
+#include "include/mach-omap2/clockdomains.h"
+#include "include/mach-omap2/powerdomains.h"
+#include "include/mach-omap2/omap_hwmod.h"
+#include "include/mach-omap2/cm44xx.h"
+#include "include/mach-omap2/prm44xx.h"
 #include "../../../../../../kernel/arch/arm/mach-omap2/mux.h"
 #include "../../../../../../kernel/arch/arm/mach-omap2/pm.h"
 

@@ -16,7 +16,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#include "_tiler.h"
+#include "include/tiler/_tiler.h"
 
 static struct tiler_ops *ops;	/* shared methods and variables */
 static int band_8;

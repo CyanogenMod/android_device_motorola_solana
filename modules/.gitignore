@@ -1,4 +1,8 @@
 # ignore mod and object files
-*.mod
 *.cmd
+*.mod
+*.mod.c
 *.o
+*.order
+*.symvers
+

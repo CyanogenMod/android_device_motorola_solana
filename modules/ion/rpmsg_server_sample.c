@@ -16,10 +16,10 @@
 
 #include <linux/kernel.h>
 #include <linux/module.h>
-#include "virtio.h"
+#include "include/virtio/virtio.h"
 #include <linux/scatterlist.h>
 #include <linux/slab.h>
-#include "linux-rpmsg.h"
+#include "include/rpmsg/linux-rpmsg.h"
 
 #define MSG		("hello world!")
 #define MSG_LIMIT	100

@@ -24,7 +24,7 @@
 #include <linux/list.h>
 #include <linux/slab.h>
 
-#include "tmm.h"
+#include "include/tiler/tmm.h"
 
 /* CONFIG DEFINES */
 #define CONFIG_TILER_CACHE_LIMIT 40

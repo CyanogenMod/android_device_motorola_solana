@@ -34,10 +34,10 @@
 #include <linux/seq_file.h>
 #include <linux/debugfs.h>
 
-#include "dmm.h"
-#include "tmm.h"
-#include "_tiler.h"
-#include "tcm/tcm-sita.h"		/* TCM algorithm */
+#include "include/tiler/dmm.h"
+#include "include/tiler/tmm.h"
+#include "include/tiler/_tiler.h"
+#include "include/tiler/tcm/tcm-sita.h"		/* TCM algorithm */
 
 /* CONFIG DEFINES */
 #define CONFIG_TILER_SSPTR_ID 1

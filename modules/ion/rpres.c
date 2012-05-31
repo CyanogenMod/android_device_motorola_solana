@@ -16,7 +16,7 @@
 #include <linux/slab.h>
 #include <linux/err.h>
 #include <plat/omap_device.h>
-#include "rpres.h"
+#include "include/remoteproc/rpres.h"
 
 static LIST_HEAD(rpres_list);
 static DEFINE_SPINLOCK(rpres_lock);

@@ -27,7 +27,7 @@
 #include <linux/mm_types.h>
 #include <asm/mach/map.h>	/* for ioremap_page */
 
-#include "_tiler.h"
+#include "include/tiler/_tiler.h"
 
 /* CONFIG DEFINES */
 #define CONFIG_TILER_SECURITY 1

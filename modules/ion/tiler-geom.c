@@ -17,7 +17,7 @@
  */
 
 #include <linux/module.h>
-#include "_tiler.h"
+#include "include/tiler/_tiler.h"
 
 /* bits representing the same slot in DMM-TILER hw-block */
 #define SLOT_WIDTH_BITS		6

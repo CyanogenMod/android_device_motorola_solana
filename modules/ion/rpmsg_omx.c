@@ -32,15 +32,15 @@
 #include <linux/wait.h>
 #include <linux/skbuff.h>
 #include <linux/sched.h>
-#include "linux-rpmsg.h"
-#include "rpmsg_omx.h"
+#include "include/rpmsg/linux-rpmsg.h"
+#include "include/rpmsg/rpmsg_omx.h"
 #include <linux/completion.h>
 
-#include "tiler.h"
+#include "include/tiler/tiler.h"
 
 #ifdef CONFIG_ION_OMAP
-#include "ion.h"
-#include "omap_ion.h"
+#include "include/ion/ion.h"
+#include "include/ion/omap_ion.h"
 
 extern struct ion_device *omap_ion_device;
 #endif
