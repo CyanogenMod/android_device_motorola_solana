@@ -24,6 +24,8 @@
  *
  ******************************************************************************/
 
+#define CONFIG_TILER_GRANULARITY 128
+
 #include <linux/version.h>
 
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,38))
@@ -1082,8 +1084,8 @@ FreeAllocPagesLinuxMemArea(LinuxMemArea *psLinuxMemArea)
 
 #include "env_perproc.h"
 
-#include <linux/ion.h>
-#include <linux/omap_ion.h>
+#include "../../../../../../../ion/include/ion/ion.h"
+#include "../../../../../../../ion/include/ion/linux-omap_ion.h"
 
 #define TILER_ENABLE_CO_ALIGNED_BUFFER_ALLOCATIONS 1
 

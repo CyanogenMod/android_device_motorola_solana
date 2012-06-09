@@ -21,7 +21,6 @@
 # Imagination Technologies Ltd. <gpl-support@imgtec.com>
 # Home Park Estate, Kings Langley, Herts, WD4 8LZ, UK 
 # 
-
 pvrsrvkm_sgx$(SGXCORE)_$(SGX_CORE_REV)-y += \
 	services4/srvkm/env/linux/osfunc.o \
 	services4/srvkm/env/linux/mutils.o \

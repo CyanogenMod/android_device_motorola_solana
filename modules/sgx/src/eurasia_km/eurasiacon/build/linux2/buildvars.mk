@@ -189,7 +189,7 @@ ALL_KBUILD_CFLAGS := $(COMMON_CFLAGS) $(KBUILD_WARNING_CFLAGS) \
  $(call kernel-cc-option,-Wno-type-limits) \
  $(call kernel-cc-option,-Wno-pointer-arith) \
  $(call kernel-cc-option,-Wno-aggregate-return) \
- $(call kernel-cc-option,-Wno-unused-but-set-variable)
+# $(call kernel-cc-option,-Wno-unused-but-set-variable)
 
 # This variable contains a list of all modules built by kbuild
 ALL_KBUILD_MODULES :=

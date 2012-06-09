@@ -2071,6 +2071,7 @@ int omap_ion_remove(struct platform_device *pdev)
 
 #include "include/ion/mach-omap4_ion.h"
 
+#if 0
 static struct ion_platform_data omap4_ion_data = {
 	.nr = 3,
 	.heaps = {
@@ -2095,6 +2096,27 @@ static struct ion_platform_data omap4_ion_data = {
 			.name = "nonsecure_tiler",
 			.base = 0x80000000 + SZ_512M + SZ_2M,
 			.size = OMAP4_ION_HEAP_NONSECURE_TILER_SIZE,
+		},
+	},
+};
+#endif
+//We need structure for mempool
+// So declare at least one heap of each kind with 1MB size
+static struct ion_platform_data omap4_ion_data = {
+	.nr = 2,
+	.heaps = {
+		{
+			.type = ION_HEAP_TYPE_CARVEOUT,
+			.id = OMAP_ION_HEAP_SECURE_INPUT,
+			.name = "secure_input",
+			.base = PHYS_ADDR_ION_HEAP_SECURE_INPUT,
+			.size = OMAP4_ION_HEAP_SECURE_INPUT_SIZE,
+		},
+		{	.type = OMAP_ION_HEAP_TYPE_TILER,
+			.id = OMAP_ION_HEAP_TILER,
+			.name = "tiler",
+			.base = PHYS_ADDR_ION_HEAP_TILER,
+			.size = OMAP4_ION_HEAP_TILER_SIZE,
 		},
 	},
 };

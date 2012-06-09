@@ -38,18 +38,19 @@
 #include <linux/string.h>
 #include <linux/notifier.h>
 #include <linux/mutex.h>
-#include <plat/sgx_omaplfb.h>
+#include "sgx_omaplfb.h"
 
 #ifdef CONFIG_ION_OMAP
-#include <linux/ion.h>
+#include "../../../../../ion/include/ion/ion.h"
 #endif
 #ifdef CONFIG_HAS_EARLYSUSPEND
 #include <linux/earlysuspend.h>
 #endif
 
-#include <video/dsscomp.h>
-#include <linux/bltsville.h>
-#include <video/omap_hwc.h>
+#include "include/video-dsscomp.h"
+#include "include/plat-dsscomp.h"
+#include "include/bltsville.h"
+#include "include/omap_hwc.h"
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,38))
 #define	OMAPLFB_CONSOLE_LOCK()		console_lock()
 #define	OMAPLFB_CONSOLE_UNLOCK()	console_unlock()

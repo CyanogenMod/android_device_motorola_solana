@@ -15,7 +15,7 @@ insmod ion_driver.ko
 insmod virtio.ko
 insmod virtio_ring.ko
 insmod rpres.ko
-insmod remoteproc.ko
+insmod remoteproc_driver.ko
 insmod virtio_rpmsg_bus.ko
 insmod rpmsg_omx_driver.ko
 insmod rpmsg_resmgr_driver.ko

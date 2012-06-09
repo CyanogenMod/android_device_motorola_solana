@@ -1,3 +1,8 @@
+# SETUP CONFIG
+CONFIG_ION := y
+CONFIG_ION_OMAP := y
+CONFIG_ION_OMAP_DYNAMIC := y
+
 tiler2_dmm-objs := dmm.o
 obj-m += tiler2_dmm.o
 
@@ -12,6 +17,9 @@ obj-m += virtio_ring.o
 
 obj-m += rpres.o
 obj-m += remoteproc_driver.o
+
+omap_remoteproc_driver-objs := iommu.o omap_remoteproc.o
+obj-m += omap_remoteproc_driver.o
 
 obj-m += virtio_rpmsg_bus.o
 

@@ -24,6 +24,8 @@
  *
  ******************************************************************************/
 
+#define __ASM_ARCH_OMAP_DISPLAY_H
+
 #include <linux/version.h>
 #include <linux/kernel.h>
 #include <linux/console.h>
@@ -31,7 +33,8 @@
 #include <linux/module.h>
 #include <linux/string.h>
 #include <linux/notifier.h>
-#include <plat/sgx_omaplfb.h>
+#include "include/omapdss.h"
+#include "sgx_omaplfb.h"
 
 #include "img_defs.h"
 #include "servicesext.h"
@@ -47,12 +50,14 @@
 #if !defined(CONFIG_TI_TILER) || !defined(CONFIG_ION_OMAP)
 #error Expected CONFIG_TI_TILER and CONFIG_ION_OMAP to be defined
 #endif
-#include <linux/ion.h>
-#include <linux/omap_ion.h>
-#include <mach/tiler.h>
-#include <video/dsscomp.h>
-#include <plat/dsscomp.h>
-#include <video/omap_hwc.h>
+#include "../../../../../ion/include/ion/ion.h"
+#include "../../../../../ion/include/linux-omap_ion.h"
+#include "../../../../../ion/include/tiler/tiler.h"
+#include <plat/display.h>
+#include "include/omapdss.h"
+#include "include/video-dsscomp.h"
+#include "include/plat-dsscomp.h"
+#include "include/omap_hwc.h"
 #include <services_headers.h>
 
 
@@ -974,13 +979,14 @@ static IMG_BOOL ProcessFlipV2(IMG_HANDLE hCmdCookie,
 
 	if (iUseBltFB && !bBltReady)
 	{
+#if 0
 		/* Defer allocation and mapping of blit buffers */
 		if (OMAPLFBInitBltFBs(psDevInfo) != OMAPLFB_OK)
 		{
 			WARN(1, "Could not initialize blit FBs");
 			return IMG_FALSE;
 		}
-
+#endif
 		bBltReady = IMG_TRUE;
 	}
 
@@ -1724,7 +1730,7 @@ OMAPLFB_ERROR OMAPLFBInit(void)
 		return OMAPLFB_ERROR_INIT_FAILURE;
 	}
 
-	gbBvInterfacePresent = OMAPLFBInitBlt();
+	gbBvInterfacePresent = false; // OMAPLFBInitBlt();
 
 	if (!gbBvInterfacePresent)
 	{

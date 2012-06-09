@@ -24,6 +24,8 @@
  *
  ******************************************************************************/
 
+#define __ASM_ARCH_OMAP_DISPLAY_H
+
 #include <linux/version.h>
 
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,38))
@@ -40,6 +42,8 @@
 #include <linux/module.h>
 #endif
 
+#include "include/omapdss.h"
+
 #include <linux/kernel.h>
 #include <linux/slab.h>
 #include <linux/hardirq.h>
@@ -49,10 +53,10 @@
 #include <linux/console.h>
 #include <linux/omapfb.h>
 #include <linux/mutex.h>
-#include <plat/sgx_omaplfb.h>
+#include "sgx_omaplfb.h"
 
 #if defined(PVR_OMAPLFB_DRM_FB)
-#include <plat/display.h>
+#include "include/omapdss.h"
 #include <linux/omap_gpu.h>
 #else	
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,34))

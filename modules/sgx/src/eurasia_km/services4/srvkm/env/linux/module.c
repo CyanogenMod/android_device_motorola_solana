@@ -128,8 +128,8 @@ MODULE_PARM_DESC(gPVRDebugLevel, "Sets the level of debug output (default 0x7)")
 #endif 
 
 #if defined(CONFIG_ION_OMAP)
-#include <linux/ion.h>
-#include <linux/omap_ion.h>
+#include "../../../../../../../ion/include/ion/ion.h"
+#include "../../../../../../../ion/include/ion/linux-omap_ion.h"
 #include "ion.h"
 extern void omap_ion_register_pvr_export(void *);
 extern struct ion_device *omap_ion_device;

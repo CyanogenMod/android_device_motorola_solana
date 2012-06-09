@@ -25,6 +25,10 @@
 
 # We don't support building scripts from this build directory.
 #
+CONFIG_ION := y
+CONFIG_ION_OMAP := y
+CONFIG_TILER_GRANULARITY := 128
+
 ifeq ($(MAKECMDGOALS),)
 MAKECMDGOALS := components kbuild install_script
 endif
@@ -48,7 +52,7 @@ endif
 export SGXCORE
 export SGX_CORE_REV
 
-SGX_DYNAMIC_TIMING_INFO := 1
+#SGX_DYNAMIC_TIMING_INFO := 1
 SYS_SGX_ACTIVE_POWER_LATENCY_MS := 2
 
 SUPPORT_LINUX_USING_WORKQUEUES := 1

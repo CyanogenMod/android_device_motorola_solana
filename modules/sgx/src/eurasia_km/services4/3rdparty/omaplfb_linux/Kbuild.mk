@@ -30,5 +30,7 @@ ccflags-y += \
 
 omaplfb_sgx$(SGXCORE)_$(SGX_CORE_REV)-y += \
 	services4/3rdparty/omaplfb_linux/omaplfb_displayclass.o \
-	services4/3rdparty/omaplfb_linux/omaplfb_linux.o \
-	services4/3rdparty/omaplfb_linux/omaplfb_bv.o
+	services4/3rdparty/omaplfb_linux/omaplfb_linux.o
+
+
+#	services4/3rdparty/omaplfb_linux/omaplfb_bv.o

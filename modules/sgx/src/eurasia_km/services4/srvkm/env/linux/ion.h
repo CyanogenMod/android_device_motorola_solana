@@ -27,8 +27,8 @@
 #ifndef __IMG_LINUX_ION_H__
 #define __IMG_LINUX_ION_H__
 
-#include <linux/ion.h>
-#include <linux/omap_ion.h>
+#include "../../../../../../../ion/include/ion/ion.h"
+#include "../../../../../../../ion/include/ion/linux-omap_ion.h"
 
 void PVRSRVExportFDToIONHandles(int fd, struct ion_client **client,
 								struct ion_handle **handles,

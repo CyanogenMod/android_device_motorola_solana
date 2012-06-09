@@ -39,6 +39,8 @@ struct omap_ion_tiler_alloc_data {
 	struct ion_handle *handle;
 	size_t stride;
 	size_t offset;
+	u32 out_align;
+	u32 token;
 };
 
 #ifdef __KERNEL__
@@ -78,6 +80,7 @@ enum {
  * List of heaps in the system
  */
 enum {
+	OMAP_ION_HEAP_SYSTEM,
 	OMAP_ION_HEAP_LARGE_SURFACES,
 	OMAP_ION_HEAP_TILER,
 	OMAP_ION_HEAP_SECURE_INPUT,
