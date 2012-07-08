@@ -23,7 +23,6 @@
 /dev/android_adb          0660   adb        adb
 /dev/android_adb_enable   0660   adb        adb
 /dev/ttyMSM0              0600   bluetooth  bluetooth
-/dev/ttyHS0               0600   bluetooth  bluetooth
 /dev/uinput               0660   system     bluetooth
 /dev/alarm                0664   system     radio
 /dev/tty0                 0660   root       system
@@ -64,7 +63,6 @@
 /dev/snd/dsp1             0660   system     audio
 /dev/snd/mixer            0660   system     audio
 /dev/smd0                 0640   radio      radio
-/dev/qemu_trace           0666   system     system
 /dev/qmi                  0640   radio      radio
 /dev/qmi0                 0640   radio      radio
 /dev/qmi1                 0640   radio      radio
@@ -79,7 +77,7 @@
 # CDMA radio interface MUX
 /dev/ts0710mux*           0640   radio      radio
 /dev/ppp                  0660   radio      vpn
-/dev/tun                  0640   vpn        vpn
+/dev/tun                  0660   system     vpn
 
 # sysfs properties
 /sys/devices/virtual/input/input*   enable      0660  root   input

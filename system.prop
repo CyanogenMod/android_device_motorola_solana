@@ -9,10 +9,11 @@ ro.default_usb_mode=2
 ro.mot.ril.danlist=611,*611,#611
 persist.ril.ecclist=911,*911,#911
 persist.ril.modem.mode =1
+
 # This defines the max event window manager can
 # handle in 1 s. We may adjust this # for performance
 # reason later
-windowsmgr.max_events_per_sec=250
+windowsmgr.max_events_per_sec=90
 
 # USB modes allowed for UI and switching
 ro.ngp_available=1
@@ -29,8 +30,9 @@ ro.cdma.home.operator.alpha=Verizon
 ro.config.vc_call_vol_steps=7
 
 # wlan interface
-wifi.interface = tiwlan0
-softap.interface = tiap0
+wifi.interface = wlan0
+softap.interface = wlan1
+wifi.ap.interface = wlan1
 
 # Time between scans in seconds. Keep it high to minimize battery drain.
 # This only affects the case in which there are remembered access points,
@@ -186,29 +188,24 @@ mot.mms.retry.timeout.3 = 300000
 mot.mms.retry.timeout.4 = 480000
 # END IKSTABLEFIVE-1796
 
-#BEGIN Motorola, w36256, 6-Apr-2011, IKSTABLEFOURV-6808
-# add latin encoding type for sms in cdma mode, this is only for vzw
-ro.cdma.sms.latin_encode=true
-#END IKSTABLEFOURV-6808
+# BEGIN Motorola abp095, 4-Jan-2012, IKHSS7-2427 - Thumbnail property change
+com.motorola.cg.lowres=1
+com.motorola.cg.tnWidth=160
+com.motorola.cg.tnHeight=160
+com.motorola.cg.tndisplay=1
+# END IKHSS7-2427
 
-#Enable hdcp support
+# BEGIN Motorola, w21549, 06/06/2012, IKHSS6UPGR-12234
 ro.hdcp.support=2
-
-# Mount the internal SD card, too
-ro.additionalmounts=/mnt/sdcard
-
-#special moto usb handling
-#ro.usb.use_custom_service=1
-
-# use charge_counter for 1% battery increments
-ro.product.use_charge_counter=1
-
-# set default usb mode as usb mass storage
-ro.default_usb_mode=2
-
+# END IKHSS6UPGR-12234
 #
 # ADDITIONAL_BUILD_PROPERTIES
 #
+#dalvik.vm.heapstartsize=5m
+#dalvik.vm.heapgrowthlimit=42m
+#dalvik.vm.heapsize=128m
+dalvik.vm.heapsize=64m \
+drm.service.enabled=true
 ro.com.google.clientidbase=android-motorola
 ro.com.google.clientidbase.ms=android-verizon
 ro.com.google.clientidbase.am=android-verizon
@@ -221,18 +218,15 @@ persist.ril.modem.ttydevice=/dev/ttySPI0
 persist.ril.features=0x30E
 persist.ril.mux.retries=500
 persist.ril.mux.sleep=2
+persist.sys.usb.config=mass_storage
+ro.com.google.gmsversion=2.3_r6
+ro.crypto.state=unencrypted
 persist.mot.mdm_panicd.nopanic=no
 ro.media.enc.aud.fileformat=3gp
 ro.media.enc.aud.codec=amrnb
 ro.media.enc.aud.bps=12200
 ro.media.enc.aud.ch=1
 ro.media.enc.aud.hz=8000
-ro.com.google.gmsversion=2.3_r6
-ro.telephony.call_ring.multiple=false
-ro.telephony.call_ring.delay=3000
-ro.setupwizard.enable_bypass=1
-ro.cdma.homesystem=64,65,76,77,78,79,80,81,82,83
-ro.cdma.data_retry_config=default_randomization=2000,0,0,120000,180000,540000,960000
 ro.media.camcorder.1080p=mp4,h264,30,15000000,aac,128000,44100,2
 ro.media.camcorder.720p=mp4,h264,30,10000000,aac,128000,44100,2
 ro.media.camcorder.d1NTSC=mp4,h264,30,6000000,aac,128000,44100,2
@@ -242,13 +236,14 @@ ro.media.camcorder.qvga=mp4,h264,15,500000,aac,64000,44100,2
 ro.media.camcorder.mms=3gp,h264,15,128000,amrnb,12200,8000,1
 ro.media.camcorder.mmsres=qvga
 ro.camcorder.zoom=true
-ro.media.capture.maxres=8m
+ro.media.capture.maxres=5m
 ro.media.capture.fast.fps=4
 ro.media.capture.slow.fps=120
 ro.media.capture.flash=led
 ro.media.capture.flashMinV=3300000
-ro.media.capture.torchIntensity=21
-ro.media.capture.flashIntensity=40
+ro.media.capture.torchIntensity=40
+ro.media.capture.flashIntensity=70
+ro.media.capture.classification=classF
 ro.media.panorama.defres=3264x1840
 ro.media.panorama.frameres=1280x720
 ro.camcorder.videoModes=false
@@ -271,15 +266,26 @@ ro.horizontalVMM=false
 ro.horizontalMOD=false
 ro.horizontalVOD=false
 ro.horizontalEmail=false
+ro.mot.phonemode.vzw4gphone=1
 ro.mot.internalsdcard=1
+ro.telephony.call_ring.multiple=false
+ro.telephony.call_ring.delay=3000
+ro.setupwizard.enable_bypass=1
+ro.cdma.homesystem=64,65,76,77,78,79,80,81,82,83
+ro.cdma.data_retry_config=max_retries=infinite,0,0,10000,10000,100000,10000,10000,10000,10000,140000,540000,960000
+#ro.cdma.data_retry_config=default_randomization=2000,0,0,120000,180000,540000,960000
+ro.gsm.data_retry_config=default_randomization=2000,max_retries=infinite,0,0,80000,125000,485000,905000
+ro.gsm.2nd_data_retry_config=max_retries=infinite,default_randomization=2000,0,0,80000,125000,485000,905000
+net.bt.name=Android
 ro.mot.dpmext=true
 ro.com.google.clientid=android-motorola
 ro.mot.hw.uaprof=http://uaprof.motorola.com/phoneconfig/MotoMB200/profile/MotoMB200.rdf
-ro.build.version.full=ICS_Version.4.0.3_r1.XT862.Verizon.en.US
+ro.build.version.full=ICS_4.0.4_r2.1.XT862.Verizon.en.US
 ro.mot.hidden_keyboards=evfwd
 persist.sys.usb.config=mass_storage,adb
 ro.ril.disable.power.collaspe=1
 pm.sleep_mode=1
 
-ro.rommanager.developerid=Hashcode
-ro.modversion=Droid3-ICS-Beta1
+com.ti.omap_enhancement=true
+hwui.render_dirty_regions=false
+ril.subscription.types=NV,RUIM

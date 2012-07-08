@@ -1,12 +1,7 @@
-# Sandbox Setup: ON  ** IF YOU ARE USING THIS AND DON'T KNOW WHAT THAT MEANS: BEWARE **
-
-
 # Camera
 USE_CAMERA_STUB := false
 BOARD_USES_TI_CAMERA_HAL := true
-BOARD_USE_LEGACY_TOUCHSCREEN := true
-
-ENABLE_WEBGL := true
+TI_CAMERAHAL_DEBUG_ENABLED := true
 
 # inherit from the proprietary version
 -include vendor/motorola/solana/BoardConfigVendor.mk
@@ -28,48 +23,55 @@ TARGET_GLOBAL_CFLAGS += -DNEEDS_ARM_ERRATA_754319_754320
 
 
 # Kernel
-TARGET_PREBUILT_KERNEL := device/motorola/solana/kernel
-BOARD_KERNEL_CMDLINE := console=/dev/null rw mem=456M@0x80000000 mem=52M@0x9CC00000 vram=4M omapgpu.vram=0:4M init=/init ip=off mmcparts=mmcblk1:p7(pds),p15(boot),p16(recovery),p17(cdrom),p18(misc),p19(cid),p20(kpanic),p21(system),p22(cache),p23(preinstall),p24(userdata),p25(emstorage)
+BOARD_KERNEL_CMDLINE := root=/dev/ram0 rw mem=512M@0x80000000 console=ttyO2,115200n8 vram=10300K omapfb.vram=0:8256K,1:4K,2:2040K init=/init ip=off brdrev=P2A ramdisk_size=20480 mmcparts=mmcblk1:p7(pds),p15(boot),p16(recovery),p17(cdrom),p18(misc),p19(cid),p20(kpanic),p21(system),p22(cache),p23(preinstall),p24(userdata),p25(emstorage) androidboot.bootloader=0x0A64
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_PAGE_SIZE := 0x4096
 
+# Kernel Build
+#TARGET_KERNEL_SOURCE := kernel/motorola/solana
+#TARGET_KERNEL_CONFIG := hashcode_defconfig
+TARGET_PREBUILT_KERNEL := device/motorola/solana/kernel
+
+#KERNEL_EXTERNAL_MODULES:
+#	make -C kernel/motorola/solana/external/wlan/mac80211/compat_wl12xx KERNEL_DIR=$(KERNEL_OUT) KLIB=$(KERNEL_OUT) KLIB_BUILD=$(KERNEL_OUT) ARCH=arm CROSS_COMPILE="arm-eabi-"
+#	mv kernel/motorola/solana/external/wlan/mac80211/compat_wl12xx/compat/compat.ko $(KERNEL_MODULES_OUT)
+#	mv kernel/motorola/solana/external/wlan/mac80211/compat_wl12xx/net/mac80211/mac80211.ko $(KERNEL_MODULES_OUT)
+#	mv kernel/motorola/solana/external/wlan/mac80211/compat_wl12xx/net/wireless/cfg80211.ko $(KERNEL_MODULES_OUT)
+#	mv kernel/motorola/solana/external/wlan/mac80211/compat_wl12xx/drivers/net/wireless/wl12xx/wl12xx.ko $(KERNEL_MODULES_OUT)
+#	mv kernel/motorola/solana/external/wlan/mac80211/compat_wl12xx/drivers/net/wireless/wl12xx/wl12xx_spi.ko $(KERNEL_MODULES_OUT)
+#	mv kernel/motorola/solana/external/wlan/mac80211/compat_wl12xx/drivers/net/wireless/wl12xx/wl12xx_sdio.ko $(KERNEL_MODULES_OUT)
+#	make -C kernel/motorola/solana/external/sgx/src/eurasia_km/eurasiacon/build/linux2/omap4430_android ARCH=arm KERNEL_CROSS_COMPILE=arm-eabi- CROSS_COMPILE=arm-eabi- KERNELSRC=$(KERNEL_OUT)/../../../../../../kernel/motorola/solana KERNELDIR=$(KERNEL_OUT) TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.0
+#	mv $(KERNEL_OUT)/../../target/kbuild/omaplfb_sgx540_120.ko $(TARGET_ROOT_OUT)/omaplfb_sgx540_120.ko
+#	mv $(KERNEL_OUT)/../../target/kbuild/pvrsrvkm_sgx540_120.ko $(TARGET_ROOT_OUT)/pvrsrvkm_sgx540_120.ko
+
+#TARGET_KERNEL_MODULES := KERNEL_EXTERNAL_MODULES
+
 
 # Storage / Sharing
-BOARD_VOLD_MAX_PARTITIONS := 30
+BOARD_VOLD_MAX_PARTITIONS := 100
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
-TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/usb_mass_storage/lun%d/file"
-BOARD_CUSTOM_USB_CONTROLLER := ../../device/motorola/solana/UsbController.cpp
-
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/class/android_usb/android0/f_mass_storage/lun%d/file"
+BOARD_MTP_DEVICE := "/dev/mtp"
 
 # Connectivity - Wi-Fi
-BOARD_WPA_SUPPLICANT_DRIVER := CUSTOM
-BOARD_HOSTAPD_DRIVER        := CUSTOM
-BOARD_WPA_SUPPLICANT_PRIVATE_LIB := libCustomWifi
-WPA_SUPPLICANT_VERSION      := VER_0_6_X
-HOSTAPD_VERSION             := VER_0_6_X
-BOARD_SOFTAP_DEVICE         := wl1283
-BOARD_WLAN_DEVICE           := wl1283
-#BOARD_WLAN_TI_STA_DK_ROOT   := system/wlan/ti/wilink_6_1
-WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/tiwlan_drv.ko"
-WIFI_DRIVER_MODULE_NAME     := "tiwlan_drv"
-WIFI_DRIVER_MODULE_ARG      := ""
-WIFI_FIRMWARE_LOADER        := "wlan_loader"
-WIFI_DRIVER_FW_STA_PATH     := "/system/etc/wifi/fw_wlan1283.bin"
-WIFI_DRIVER_FW_AP_PATH      := "/system/etc/wifi/fw_wlan1283_AP.bin"
-PRODUCT_WIRELESS_TOOLS      := true
-AP_CONFIG_DRIVER_WILINK     := true
-WPA_SUPPL_APPROX_USE_RSSI   := true
-
+BOARD_WPA_SUPPLICANT_DRIVER      := NL80211
+WPA_SUPPLICANT_VERSION           := VER_0_8_X
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wl12xx
+BOARD_HOSTAPD_DRIVER             := NL80211
+PRODUCT_WIRELESS_TOOLS           := true
+BOARD_HOSTAPD_PRIVATE_LIB        := lib_driver_cmd_wl12xx
+BOARD_WLAN_DEVICE                := wl12xx_mac80211
+BOARD_SOFTAP_DEVICE              := wl12xx_mac80211
+WIFI_DRIVER_MODULE_PATH          := "/system/lib/modules/wl12xx_sdio.ko"
+WIFI_DRIVER_MODULE_NAME          := "wl12xx_sdio"
+WIFI_FIRMWARE_LOADER             := ""
+COMMON_GLOBAL_CFLAGS += -DUSES_TI_MAC80211
 
 # Audio
 BOARD_USES_GENERIC_AUDIO := false
 BOARD_USES_ALSA_AUDIO := true
 BUILD_WITH_ALSA_UTILS := true
 HAVE_2_3_DSP := 1
-BOARD_USES_AUDIO_LEGACY := true
-ifdef BOARD_USES_AUDIO_LEGACY
-    COMMON_GLOBAL_CFLAGS += -DBOARD_USES_AUDIO_LEGACY
-endif
 TARGET_PROVIDES_LIBAUDIO := true
 BOARD_USE_MOTO_DOCK_HACK := true
 
@@ -81,9 +83,10 @@ BOARD_HAVE_BLUETOOTH_BCM := true
 
 # Recovery
 BUILD_BOOTMENU_STANDALONE := true
-BOARD_HAS_LOCKED_BOOTLOADER := true
+#BOARD_HAS_LOCKED_BOOTLOADER := true
 TARGET_PREBUILT_RECOVERY_KERNEL := device/motorola/solana/recovery-kernel
 BOARD_HAS_NO_SELECT_BUTTON := true
+BOARD_UMS_LUNFILE := "/sys/class/android_usb/android0/f_mass_storage/lun%d/file"
 BOARD_ALWAYS_INSECURE := true
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_MKE2FS := device/motorola/solana/releaseutils/mke2fs
@@ -92,6 +95,7 @@ BOARD_HAS_SDCARD_INTERNAL := true
 #BOARD_HAS_SDEXT := false
 TARGET_RECOVERY_PRE_COMMAND := "echo 1 > /data/.recovery_mode; sync;"
 TARGET_RECOVERY_PRE_COMMAND_CLEAR_REASON := true
+TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
 
 
 # Sandbox Filesystem Settings
@@ -101,27 +105,22 @@ BOARD_SYSTEM_FILESYSTEM := ext3
 
 
 # Graphics
-BOARD_EGL_CFG := device/motorola/solana/prebuilt/etc/egl.cfg
-COMMON_GLOBAL_CFLAGS += -DMISSING_EGL_EXTERNAL_IMAGE -DMISSING_EGL_PIXEL_FORMAT_YV12 -DMISSING_GRALLOC_BUFFERS
-
-
-# OMX
-HARDWARE_OMX := true
-ifdef HARDWARE_OMX
-OMX_VENDOR := ti
-OMX_VENDOR_WRAPPER := TI_OMX_Wrapper
-BOARD_OPENCORE_LIBRARIES := libOMX_Core
-BOARD_OPENCORE_FLAGS := -DHARDWARE_OMX=1
-endif
-LEGACY_DOMX := true
+BOARD_EGL_CFG := device/motorola/spyder/prebuilt/etc/egl.cfg
+USE_OPENGL_RENDERER := true
+COMMON_GLOBAL_CFLAGS += -DSURFACEFLINGER_FORCE_SCREEN_RELEASE
 
 
 # OMAP
-#OMAP_ENHANCEMENT := true
+OMAP_ENHANCEMENT := true
 ifdef OMAP_ENHANCEMENT
 COMMON_GLOBAL_CFLAGS += -DOMAP_ENHANCEMENT -DTARGET_OMAP4
 endif
 
+ENHANCED_DOMX := true
+USE_ITTIAM_AAC := true
+ifdef USE_ITTIAM_AAC
+COMMON_GLOBAL_CFLAGS += -DUSE_ITTIAM_AAC
+endif
 
 # MOTOROLA
 USE_MOTOROLA_CODE := true
@@ -143,9 +142,17 @@ TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/motorola/solana/releasetools
 TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := device/motorola/solana/releasetools/solana_img_from_target_files
 TARGET_CUSTOM_RELEASETOOL := ./device/motorola/solana/releasetools/squisher
 
-# Hijack
-#TARGET_NEEDS_MOTOROLA_HIJACK := true
-#BOARD_HIJACK_LOG_ENABLE := true
+# CodeAurora Optimizations: msm8960: Improve performance of memmove, bcopy, and memmove_words
+# added by twa_priv
+TARGET_USE_KRAIT_BIONIC_OPTIMIZATION := true
+TARGET_USE_KRAIT_PLD_SET := true
+TARGET_KRAIT_BIONIC_PLDOFFS := 10
+TARGET_KRAIT_BIONIC_PLDTHRESH := 10
+TARGET_KRAIT_BIONIC_BBTHRESH := 64
+TARGET_KRAIT_BIONIC_PLDSIZE := 64
+
+# Bootanimation
+TARGET_BOOTANIMATION_PRELOAD := true
 
 
 # Misc.
@@ -155,3 +162,4 @@ BOARD_NEEDS_CUTILS_LOG := true
 BOARD_USES_SECURE_SERVICES := true
 BOARD_USES_KEYBOARD_HACK := true
 BOARD_HAS_MAPPHONE_SWITCH := true
+USE_IPV6_ROUTE := true
