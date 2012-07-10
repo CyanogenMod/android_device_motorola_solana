@@ -276,10 +276,6 @@ on boot
 # Set this property so surfaceflinger is not started by system_init
     setprop system_init.startsurfaceflinger 0
 
-    # Setup trace files
-    mkdir /data/trace 0666 system system
-    chown system system /data/trace
-
     class_start core
     class_start main
 

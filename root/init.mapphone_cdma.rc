@@ -582,6 +582,12 @@ on boot
     setprop net.tcp.buffersize.4ghotspot 262144,524288,1048576,524288,1048576,2097152
 # Network Bandwidth control for netd
     setprop persist.bandwidth.enable 1
+
+# Setup trace files
+    mkdir /data/trace 0777 root root
+    chown root root /data/trace
+    chmod 0777 /data/trace
+
 # Start services
     exec /system/bin/mot_boot_mode
 # Set core max size (2G)
@@ -644,17 +650,20 @@ on property:persist.service.adb.enable=1
 
 # Power up to suspend
 on property:tcmd.suspend=1
+    log "==  init.mapphone_cdma.rc: on property:tcmd.suspend=1 ------------------------"
     stop surfaceflinger
     stop media
     stop zygote
 # Normal to suspend
 on property:tcmd.suspend=2
+    log "==  init.mapphone_cdma.rc: on property:tcmd.suspend=2 ------------------------"
     stop surfaceflinger
     stop media
     stop zygote
     write /sys/devices/virtual/radio/w3g_lte/command suspend
 # suspend to start services
 on property:tcmd.suspend=3
+    log "==  init.mapphone_cdma.rc: on property:tcmd.suspend=3 ------------------------"
     start surfaceflinger
     start media
     start zygote
@@ -728,11 +737,11 @@ on property:ro.hdcp.support=2
 # ro.sys.atvc_allow_netmon_usb
 # ro.sys.atvc_allow_netmon_ih
 # ro.sys.atvc_allow_all_adb
-service atvc /system/bin/dbvc_atvc_property_set
-    class core
-    user system
-    group system mot_tpapi
-    oneshot
+#service atvc /system/bin/dbvc_atvc_property_set
+#    class core
+#    user system
+#    group system mot_tpapi
+#    oneshot
 service battd /system/bin/battd
     class core
     socket battdsock stream 0666 mot_accy mot_accy
