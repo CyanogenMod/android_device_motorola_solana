@@ -920,7 +920,7 @@ service baseimage /system/bin/dspexec -v -T /system/lib/dsp/baseimage.dof
     user media
     group media graphics
     oneshot
-service pvrsrv /system/vendor/bin/pvrsrvinit
+service pvrsrv /system/bin/pvrsrvinit
     class main
     user root
     oneshot
