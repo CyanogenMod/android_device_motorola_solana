@@ -31,6 +31,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     camera.omap4 \
     libinvensense_mpl \
+    parse_hdmi_edid \
+    libedid \
+    hwcomposer.solana \
 
 PRODUCT_PACKAGES += \
     libaudioutils \
