@@ -217,7 +217,6 @@ persist.ril.modem.ttydevice=/dev/ttySPI0
 persist.ril.features=0x30E
 persist.ril.mux.retries=500
 persist.ril.mux.sleep=2
-persist.sys.usb.config=mass_storage
 #persist.mot.mdm_panicd.nopanic=no
 #ro.media.enc.aud.fileformat=3gp
 #ro.media.enc.aud.codec=amrnb
@@ -282,7 +281,7 @@ ro.mot.hw.uaprof=http://uaprof.motorola.com/phoneconfig/MotoMB200/profile/MotoMB
 ro.build.version.full=ICS_4.0.4_r2.1.XT862.Verizon.en.US
 ro.mot.hidden_keyboards=evfwd
 ro.setupwizard.enable_bypass=1
-persist.sys.usb.config=mass_storage,adb
+persist.sys.usb.config=mtp,adb
 
 com.ti.omap_enhancement=true
 hwui.render_dirty_regions=false
