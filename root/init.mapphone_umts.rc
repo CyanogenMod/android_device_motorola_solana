@@ -11,6 +11,7 @@ on early-init
     symlink /mnt/sdcard /sdcard
 
 on init
+    mkdir /mnt/external1 0000 system system
 
     exec /sbin/fixboot.sh
 

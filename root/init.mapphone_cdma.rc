@@ -11,6 +11,7 @@ on early-init
     symlink /mnt/sdcard /sdcard
 
 on init
+    mkdir /mnt/external1 0000 system system
 
     exec /sbin/fixboot.sh
 
@@ -52,7 +53,6 @@ on init
 
 # Permissions for RIL. Need to be set before boot.
 
-#    chown radio radio /sys/class/radio/w3g_lte/command
 
 
     chmod 0660 /sys/bus/usb/devices/usb1/power/control
@@ -296,7 +296,6 @@ on early-boot
 # space on sholes. These numbers are in pages (4k). Must be kept
 # in sync with init.rc. This must be done before the regular init.rc
 # since these properies can't change once set.
-# HASHCODE: CHECK THESE
     setprop ro.FOREGROUND_APP_MEM 2048
     setprop ro.VISIBLE_APP_MEM 3072
     setprop ro.PERCEPTIBLE_APP_MEM 4096
@@ -312,12 +311,12 @@ on early-boot
     chmod 0444 /proc/cmdline
 # Loading SMC kernel module first. Because load kernel module need root,
 # so do not put this command into startup_smc.sh which only run as MOT_TPAPI
-#    exec /system/bin/enc_mgt_tool --insmod
+    exec /system/bin/enc_mgt_tool --insmod
     start smc
 # mount eCryptFS if required
     exec /system/bin/enc_mgt_tool
 # transfer certificates from CertificateManager
-#    start upgrade_certs
+    start upgrade_certs
     class_start media_early_init
 on boot
 # Set CPU interactive governor high speed load percentage to 95%
@@ -650,20 +649,16 @@ on property:persist.service.adb.enable=1
 
 # Power up to suspend
 on property:tcmd.suspend=1
-    log "==  init.mapphone_cdma.rc: on property:tcmd.suspend=1 ------------------------"
     stop surfaceflinger
     stop media
     stop zygote
 # Normal to suspend
 on property:tcmd.suspend=2
-    log "==  init.mapphone_cdma.rc: on property:tcmd.suspend=2 ------------------------"
     stop surfaceflinger
     stop media
     stop zygote
-    write /sys/devices/virtual/radio/w3g_lte/command suspend
 # suspend to start services
 on property:tcmd.suspend=3
-    log "==  init.mapphone_cdma.rc: on property:tcmd.suspend=3 ------------------------"
     start surfaceflinger
     start media
     start zygote
@@ -839,16 +834,16 @@ service map /system/bin/sdptool add --channel=20 --network=2 MAP
     group bluetooth net_bt_admin
     disabled
     oneshot
-#service tcmd /system/bin/tcmd
-#    class main
-#    group mot_tcmd radio mot_pwric input system log camera graphics mot_accy sdcard_rw audio inet bluetooth wifi compass net_bt_admin mot_tombstone mot_tpapi mount net_raw net_admin mot_whisper media shell mot_usb drmrpc
-#    socket local_tcmd stream 0660 mot_tcmd mot_tcmd
-#    socket batch_socket stream 0600 mot_tcmd mot_tcmd
-#service tcmdhelp /system/bin/tcmdhelp
-#    class main
-#    socket tcmdhelp stream 0600 mot_tcmd mot_tcmd
-#    oneshot
-#    disabled
+service tcmd /system/bin/tcmd
+    class main
+    group mot_tcmd radio mot_pwric input system log camera graphics mot_accy sdcard_rw audio inet bluetooth wifi compass net_bt_admin mot_tombstone mot_tpapi mount net_raw net_admin mot_whisper media shell mot_usb drmrpc
+    socket local_tcmd stream 0660 mot_tcmd mot_tcmd
+    socket batch_socket stream 0600 mot_tcmd mot_tcmd
+service tcmdhelp /system/bin/tcmdhelp
+    class main
+    socket tcmdhelp stream 0600 mot_tcmd mot_tcmd
+    oneshot
+    disabled
 # turn on wifi for tcmd step one
 on property:tcmd.load_wlan=1
     insmod /system/lib/modules/tiwlan_drv.ko
@@ -1135,8 +1130,8 @@ on property:sys.usb.config=rndis,adb
     start adbd
     setprop sys.usb.state $sys.usb.config
 # Enable Hotplug governor only for OMAP ES2.2 Silicon
-#on property:ro.revision=34
-#    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor hotplug
+on property:ro.revision=34
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor hotplug
 # Add any hotplug tuning parameters here.
 # service for transfer the certificates installed by CertificateManager to ICS
 service upgrade_certs /system/bin/upgrade_certs
