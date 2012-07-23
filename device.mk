@@ -8,7 +8,7 @@ $(call inherit-product, device/common/gps/gps_us_supl.mk)
 ## (3)  Finally, the least specific parts, i.e. the non-GSM-specific aspects
 
 # Device overlay
-    DEVICE_PACKAGE_OVERLAYS += device/motorola/solana/overlay
+    DEVICE_PACKAGE_OVERLAYS += device/motorola/solana/overlay/aosp
 
 # high-density artwork where available
 PRODUCT_AAPT_CONFIG := normal hdpi
@@ -59,8 +59,8 @@ PRODUCT_PACKAGES += \
     TQS_D_1.7.ini \
     crda \
     regulatory.bin \
-    calibrator
-
+    calibrator \
+    busybox \
 
 # Bluetooth
 PRODUCT_PACKAGES += \
@@ -77,6 +77,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     evtest \
     camera_test \
+    Camera \
+    CameraOMAP4 \
     Superuser \
     su \
     DockAudio \
@@ -88,6 +90,17 @@ PRODUCT_PACKAGES += \
     FileManager \
     MusicFX \
     Apollo \
+    VideoEditor \
+    VoiceDialer \
+    Basic \
+    HoloSpiralWallpaper \
+    MagicSmokeWallpapers \
+    NoiseField \
+    Galaxy4 \
+    LiveWallpapers \
+    LiveWallpapersPicker \
+    VisualizationWallpapers \
+    PhaseBeam \
 
 # WirelessTether
 PRODUCT_PACKAGES += wifi_tether_v3_2-pre1
@@ -150,6 +163,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/solana/prebuilt/bin/strace:system/bin/strace \
     device/motorola/solana/prebuilt/etc/gps.conf:system/etc/gps.conf \
     device/motorola/solana/prebuilt/etc/media_profiles.xml:system/etc/media_profiles.xml \
+    device/motorola/solana/prebuilt/etc/media_codecs.xml:system/etc/media_codecs.xml \
     device/motorola/solana/prebuilt/etc/vold.fstab:system/etc/vold.fstab \
     device/motorola/solana/prebuilt/usr/idc/cpcap-key.idc:system/usr/idc/cpcap-key.idc \
     device/motorola/solana/prebuilt/usr/idc/light-prox.idc:system/usr/idc/light-prox.idc \

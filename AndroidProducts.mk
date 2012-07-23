@@ -1,2 +1,2 @@
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/device_solana.mk
+    $(LOCAL_DIR)/full_solana.mk
