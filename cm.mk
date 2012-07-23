@@ -1,5 +1,5 @@
 # Inherit device configuration for Droid3.
-$(call inherit-product, device/motorola/solana/device_solana.mk)
+$(call inherit-product, device/motorola/solana/full_solana.mk)
 
 # Inherit some common CM stuff.
 $(call inherit-product, vendor/cm/config/common_full_phone.mk)
