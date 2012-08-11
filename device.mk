@@ -175,7 +175,8 @@ PRODUCT_COPY_FILES += \
     device/motorola/solana/prebuilt/etc/media_profiles.xml:system/etc/media_profiles.xml \
     device/motorola/solana/prebuilt/etc/media_codecs.xml:system/etc/media_codecs.xml \
     device/motorola/solana/prebuilt/etc/vold.fstab:system/etc/vold.fstab \
-    device/motorola/spyder/prebuilt/etc/TICameraCameraProperties.xml:system/etc/TICameraCameraProperties.xml \
+    device/motorola/solana/prebuilt/etc/TICameraCameraProperties.xml:system/etc/TICameraCameraProperties.xml \
+    device/motorola/solana/prebuilt/etc/firmware/ducati-m3.512MB.bin:system/etc/firmware/ducati-m3.512MB.bin \
     device/motorola/solana/prebuilt/usr/idc/cpcap-key.idc:system/usr/idc/cpcap-key.idc \
     device/motorola/solana/prebuilt/usr/idc/light-prox.idc:system/usr/idc/light-prox.idc \
     device/motorola/solana/prebuilt/usr/idc/mapphone-switch.idc:system/usr/idc/mapphone-switch.idc \
