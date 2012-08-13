@@ -909,6 +909,7 @@ service hostapd /system/bin/hostapd -d /data/misc/wifi/hostapd.conf
 service pvrsrv /system/vendor/bin/pvrsrvinit
     class core
     user root
+    group root
     oneshot
 
 service bugtogo /system/bin/bugtogo.sh
