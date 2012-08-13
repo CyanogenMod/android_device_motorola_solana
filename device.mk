@@ -21,11 +21,12 @@ PRODUCT_PACKAGES := \
 # Audio
 PRODUCT_COPY_FILES += \
     device/motorola/solana/audio/alsa.omap4.so:/system/lib/hw/alsa.omap4.so \
-    device/motorola/solana/audio/audio.a2dp.default.so:/system/lib/hw/audio.a2dp.default.so \
     device/motorola/solana/audio/audio.primary.omap4.so:/system/lib/hw/audio.primary.omap4.so \
     device/motorola/solana/audio/audio_policy.omap4.so:/system/lib/hw/audio_policy.omap4.so \
     device/motorola/solana/audio/libasound.so:/system/lib/libasound.so \
     device/motorola/solana/audio/libaudio_ext.so:/system/lib/libaudio_ext.so
+
+#    device/motorola/solana/audio/audio.a2dp.default.so:/system/lib/hw/audio.a2dp.default.so \
 
 # Hardware HALs
 PRODUCT_PACKAGES += \
@@ -44,10 +45,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     hciconfig \
     hcitool
-
-# TI proprietary firmware / binaries
-PRODUCT_PACKAGES += \
-    ti_omap4_sgx_libs \
 
 # Modem
 PRODUCT_PACKAGES += \
@@ -94,6 +91,7 @@ PRODUCT_PACKAGES += \
     Superuser \
     su \
     DockAudio \
+    parse_hdmi_edid \
 
 
 PRODUCT_PACKAGES += \
@@ -130,7 +128,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/solana/root/ueventd.mapphone_cdma.rc:/root/ueventd.mapphone_cdma.rc \
     device/motorola/solana/root/ueventd.mapphone_umts.rc:/root/ueventd.mapphone_umts.rc \
 
-#    out/target/product/solana/kernel:system/etc/kexec/zImage \
 # Kexec files
 PRODUCT_COPY_FILES += \
     device/motorola/solana/kexec/arm_kexec.ko:system/etc/kexec/arm_kexec.ko \
@@ -165,14 +162,12 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
 
-
 # Prebuilts
 PRODUCT_COPY_FILES += \
     device/motorola/solana/prebuilt/bin/battd:system/bin/battd \
     device/motorola/solana/prebuilt/bin/mount_ext3.sh:system/bin/mount_ext3.sh \
     device/motorola/solana/prebuilt/bin/strace:system/bin/strace \
     device/motorola/solana/prebuilt/etc/gps.conf:system/etc/gps.conf \
-    device/motorola/solana/prebuilt/etc/media_profiles.xml:system/etc/media_profiles.xml \
     device/motorola/solana/prebuilt/etc/media_codecs.xml:system/etc/media_codecs.xml \
     device/motorola/solana/prebuilt/etc/vold.fstab:system/etc/vold.fstab \
     device/motorola/solana/prebuilt/etc/TICameraCameraProperties.xml:system/etc/TICameraCameraProperties.xml \
@@ -193,6 +188,26 @@ PRODUCT_COPY_FILES += \
     device/motorola/solana/prebuilt/usr/keylayout/mapphone-switch.kl:system/usr/keylayout/mapphone-switch.kl \
     device/motorola/solana/prebuilt/usr/keylayout/omap4-keypad.kl:system/usr/keylayout/omap4-keypad.kl \
     device/motorola/solana/prebuilt/usr/keylayout/qtouch-touchscreen.kl:system/usr/keylayout/qtouch-touchscreen.kl \
+
+#    device/motorola/solana/prebuilt/etc/media_profiles.xml:system/etc/media_profiles.xml \
+
+# Graphics
+PRODUCT_COPY_FILES += \
+    device/motorola/solana/prebuilt/imgtec/lib/hw/gralloc.omap4430.so:/system/vendor/lib/hw/gralloc.omap4.so \
+    device/motorola/solana/prebuilt/imgtec/lib/egl/libEGL_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libEGL_POWERVR_SGX540_120.so \
+    device/motorola/solana/prebuilt/imgtec/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so \
+    device/motorola/solana/prebuilt/imgtec/lib/egl/libGLESv2_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libGLESv2_POWERVR_SGX540_120.so \
+    device/motorola/solana/prebuilt/imgtec/lib/libglslcompiler_SGX540_120.so:/system/vendor/lib/libglslcompiler_SGX540_120.so \
+    device/motorola/solana/prebuilt/imgtec/lib/libIMGegl_SGX540_120.so:/system/vendor/lib/libIMGegl_SGX540_120.so \
+    device/motorola/solana/prebuilt/imgtec/lib/libpvr2d_SGX540_120.so:/system/vendor/lib/libpvr2d_SGX540_120.so \
+    device/motorola/solana/prebuilt/imgtec/lib/libpvrANDROID_WSEGL_SGX540_120.so:/system/vendor/lib/libpvrANDROID_WSEGL_SGX540_120.so \
+    device/motorola/solana/prebuilt/imgtec/lib/libPVRScopeServices_SGX540_120.so:/system/vendor/lib/libPVRScopeServices_SGX540_120.so \
+    device/motorola/solana/prebuilt/imgtec/lib/libsrv_init_SGX540_120.so:/system/vendor/lib/libsrv_init_SGX540_120.so \
+    device/motorola/solana/prebuilt/imgtec/lib/libsrv_um_SGX540_120.so:/system/vendor/lib/libsrv_um_SGX540_120.so \
+    device/motorola/solana/prebuilt/imgtec/lib/libusc_SGX540_120.so:/system/vendor/lib/libusc_SGX540_120.so \
+    device/motorola/solana/prebuilt/imgtec/bin/pvrsrvinit_SGX540_120:/system/vendor/bin/pvrsrvinit \
+    device/motorola/solana/prebuilt/imgtec/bin/pvrsrvctl:/system/vendor/bin/pvrsrvctl \
+    device/motorola/solana/prebuilt/imgtec/etc/powervr.ini:/system/etc/powervr.ini \
 
 # Phone settings
 PRODUCT_COPY_FILES += \
