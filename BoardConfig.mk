@@ -32,17 +32,16 @@ ENHANCED_DOMX := true
 
 # Processor
 TARGET_NO_BOOTLOADER := true
+TARGET_BOOTLOADER_BOARD_NAME := solana
 TARGET_BOARD_PLATFORM := omap4
+
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
-TARGET_BOOTLOADER_BOARD_NAME := solana
 TARGET_CPU_SMP := true
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_ARCH_VARIANT_CPU := cortex-a9
 TARGET_ARCH_VARIANT_FPU := neon
 ARCH_ARM_HAVE_TLS_REGISTER := true
-NEEDS_ARM_ERRATA_754319_754320 := true
-TARGET_GLOBAL_CFLAGS += -DNEEDS_ARM_ERRATA_754319_754320
 
 
 # Kernel
@@ -53,7 +52,7 @@ BOARD_PAGE_SIZE := 0x4096
 # Kernel Build
 TARGET_KERNEL_SOURCE := kernel/motorola/solana
 TARGET_KERNEL_CONFIG := hashcode_defconfig
-TARGET_PREBUILT_KERNEL := device/motorola/solana/kernel
+#TARGET_PREBUILT_KERNEL := device/motorola/solana/kernel
 
 KERNEL_EXTERNAL_MODULES:
 	make clean -C hardware/ti/wlan/mac80211/compat_wl12xx
