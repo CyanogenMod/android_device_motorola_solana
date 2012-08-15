@@ -286,3 +286,5 @@ persist.sys.usb.config=mtp,adb
 com.ti.omap_enhancement=true
 hwui.render_dirty_regions=false
 persist.sys.root_access=3
+ro.hwc.legacy_api=true
+
