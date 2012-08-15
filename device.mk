@@ -21,8 +21,8 @@ PRODUCT_PACKAGES := \
 # Audio
 PRODUCT_COPY_FILES += \
     device/motorola/solana/audio/alsa.omap4.so:/system/lib/hw/alsa.omap4.so \
-    device/motorola/solana/audio/audio.primary.omap4.so:/system/lib/hw/audio.primary.omap4.so \
-    device/motorola/solana/audio/audio_policy.omap4.so:/system/lib/hw/audio_policy.omap4.so \
+    device/motorola/solana/audio/audio.primary.omap4.so:/system/lib/hw/audio.primary.solana.so \
+    device/motorola/solana/audio/audio_policy.omap4.so:/system/lib/hw/audio_policy.solana.so \
     device/motorola/solana/audio/libasound.so:/system/lib/libasound.so \
     device/motorola/solana/audio/libaudio_ext.so:/system/lib/libaudio_ext.so
 
@@ -142,6 +142,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/solana/kernel:system/etc/kexec/zImage \
     out/target/product/solana/ramdisk.img:system/etc/kexec/ramdisk.gz \
 
+#    frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
 # Permissions files
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
@@ -157,7 +158,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.distinct.xml \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.xml \
     frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
-    frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
@@ -169,6 +169,7 @@ PRODUCT_COPY_FILES += \
     device/motorola/solana/prebuilt/bin/strace:system/bin/strace \
     device/motorola/solana/prebuilt/etc/gps.conf:system/etc/gps.conf \
     device/motorola/solana/prebuilt/etc/media_codecs.xml:system/etc/media_codecs.xml \
+    device/motorola/solana/prebuilt/etc/audio_policy.conf:system/etc/audio_policy.conf \
     device/motorola/solana/prebuilt/etc/vold.fstab:system/etc/vold.fstab \
     device/motorola/solana/prebuilt/etc/TICameraCameraProperties.xml:system/etc/TICameraCameraProperties.xml \
     device/motorola/solana/prebuilt/etc/firmware/ducati-m3.512MB.bin:system/etc/firmware/ducati-m3.512MB.bin \
@@ -190,24 +191,6 @@ PRODUCT_COPY_FILES += \
     device/motorola/solana/prebuilt/usr/keylayout/qtouch-touchscreen.kl:system/usr/keylayout/qtouch-touchscreen.kl \
 
 #    device/motorola/solana/prebuilt/etc/media_profiles.xml:system/etc/media_profiles.xml \
-
-# Graphics
-PRODUCT_COPY_FILES += \
-    device/motorola/solana/prebuilt/imgtec/lib/hw/gralloc.omap4430.so:/system/vendor/lib/hw/gralloc.omap4.so \
-    device/motorola/solana/prebuilt/imgtec/lib/egl/libEGL_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libEGL_POWERVR_SGX540_120.so \
-    device/motorola/solana/prebuilt/imgtec/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so \
-    device/motorola/solana/prebuilt/imgtec/lib/egl/libGLESv2_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libGLESv2_POWERVR_SGX540_120.so \
-    device/motorola/solana/prebuilt/imgtec/lib/libglslcompiler_SGX540_120.so:/system/vendor/lib/libglslcompiler_SGX540_120.so \
-    device/motorola/solana/prebuilt/imgtec/lib/libIMGegl_SGX540_120.so:/system/vendor/lib/libIMGegl_SGX540_120.so \
-    device/motorola/solana/prebuilt/imgtec/lib/libpvr2d_SGX540_120.so:/system/vendor/lib/libpvr2d_SGX540_120.so \
-    device/motorola/solana/prebuilt/imgtec/lib/libpvrANDROID_WSEGL_SGX540_120.so:/system/vendor/lib/libpvrANDROID_WSEGL_SGX540_120.so \
-    device/motorola/solana/prebuilt/imgtec/lib/libPVRScopeServices_SGX540_120.so:/system/vendor/lib/libPVRScopeServices_SGX540_120.so \
-    device/motorola/solana/prebuilt/imgtec/lib/libsrv_init_SGX540_120.so:/system/vendor/lib/libsrv_init_SGX540_120.so \
-    device/motorola/solana/prebuilt/imgtec/lib/libsrv_um_SGX540_120.so:/system/vendor/lib/libsrv_um_SGX540_120.so \
-    device/motorola/solana/prebuilt/imgtec/lib/libusc_SGX540_120.so:/system/vendor/lib/libusc_SGX540_120.so \
-    device/motorola/spyder/prebuilt/imgtec/bin/pvrsrvinit:/system/vendor/bin/pvrsrvinit \
-    device/motorola/spyder/prebuilt/imgtec/bin/pvrsrvctl_SGX540_120:/system/vendor/bin/pvrsrvctl_SGX540_120 \
-    device/motorola/solana/prebuilt/imgtec/etc/powervr.ini:/system/etc/powervr.ini \
 
 # Phone settings
 PRODUCT_COPY_FILES += \
@@ -233,6 +216,6 @@ PRODUCT_COPY_FILES += \
 $(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
 $(call inherit-product, hardware/ti/wpan/ti-wpan-products.mk)
 $(call inherit-product, device/ti/proprietary-open/wl12xx/wlan/wl12xx-wlan-fw-products.mk)
-
+$(call inherit-product-if-exists, vendor/motorola/common/proprietary/imgtec/sgx-imgtec-bins.mk)
 $(call inherit-product-if-exists, vendor/motorola/solana/solana-vendor.mk)
 
