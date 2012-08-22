@@ -26,7 +26,7 @@ MOTOROLA_SOFTWARE_VERSION := 6.7.2.230
 DEVELOPER_NAME := hashcode
 DEVELOPER_HOST := rombot.droidhive.com
 DEVELOPMENT_STAGE := Alpha
-TARGET_BOOTANIMATION_NAME := vertical-540x960
+TARGET_BOOTANIMATION_NAME := vertical-540
 
 # Release name and versioning
 PRODUCT_RELEASE_NAME := Droid3
