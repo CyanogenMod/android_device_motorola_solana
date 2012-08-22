@@ -35,11 +35,11 @@ BOARD_KERNEL_BASE := 0x80000000
 BOARD_PAGE_SIZE := 0x4096
 
 # Kernel Build
-TARGET_KERNEL_SOURCE := kernel/motorola/solana
+TARGET_KERNEL_SOURCE := kernel/motorola/mapphone
 TARGET_KERNEL_CONFIG := hashcode_defconfig
 #TARGET_PREBUILT_KERNEL := device/motorola/solana/kernel
 
-KERNEL_EXTERNAL_MODULES:
+WLAN_MODULES:
 	make clean -C hardware/ti/wlan/mac80211/compat_wl12xx
 	make -j8 -C hardware/ti/wlan/mac80211/compat_wl12xx KERNEL_DIR=$(KERNEL_OUT) KLIB=$(KERNEL_OUT) KLIB_BUILD=$(KERNEL_OUT) ARCH=arm CROSS_COMPILE="arm-eabi-"
 	mv hardware/ti/wlan/mac80211/compat_wl12xx/compat/compat.ko $(KERNEL_MODULES_OUT)
@@ -48,11 +48,8 @@ KERNEL_EXTERNAL_MODULES:
 	mv hardware/ti/wlan/mac80211/compat_wl12xx/drivers/net/wireless/wl12xx/wl12xx.ko $(KERNEL_MODULES_OUT)
 	mv hardware/ti/wlan/mac80211/compat_wl12xx/drivers/net/wireless/wl12xx/wl12xx_spi.ko $(KERNEL_MODULES_OUT)
 	mv hardware/ti/wlan/mac80211/compat_wl12xx/drivers/net/wireless/wl12xx/wl12xx_sdio.ko $(KERNEL_MODULES_OUT)
-	make clean -C vendor/motorola/common/proprietary/imgtec/eurasia_km/eurasiacon/build/linux2/omap4430_android
-	make -j8 -C vendor/motorola/common/proprietary/imgtec/eurasia_km/eurasiacon/build/linux2/omap4430_android ARCH=arm KERNEL_CROSS_COMPILE=arm-eabi- CROSS_COMPILE=arm-eabi- KERNELSRC=$(KERNEL_OUT)/../../../../../../kernel/motorola/solana KERNELDIR=$(KERNEL_OUT) TARGET_PRODUCT="blaze_tablet" BUILD=release TARGET_SGX=540 PLATFORM_VERSION=4.0
-	mv $(KERNEL_OUT)/../../target/kbuild/pvrsrvkm_sgx540_120.ko $(KERNEL_MODULES_OUT)
 
-TARGET_KERNEL_MODULES := KERNEL_EXTERNAL_MODULES
+TARGET_KERNEL_MODULES += WLAN_MODULES
 
 
 # Storage / Sharing
@@ -65,11 +62,9 @@ BOARD_MTP_DEVICE := "/dev/mtp"
 USES_TI_MAC80211 := true
 ifdef USES_TI_MAC80211
 BOARD_WPA_SUPPLICANT_DRIVER      := NL80211
-WPA_SUPPLICANT_VERSION           := VER_0_8_X
-BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wl12xx
+WPA_SUPPLICANT_VERSION           := VER_0_8_X_TI
 BOARD_HOSTAPD_DRIVER             := NL80211
 PRODUCT_WIRELESS_TOOLS           := true
-BOARD_HOSTAPD_PRIVATE_LIB        := lib_driver_cmd_wl12xx
 BOARD_WLAN_DEVICE                := wl12xx_mac80211
 BOARD_SOFTAP_DEVICE              := wl12xx_mac80211
 WIFI_DRIVER_MODULE_PATH          := "/system/lib/modules/wl12xx_sdio.ko"
