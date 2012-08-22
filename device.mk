@@ -32,6 +32,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     camera.omap4 \
     libinvensense_mpl \
+    hwcomposer.solana \
 
 PRODUCT_PACKAGES += \
     libaudioutils \
@@ -217,5 +218,6 @@ $(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
 $(call inherit-product, hardware/ti/wpan/ti-wpan-products.mk)
 $(call inherit-product, device/ti/proprietary-open/wl12xx/wlan/wl12xx-wlan-fw-products.mk)
 $(call inherit-product-if-exists, vendor/motorola/common/proprietary/imgtec/sgx-imgtec-bins.mk)
+$(call inherit-product-if-exists, vendor/motorola/common/proprietary/custom-omap4xxx/custom-omap4.mk)
 $(call inherit-product-if-exists, vendor/motorola/solana/solana-vendor.mk)
 
