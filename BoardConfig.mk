@@ -104,12 +104,6 @@ TARGET_RECOVERY_PRE_COMMAND_CLEAR_REASON := true
 TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
 
 
-# Sandbox Filesystem Settings
-BOARD_SYSTEM_DEVICE := /dev/block/system
-BOARD_SYSTEM_FILESYSTEM_OPTIONS := noatime,nodiratime
-BOARD_SYSTEM_FILESYSTEM := ext3
-
-
 # Graphics
 BOARD_EGL_CFG := device/motorola/solana/prebuilt/etc/egl.cfg
 USE_OPENGL_RENDERER := true
