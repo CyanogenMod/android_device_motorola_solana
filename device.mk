@@ -33,6 +33,7 @@ PRODUCT_PACKAGES += \
     camera.omap4 \
     libinvensense_mpl \
     hwcomposer.solana \
+    libedid \
 
 PRODUCT_PACKAGES += \
     libaudioutils \
@@ -127,8 +128,8 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/kexec/physicalmem:system/etc/kexec/physicalmem \
     $(DEVICE_FOLDER)/kexec/procfs_rw.ko:system/etc/kexec/procfs_rw.ko \
     $(DEVICE_FOLDER)/kexec/uart.ko:system/etc/kexec/uart.ko \
-    $(DEVICE_FOLDER)/kernel:system/etc/kexec/zImage \
     out/target/product/solana/ramdisk.img:system/etc/kexec/ramdisk.gz \
+    out/target/product/solana/kernel:system/etc/kexec/zImage \
 
 # Permissions files
 PRODUCT_COPY_FILES += \
@@ -155,12 +156,12 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/prebuilt/bin/battd:system/bin/battd \
     $(DEVICE_FOLDER)/prebuilt/bin/mount_ext3.sh:system/bin/mount_ext3.sh \
     $(DEVICE_FOLDER)/prebuilt/bin/strace:system/bin/strace \
+    $(DEVICE_FOLDER)/prebuilt/etc/firmware/ducati-m3.512MB.bin:system/etc/firmware/ducati-m3.512MB.bin \
     $(DEVICE_FOLDER)/prebuilt/etc/gps.conf:system/etc/gps.conf \
     $(DEVICE_FOLDER)/prebuilt/etc/media_codecs.xml:system/etc/media_codecs.xml \
     $(DEVICE_FOLDER)/prebuilt/etc/audio_policy.conf:system/etc/audio_policy.conf \
     $(DEVICE_FOLDER)/prebuilt/etc/vold.fstab:system/etc/vold.fstab \
     $(DEVICE_FOLDER)/prebuilt/etc/TICameraCameraProperties.xml:system/etc/TICameraCameraProperties.xml \
-    $(DEVICE_FOLDER)/prebuilt/etc/firmware/ducati-m3.512MB.bin:system/etc/firmware/ducati-m3.512MB.bin \
     $(DEVICE_FOLDER)/prebuilt/usr/idc/cpcap-key.idc:system/usr/idc/cpcap-key.idc \
     $(DEVICE_FOLDER)/prebuilt/usr/idc/light-prox.idc:system/usr/idc/light-prox.idc \
     $(DEVICE_FOLDER)/prebuilt/usr/idc/mapphone-switch.idc:system/usr/idc/mapphone-switch.idc \

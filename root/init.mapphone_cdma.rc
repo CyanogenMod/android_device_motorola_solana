@@ -1,27 +1,30 @@
-on early-init
 
-
-
-
-
-
-    export EXTERNAL_STORAGE /mnt/sdcard
-    mkdir /mnt/sdcard 0000 system system
-    # for backwards compatibility
-    symlink /mnt/sdcard /sdcard
 
 on init
-    mkdir /mnt/external1 0000 system system
-
     exec /sbin/fixboot.sh
+
+    loglevel 8
 
     export ANDROID_CACHE /cache
     export DOWNLOAD_CACHE /cache/download
     export SD_EXT_DIRECTORY /sd-ext
+
+    export EXTERNAL_STORAGE /storage/sdcard0
+    mkdir /storage 0050 system sdcard_r
+    mkdir /storage/sdcard0 0000 system system
+    # for backwards compatibility
+    symlink /storage/sdcard0 /sdcard
+    symlink /storage/sdcard0 /mnt/sdcard
+
     export SECONDARY_STORAGE /mnt/sdcard-ext
-#    export EXTERNAL_ALT_STORAGE /mnt/sdcard-ext # Feature 34534
-    mkdir /mnt/sdcard-ext 0000 system system # Feature 34534
-    symlink /mnt/sdcard-ext /sdcard-ext # Feature 34534
+    mkdir /storage/sdcard1 0000 system system
+    # for backwards compatibility
+    symlink /storage/sdcard1 /sdcard-ext
+    symlink /storage/sdcard1 /mnt/sdcard-ext
+
+    # create removable USB Mass Storage mountpoints
+    mkdir /storage/usb0 0000 system system
+    mkdir /storage/usb1 0000 system system
 
     mkdir /pds 0775 system system
     mkdir /data/tmp 0777 system system
@@ -30,17 +33,6 @@ on init
     mkdir /cdrom 0770 system system
 
     symlink /data/tmp /tmp
-
-# Mount Points for External Storage Devices
-    mkdir /mnt/usbdisk_1.1.1 0755 system system
-    mkdir /mnt/usbdisk_1.0 0755 system system
-    mkdir /mnt/usbdisk_1.1 0755 system system
-    mkdir /mnt/usbdisk_1.2 0755 system system
-    mkdir /mnt/usbdisk_1.3 0755 system system
-    mkdir /mnt/usbdisk_1.4 0755 system system
-    mkdir /mnt/usbdisk_1.5 0755 system system
-    mkdir /mnt/usbdisk_1.6 0755 system system
-    mkdir /mnt/usbdisk_1.7 0755 system system
 
 # For Authentec VPN: route packets over bridge interface before processing
     write /proc/sys/net/bridge/bridge-nf-call-arptables 0
@@ -66,7 +58,6 @@ on init
 
 on fs
     mount ext3 /dev/block/mmcblk1p23 /system wait noatime nodiratime barrier=1
-
     mount ext3 /dev/block/mmcblk1p7 /pds nosuid nodev noatime nodiratime
     mount ext3 /dev/block/mmcblk1p24 /data nosuid nodev noatime nodiratime
     mount ext3 /dev/block/mmcblk1p22 /cache nosuid nodev noatime nodiratime
@@ -84,55 +75,6 @@ on post-fs
     mount ext3 /dev/block/mmcblk1p23 /system ro noatime nodiratime remount
     mount rootfs rootfs / rw remount
     symlink /dev/ttyGS0 /dev/acm0
-
-    # Create mountpoints and mount tmpfs
-    mkdir /mnt 0775 root system
-    mkdir /osh 0755 root root
-    mkdir /preinstall 0755 system system
-    mkdir /pds 0775 system system
-    mkdir /data/tmp 0777 system system
-    mkdir /misc 0770 system misc
-    mkdir /sd-ext 0771 system system
-
-    mkdir /mnt/sdcard 0000 system system
-    mkdir /mnt/sdcard-ext 0000 system system
-
-    symlink /data/tmp /tmp
-    symlink /mnt/sdcard /sdcard
-    symlink /mnt/sdcard-ext /sdcard-ext
-
-    mount tmpfs tmpfs /tmp
-
-    # Same reason as /data above
-    chown system cache /cache
-    chmod 0771 /cache
-
-    chown system misc /misc
-    chmod 0770 /misc
-
-    # This may have been created by the recovery system with odd permissions
-    chown system cache /cache/recovery
-    chmod 0770 /cache/recovery
-
-    #change permissions on vmallocinfo so we can grab it from bugreports
-    chown root log /proc/vmallocinfo
-    chmod 0440 /proc/vmallocinfo
-
-    #change permissions on kmsg & sysrq-trigger so bugreports can grab kthread stacks
-    chown root system /proc/kmsg
-    chmod 0440 /proc/kmsg
-    chown root system /proc/sysrq-trigger
-    chmod 0220 /proc/sysrq-trigger
-
-#Set the default value for bluedroid_ref
-    #    write /data/tmp/bluedroid_ref 0
-    #    chown system system /data/tmp/bluedroid_ref
-
-# Configure kernel options
-
-# Disable automatic power control for OHCI USB IPC Temporarily
-#    write /sys/devices/platform/ohci-omap3/usb1/1-1/power/control auto
-
 # NFC configuration
     # Reset system time
     write /sys/class/rtc/rtc0/unsecured_rtc on
@@ -945,16 +887,16 @@ service gadget-qbp-modem /system/bin/tty2ttyd persist.ril.modem.ttydevice /dev/t
     user radio
     group radio
     disabled
-service gadget-qbp-diag /system/bin/tty2ttyd persist.ril.diag.ttydevice /dev/ttyGS3 0 1024
-    user radio
-    group radio
-    disabled
+#service gadget-qbp-diag /system/bin/tty2ttyd persist.ril.diag.ttydevice /dev/ttyGS3 0 1024
+#    user radio
+#    group radio
+#    disabled
 on property:ro.bootmode=bp-tools
     start tcmd
     start gadget-qbp-modem
     start gadget-qbp-diag
     write /proc/sys/net/ipv4/ip_forward 1
-    start wrigley-diag
+#    start wrigley-diag
     start logcatd-blan
 service thermal_manager /system/bin/thermaldaemon
     class main
