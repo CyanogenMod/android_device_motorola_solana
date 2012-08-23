@@ -37,7 +37,6 @@ BOARD_PAGE_SIZE := 0x4096
 # Kernel Build
 TARGET_KERNEL_SOURCE := kernel/motorola/mapphone
 TARGET_KERNEL_CONFIG := hashcode_defconfig
-#TARGET_PREBUILT_KERNEL := device/motorola/solana/kernel
 
 WLAN_MODULES:
 	make clean -C hardware/ti/wlan/mac80211/compat_wl12xx
@@ -106,6 +105,11 @@ BOARD_HAS_SDCARD_INTERNAL := true
 TARGET_RECOVERY_PRE_COMMAND := "echo 1 > /data/.recovery_mode; sync;"
 TARGET_RECOVERY_PRE_COMMAND_CLEAR_REASON := true
 TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
+
+BOARD_HAS_VIRTUAL_KEYS := true
+BOARD_VIRTUAL_KEY_HEIGHT := 64
+BOARD_MAX_TOUCH_X := 1024
+BOARD_MAX_TOUCH_Y := 1024
 
 
 # Graphics

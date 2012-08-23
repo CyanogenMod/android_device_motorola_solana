@@ -24,16 +24,15 @@ ANDROID_VERSION := 4.1.1_r1
 MOTOROLA_BUILD_ID := JRO03C
 MOTOROLA_SOFTWARE_VERSION := 6.7.2.230
 DEVELOPER_NAME := hashcode
-DEVELOPER_HOST := rombot.droidhive.com
+DEVELOPER_HOST := hashcode-unn
 DEVELOPMENT_STAGE := Alpha
-TARGET_BOOTANIMATION_NAME := vertical-540
+TARGET_BOOTANIMATION_NAME := vertical-540x960
 
 # Release name and versioning
 PRODUCT_RELEASE_NAME := Droid3
 
 UTC_DATE := $(shell date +%s)
 DATE := $(shell date +%Y%m%d)
-ACT_DATE := $(shell date +%F/%R)
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
    BUILD_ID=${MOTOROLA_BUILD_ID} \
