@@ -104,11 +104,6 @@ PRODUCT_PACKAGES += \
     MusicFX \
     Apollo \
 
-# WirelessTether
-PRODUCT_PACKAGES += wifi_tether_v3_2-beta1
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/prebuilt/lib/libwtnativetask.so:system/lib/libwtnativetask.so \
-
 # Rootfs files
 PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/root/default.prop:/root/default.prop \
@@ -182,12 +177,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/prebuilt/usr/keylayout/qtouch-touchscreen.kl:system/usr/keylayout/qtouch-touchscreen.kl \
 
 #    $(DEVICE_FOLDER)/prebuilt/etc/media_profiles.xml:system/etc/media_profiles.xml \
-
-# Backup Tool
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/prebuilt/bin/backuptool.sh:system/bin/backuptool.sh \
-    $(DEVICE_FOLDER)/prebuilt/bin/backuptool.functions:system/bin/backuptool.functions \
-    $(DEVICE_FOLDER)/prebuilt/bin/50-backup.sh:system/addon.d/50-backup.sh
 
 # Phone settings
 PRODUCT_COPY_FILES += \
