@@ -22,3 +22,4 @@
 
 add_lunch_combo full_solana-userdebug
 add_lunch_combo cm_solana-userdebug
+add_lunch_combo aokp_solana-userdebug
