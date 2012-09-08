@@ -64,6 +64,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/prebuilt/etc/apns-conf.xml:system/etc/apns-conf.xml
 
+# SU binary for AOSP builds
+ifeq ($(TARGET_PRODUCT),full_solana)
+PRODUCT_COPY_FILES += vendor/motorola/common/prebuilt/bin/su:system/xbin/su
+endif
+
 $(call inherit-product, device/motorola/common/common.mk)
 $(call inherit-product-if-exists, vendor/motorola/solana/solana-vendor.mk)
 
