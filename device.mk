@@ -26,7 +26,6 @@ PRODUCT_PACKAGES += \
 # Rootfs files
 PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/root/default.prop:/root/default.prop \
-    $(DEVICE_FOLDER)/root/init.rc:/root/init.rc \
     $(DEVICE_FOLDER)/root/init.mapphone_cdma.rc:/root/init.mapphone_cdma.rc \
     $(DEVICE_FOLDER)/root/init.mapphone_umts.rc:/root/init.mapphone_umts.rc \
     $(DEVICE_FOLDER)/root/ueventd.rc:/root/ueventd.rc \
