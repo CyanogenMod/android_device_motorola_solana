@@ -32,7 +32,6 @@ on init
     mkdir /mnt/external1 0000 system system
 
     mkdir /pds 0775 system system
-    mkdir /data/tmp 0777 system system
     mkdir /preinstall 0771 system system
 
     mkdir /cdrom 0770 system system
@@ -185,6 +184,7 @@ on post-fs
     exec /system/bin/motobox mkswap /dev/block/zram0
     exec /system/bin/motobox swapon /dev/block/zram0
 on post-fs-data
+    mkdir /data/tmp 0777 system system
     copy /proc/apanic_app_threads /data/dontpanic/apanic_app_threads
     chown root log /data/dontpanic/apanic_app_threads
     chmod 0660 /data/dontpanic/apanic_app_threads
