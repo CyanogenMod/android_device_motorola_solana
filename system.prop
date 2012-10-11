@@ -6,7 +6,7 @@ rild.libpath=/system/lib/libmoto_ril.so
 rild.libargs=-d /dev/ttyO0
 ro.default_usb_mode=2
 ro.mot.ril.danlist=611,*611,#611
-persist.ril.ecclist=911,*911,#911
+persist.ril.ecclist=911,*911,#911,119,118,999,08,000,112,110
 persist.ril.modem.mode =1
 
 # This defines the max event window manager can
@@ -24,8 +24,13 @@ ro.telephony.default_network=7
 ro.com.google.clientid=android-motorola
 ro.url.legal=http://www.google.com/intl/%s/mobile/android/basic/phone-legal.html
 ro.url.legal.android_privacy=http://www.google.com/intl/%s/mobile/android/basic/privacy.html
+# Set these for VZW
 ro.cdma.home.operator.numeric=310004
 ro.cdma.home.operator.alpha=Verizon
+
+# Set this for GSM
+#ro.cdma.subscription=0
+
 ro.config.vc_call_vol_steps=7
 
 # wlan interface
@@ -70,8 +75,8 @@ ro.mot.hw.HAC=1
 # Motorola, a19622, 03/16/2010, IKSHADOW-2141 / Disable feature 33067
 #ro.mot.settings.locprivacy=1
 # ERI feature
-# 0 OFF
-# 1 ON
+# 0 OFF for GSM
+# 1 ON for VZW
 ro.mot.eri=1
 
 # Motorol,a6889c,02/Feb/2010,IKSHADOW-619
@@ -198,6 +203,11 @@ com.motorola.cg.tndisplay=1
 # BEGIN Motorola, w21549, 06/06/2012, IKHSS6UPGR-12234
 ro.hdcp.support=2
 # END IKHSS6UPGR-12234
+
+# Enable for GSM
+#persist.ril.rssi.enable.param6 = 1
+#persist.ril.baudrate=230400
+
 #
 # ADDITIONAL_BUILD_PROPERTIES
 #
