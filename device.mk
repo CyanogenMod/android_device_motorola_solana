@@ -30,7 +30,8 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/root/init.mapphone_umts.rc:/root/init.mapphone_umts.rc \
     $(DEVICE_FOLDER)/root/ueventd.rc:/root/ueventd.rc \
     $(DEVICE_FOLDER)/root/ueventd.mapphone_cdma.rc:/root/ueventd.mapphone_cdma.rc \
-    $(DEVICE_FOLDER)/root/ueventd.mapphone_umts.rc:/root/ueventd.mapphone_umts.rc
+    $(DEVICE_FOLDER)/root/ueventd.mapphone_umts.rc:/root/ueventd.mapphone_umts.rc \
+    $(DEVICE_FOLDER)/root/fixboot.sh:/root/sbin/fixboot.sh
 
 # Kexec files
 ifeq ($(TARGET_PRODUCT),full_solana)
@@ -38,16 +39,11 @@ PRODUCT_COPY_FILES += device/motorola/common/prebuilt/etc/rootfs/init:root/init
 endif
 PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/kexec/arm_kexec.ko:system/etc/kexec/arm_kexec.ko \
-    $(DEVICE_FOLDER)/kexec/atags.ko:system/etc/kexec/atags.ko \
-    $(DEVICE_FOLDER)/kexec/atags:system/etc/kexec/atags3 \
-    $(DEVICE_FOLDER)/kexec/devtree:system/etc/kexec/devtree7 \
-    $(DEVICE_FOLDER)/kexec/kexec:system/etc/kexec/kexec \
+    $(DEVICE_FOLDER)/kexec/devtree:system/etc/kexec/devtree \
     $(DEVICE_FOLDER)/kexec/kexec.ko:system/etc/kexec/kexec.ko \
-    $(DEVICE_FOLDER)/kexec/physicalmem:system/etc/kexec/physicalmem \
-    $(DEVICE_FOLDER)/kexec/procfs_rw.ko:system/etc/kexec/procfs_rw.ko \
     $(DEVICE_FOLDER)/kexec/uart.ko:system/etc/kexec/uart.ko \
-    out/target/product/solana/ramdisk.img:system/etc/kexec/ramdisk.gz \
-    out/target/product/solana/kernel:system/etc/kexec/zImage
+    out/target/product/solana/ramdisk.img:system/etc/kexec/ramdisk.img \
+    out/target/product/solana/kernel:system/etc/kexec/kernel
 
 # Prebuilts
 PRODUCT_COPY_FILES += \
