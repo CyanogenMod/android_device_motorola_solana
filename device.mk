@@ -31,7 +31,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/root/ueventd.rc:/root/ueventd.rc \
     $(DEVICE_FOLDER)/root/ueventd.mapphone_cdma.rc:/root/ueventd.mapphone_cdma.rc \
     $(DEVICE_FOLDER)/root/ueventd.mapphone_umts.rc:/root/ueventd.mapphone_umts.rc \
-    $(DEVICE_FOLDER)/root/fixboot.sh:/root/sbin/fixboot.sh
 
 # Kexec files
 ifeq ($(TARGET_PRODUCT),full_solana)
