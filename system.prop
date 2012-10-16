@@ -300,4 +300,5 @@ ro.hwc.legacy_api=true
 ro.product.use_charge_counter=1
 persist.sys.moto_oem_telephony=true
 persist.sys.moto_imsi_fix=true
+persist.sys.gsm_signalstrength_fix=false
 ro.config.not_world_phone=false
