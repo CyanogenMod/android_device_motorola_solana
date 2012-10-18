@@ -20,6 +20,8 @@ PRODUCT_PACKAGES := \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.telephony.cdma.xml:system/etc/permissions/android.hardware.telephony.cdma.xml
 
+PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME=cdma_solana
+
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 # Inherit from solana device
@@ -30,4 +32,5 @@ $(call inherit-product, device/motorola/solana/device.mk)
 PRODUCT_NAME := full_solana
 PRODUCT_DEVICE := solana
 PRODUCT_BRAND := verizon
+PRODUCT_MANUFACTURER := Motorola
 PRODUCT_MODEL := DROID3
