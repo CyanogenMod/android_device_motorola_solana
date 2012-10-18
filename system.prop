@@ -4,11 +4,12 @@
 # rild.libpath=/system/lib/libril-moto-umts-1.so
 rild.libpath=/system/lib/libmoto_ril.so
 rild.libargs=-d /dev/ttyO0
-ro.default_usb_mode=2
+#ro.default_usb_mode=2
+ro.sf.lcd_density=240
 ro.mot.ril.danlist=611,*611,#611
 persist.ril.ecclist=911,*911,#911,119,118,999,08,000,112,110
-persist.ril.modem.mode =1
 
+persist.ril.modem.mode =1
 # This defines the max event window manager can
 # handle in 1 s. We may adjust this # for performance
 # reason later
@@ -24,7 +25,6 @@ ro.telephony.default_network=7
 ro.com.google.clientid=android-motorola
 ro.url.legal=http://www.google.com/intl/%s/mobile/android/basic/phone-legal.html
 ro.url.legal.android_privacy=http://www.google.com/intl/%s/mobile/android/basic/privacy.html
-# Set these for VZW
 ro.cdma.home.operator.numeric=310004
 ro.cdma.home.operator.alpha=Verizon
 
@@ -49,14 +49,7 @@ wifi.supplicant_scan_interval = 90
 ro.cdma.otaspnumschema=SELC,1,80,99
 
 # write cdma MIN to property for VVM use in GSM/UMTS mode
-
 persist.radio.cdma.min = 0
-
-# true  Horizontal VVM is preloaded, not allow to install standalone version of
-# VVM from Android Market
-# false Horizontal VVM is not preloaded
-
-ro.HorizontalVVM=true
 
 # The OpenGL ES API level that is natively supported by this device.
 # This is a 16.16 fixed point number
@@ -100,9 +93,8 @@ ro.cdma.nbpcd=1
 persist.mot.usb.mediasync = 1
 # persist.usb.android_config = 1
 
-# System property for SMC
-#ro.service.start.smc=1
-ro.service.start.smc=0
+# System property for Security Middleware Component
+ro.service.start.smc=1
 ro.HorizontalBUA=true
 #Proximity sensor debounce time
 mot.proximity.delay=450
@@ -204,10 +196,6 @@ com.motorola.cg.tndisplay=1
 ro.hdcp.support=2
 # END IKHSS6UPGR-12234
 
-# Enable for GSM
-#persist.ril.rssi.enable.param6 = 1
-#persist.ril.baudrate=230400
-
 #
 # ADDITIONAL_BUILD_PROPERTIES
 #
@@ -227,16 +215,31 @@ persist.ril.modem.ttydevice=/dev/ttySPI0
 persist.ril.features=0x30E
 persist.ril.mux.retries=500
 persist.ril.mux.sleep=2
+
+# Enable for GSM
+#persist.ril.rssi.enable.param6 = 1
+#persist.ril.baudrate=230400
+
 #persist.mot.mdm_panicd.nopanic=no
 #ro.media.enc.aud.fileformat=3gp
 #ro.media.enc.aud.codec=amrnb
 #ro.media.enc.aud.bps=12200
+ro.com.google.gmsversion=4.0_r2
+ro.crypto.state=unencrypted
 ro.media.enc.aud.fileformat=qcp
 ro.media.enc.aud.codec=qcelp
 ro.media.enc.aud.bps=13300
 ro.media.enc.aud.ch=1
 ro.media.enc.aud.hz=8000
-ro.crypto.state=unencrypted
+ro.mot.setuptype=2
+ro.HorizontalBUA=true
+ro.HorizontalVVM=true
+ro.horizontalIM=true
+ro.horizontalNGM=false
+ro.horizontalVMM=false
+ro.horizontalMOD=false
+ro.horizontalVOD=false
+ro.horizontalEmail=false
 ro.media.camcorder.1080p=mp4,h264,30,15000000,aac,128000,44100,2
 ro.media.camcorder.720p=mp4,h264,30,10000000,aac,128000,44100,2
 ro.media.camcorder.d1NTSC=mp4,h264,30,6000000,aac,128000,44100,2
@@ -256,26 +259,15 @@ ro.media.capture.flashIntensity=70
 ro.media.capture.classification=classF
 ro.media.panorama.defres=3264x1840
 ro.media.panorama.frameres=1280x720
-ro.mot.setuptype=2
-ro.HorizontalBUA=true
-ro.HorizontalVVM=true
-ro.horizontalIM=true
-ro.horizontalNGM=false
-ro.horizontalVMM=false
-ro.horizontalMOD=false
-ro.horizontalVOD=false
-ro.horizontalEmail=false
-ro.sf.lcd_density=240
 persist.service.aplogd.enable=1
 ro.mot.phonemode.vzw4gphone=1
 ro.mot.lte_on_cdma=1
+ro.mot.tmp.telephony.refactor=true
+ro.cdma.subscription=0
 cdma_ril.libpath=/system/lib/libmoto_ril.so
 ril.rat=LTE
 lte_ril.netcfg_to=90
-ro.mot.tmp.telephony.refactor=true
-ro.cdma.subscription=0
-ro.mot.internalsdcard=1
-ro.com.google.gmsversion=4.0_r2
+#ro.mot.internalsdcard=1
 ro.telephony.call_ring.multiple=false
 ro.telephony.call_ring.delay=3000
 ro.setupwizard.enable_bypass=1
@@ -291,7 +283,7 @@ ro.mot.hw.uaprof=http://uaprof.motorola.com/phoneconfig/MotoMB200/profile/MotoMB
 ro.build.version.full=ICS_4.1.1_r3.XT862.Verizon.en.US
 ro.mot.hidden_keyboards=evfwd
 ro.setupwizard.enable_bypass=1
-persist.sys.usb.config=mtp,adb
+persist.sys.usb.config=mass_storage,adb
 
 com.ti.omap_enhancement=true
 hwui.render_dirty_regions=false

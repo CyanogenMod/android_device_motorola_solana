@@ -112,6 +112,8 @@ on post-fs
     # Increase MMC block device readaheads
     write /sys/block/mmcblk0/queue/read_ahead_kb 1024
     write /sys/block/mmcblk1/queue/read_ahead_kb 1024
+    # Set enable_smp if BT LE is supported
+    write /sys/module/bluetooth/parameters/enable_smp 1
     # Set mot_pass_through_mt_input to true for ICS based releases
     write /sys/module/hid_motorola/parameters/mot_pass_through_mt_input 1
     # Disable SysRq keyboard trigger
@@ -492,15 +494,15 @@ on boot
     setrlimit 4 2147483648 2147483648
 # Define the oom_adj values for the classes of processes that can be
 # killed by the kernel.  These are used in ActivityManagerService.
-    setprop ro.FOREGROUND_APP_ADJ 0
-    setprop ro.VISIBLE_APP_ADJ 1
-    setprop ro.PERCEPTIBLE_APP_ADJ 2
-    setprop ro.HEAVY_WEIGHT_APP_ADJ 3
-    setprop ro.SECONDARY_SERVER_ADJ 4
-    setprop ro.BACKUP_APP_ADJ 5
-    setprop ro.HOME_APP_ADJ 6
-    setprop ro.HIDDEN_APP_MIN_ADJ 7
-    setprop ro.EMPTY_APP_ADJ 15
+#    setprop ro.FOREGROUND_APP_ADJ 0
+#    setprop ro.VISIBLE_APP_ADJ 1
+#    setprop ro.PERCEPTIBLE_APP_ADJ 2
+#    setprop ro.HEAVY_WEIGHT_APP_ADJ 3
+#    setprop ro.SECONDARY_SERVER_ADJ 4
+#    setprop ro.BACKUP_APP_ADJ 5
+#    setprop ro.HOME_APP_ADJ 6
+#    setprop ro.HIDDEN_APP_MIN_ADJ 7
+#    setprop ro.EMPTY_APP_ADJ 15
     mount debugfs /sys/kernel/debug /sys/kernel/debug
 #IKHSS6-3716 allow mediaserver to enable performance mode for OMAP4 USB Audio
     chown root audio /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
