@@ -17,7 +17,8 @@ PRODUCT_COPY_FILES += \
 
 # Hardware HALs
 PRODUCT_PACKAGES += \
-    hwcomposer.solana
+    hwcomposer.solana \
+    sensors.solana
 
 # Modem
 PRODUCT_PACKAGES += \
