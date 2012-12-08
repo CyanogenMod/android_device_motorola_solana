@@ -3,6 +3,7 @@
 #
 
 DEVICE_FOLDER := device/motorola/solana
+BOARD_USES_KEXEC := true
 
 # Device overlay
     DEVICE_PACKAGE_OVERLAYS += $(DEVICE_FOLDER)/overlay/aosp
@@ -31,7 +32,7 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/root/init.mapphone_umts.rc:/root/init.mapphone_umts.rc \
     $(DEVICE_FOLDER)/root/ueventd.rc:/root/ueventd.rc \
     $(DEVICE_FOLDER)/root/ueventd.mapphone_cdma.rc:/root/ueventd.mapphone_cdma.rc \
-    $(DEVICE_FOLDER)/root/ueventd.mapphone_umts.rc:/root/ueventd.mapphone_umts.rc \
+    $(DEVICE_FOLDER)/root/ueventd.mapphone_umts.rc:/root/ueventd.mapphone_umts.rc
 
 # Kexec files
 ifeq ($(TARGET_PRODUCT),full_solana)

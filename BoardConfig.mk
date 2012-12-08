@@ -1,3 +1,8 @@
+BOARD_USES_KEXEC := true
+ifdef BOARD_USES_KEXEC
+COMMON_GLOBAL_CFLAGS += -DBOARD_USES_KEXEC
+endif
+
 # inherit from common
 -include device/motorola/common/BoardConfigCommon.mk
 
@@ -19,11 +24,9 @@ TARGET_KERNEL_CONFIG := mapphone_solana_jb_defconfig
 # Recovery
 BOARD_NONSAFE_SYSTEM_DEVICE := /dev/block/mmcblk1p21
 
-BOARD_HAS_VIRTUAL_KEYS := true
-BOARD_VIRTUAL_KEY_HEIGHT := 64
-BOARD_MAX_TOUCH_X := 1024
-BOARD_MAX_TOUCH_Y := 1024
-
 # Misc.
 BOARD_USES_KEYBOARD_HACK := true
 BOARD_USES_LEGACY_RIL := true
+
+# TI Codecs
+ENHANCED_DOMX := true
