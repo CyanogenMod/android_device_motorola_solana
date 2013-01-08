@@ -12,7 +12,7 @@ TARGET_KERNEL_MODULES += SGX_MODULES
 
 # Graphics
 PRODUCT_COPY_FILES += \
-    $(SGX_LOCAL_PATH)/lib/hw/gralloc.omap4430.so:/system/vendor/lib/hw/gralloc.omap4430.so \
+    $(SGX_LOCAL_PATH)/lib/hw/gralloc.omap4430.so:/system/vendor/lib/hw/gralloc.omap4.so \
     $(SGX_LOCAL_PATH)/lib/egl/libEGL_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libEGL_POWERVR_SGX540_120.so \
     $(SGX_LOCAL_PATH)/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libGLESv1_CM_POWERVR_SGX540_120.so \
     $(SGX_LOCAL_PATH)/lib/egl/libGLESv2_POWERVR_SGX540_120.so:/system/vendor/lib/egl/libGLESv2_POWERVR_SGX540_120.so \
