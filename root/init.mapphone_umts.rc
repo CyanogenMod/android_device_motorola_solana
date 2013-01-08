@@ -36,7 +36,6 @@ on fs
     mount rootfs rootfs / rw remount
     mkdir /ss 0777 root root
     mount vfat /dev/block/emstorage /ss
-    exec /sbin/bbx ls -l /dev/block/* > /ss/block-dir.txt
 # end SS3 setup
     mount ext3 loop@/ss/safestrap/rom-slot1/system.img /system wait noatime nodiratime barrier=1
     mount ext3 /dev/block/pds /pds nosuid nodev noatime nodiratime
