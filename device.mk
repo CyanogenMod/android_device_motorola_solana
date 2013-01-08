@@ -53,11 +53,10 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/prebuilt/etc/firmware/ducati-m3.512MB.bin:system/etc/firmware/ducati-m3.512MB.bin \
     $(DEVICE_FOLDER)/prebuilt/etc/gps.conf:system/etc/gps.conf \
     $(DEVICE_FOLDER)/prebuilt/etc/media_codecs.xml:system/etc/media_codecs.xml \
+    $(DEVICE_FOLDER)/prebuilt/etc/media_profiles.xml:system/etc/media_profiles.xml \
     $(DEVICE_FOLDER)/prebuilt/etc/audio_policy.conf:system/etc/audio_policy.conf \
-    $(DEVICE_FOLDER)/prebuilt/etc/vold.fstab:system/etc/vold.fstab \
-    $(DEVICE_FOLDER)/prebuilt/etc/TICameraCameraProperties.xml:system/etc/TICameraCameraProperties.xml \
+    $(DEVICE_FOLDER)/prebuilt/etc/vold.fstab:system/etc/vold.fstab
 
-#    $(DEVICE_FOLDER)/prebuilt/etc/media_profiles.xml:system/etc/media_profiles.xml \
 
 # Phone settings
 PRODUCT_COPY_FILES += \
