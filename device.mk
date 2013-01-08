@@ -226,7 +226,7 @@ PRODUCT_LOCALES += en_US
 
 # stuff specific to ti OMAP4 hardware
 #$(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
-$(call inherit-product-if-exists, vendor/motorola/solana/imgtec/sgx-imgtec-bins.mk)
+$(call inherit-product-if-exists, device/motorola/solana/imgtec/sgx-imgtec-bins.mk)
 $(call inherit-product-if-exists, vendor/motorola/common/common-vendor.mk)
 $(call inherit-product-if-exists, vendor/motorola/solana/solana-vendor.mk)
 
