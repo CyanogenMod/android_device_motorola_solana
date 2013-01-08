@@ -283,7 +283,7 @@ ro.mot.hw.uaprof=http://uaprof.motorola.com/phoneconfig/MotoMB200/profile/MotoMB
 ro.build.version.full=ICS_4.1.1_r3.XT862.Verizon.en.US
 ro.mot.hidden_keyboards=evfwd
 ro.setupwizard.enable_bypass=1
-persist.sys.usb.config=mass_storage,adb
+persist.sys.usb.config=mtp,adb
 
 com.ti.omap_enhancement=true
 hwui.render_dirty_regions=false
