@@ -19,7 +19,6 @@ PRODUCT_PACKAGES += \
     libaudioutils \
     libaudiohw_legacy
 
-
 # BlueZ test tools
 PRODUCT_PACKAGES += \
     hciconfig \
@@ -170,8 +169,6 @@ PRODUCT_COPY_FILES += \
 # non-kexec setting
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.hwc.sw_vsync=1
-
-endif
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
