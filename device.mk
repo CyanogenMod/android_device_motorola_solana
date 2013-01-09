@@ -6,90 +6,19 @@ DEVICE_FOLDER := device/motorola/solana
 BOARD_USES_KEXEC := true
 
 # Device overlay
-    DEVICE_PACKAGE_OVERLAYS += $(DEVICE_FOLDER)/overlay/aosp
-
-# Audio
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/audio/alsa.omap4.so:/system/lib/hw/alsa.omap4.so \
-    $(DEVICE_FOLDER)/audio/audio.primary.omap4.so:/system/lib/hw/audio.primary.solana.so \
-    $(DEVICE_FOLDER)/audio/audio_policy.omap4.so:/system/lib/hw/audio_policy.omap4.so \
-    $(DEVICE_FOLDER)/audio/libasound.so:/system/lib/libasound.so \
-    $(DEVICE_FOLDER)/audio/libaudio_ext.so:/system/lib/libaudio_ext.so
+DEVICE_PACKAGE_OVERLAYS += $(DEVICE_FOLDER)/overlay/aosp
 
 # Hardware HALs
 PRODUCT_PACKAGES += \
     hwcomposer.solana \
     sensors.solana
-
-# Modem
-PRODUCT_PACKAGES += \
-    libreference-cdma-sms
-
-# Rootfs files
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/root/default.prop:/root/default.prop \
-    $(DEVICE_FOLDER)/root/init.mapphone_cdma.rc:/root/init.mapphone_cdma.rc \
-    $(DEVICE_FOLDER)/root/init.mapphone_umts.rc:/root/init.mapphone_umts.rc \
-    $(DEVICE_FOLDER)/root/ueventd.rc:/root/ueventd.rc \
-    $(DEVICE_FOLDER)/root/ueventd.mapphone.rc:/root/ueventd.mapphone_cdma.rc \
-    $(DEVICE_FOLDER)/root/ueventd.mapphone.rc:/root/ueventd.mapphone_umts.rc
-
-# Kexec files
-ifeq ($(TARGET_PRODUCT),full_solana)
-PRODUCT_COPY_FILES += $(DEVICE_FOLDER)/prebuilt/etc/rootfs/init:root/init
-endif
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/kexec/arm_kexec.ko:system/etc/kexec/arm_kexec.ko \
-    $(DEVICE_FOLDER)/kexec/devtree:system/etc/kexec/devtree \
-    $(DEVICE_FOLDER)/kexec/kexec.ko:system/etc/kexec/kexec.ko \
-    $(DEVICE_FOLDER)/kexec/uart.ko:system/etc/kexec/uart.ko \
-    $(OUT)/ramdisk.img:system/etc/kexec/ramdisk.img \
-    $(OUT)/kernel:system/etc/kexec/kernel
-
-# Prebuilts
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/prebuilt/bin/battd:system/bin/battd \
-    $(DEVICE_FOLDER)/prebuilt/bin/mount_ext3.sh:system/bin/mount_ext3.sh \
-    $(DEVICE_FOLDER)/prebuilt/etc/firmware/ducati-m3.512MB.bin:system/etc/firmware/ducati-m3.512MB.bin \
-    $(DEVICE_FOLDER)/prebuilt/etc/gps.conf:system/etc/gps.conf \
-    $(DEVICE_FOLDER)/prebuilt/etc/media_codecs.xml:system/etc/media_codecs.xml \
-    $(DEVICE_FOLDER)/prebuilt/etc/media_profiles.xml:system/etc/media_profiles.xml \
-    $(DEVICE_FOLDER)/prebuilt/etc/audio_policy.conf:system/etc/audio_policy.conf \
-    $(DEVICE_FOLDER)/prebuilt/etc/vold.fstab:system/etc/vold.fstab
-
-
-# Phone settings
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/prebuilt/etc/apns-conf.xml:system/etc/apns-conf.xml
-
-
-# The gps config appropriate for this device
-$(call inherit-product, device/common/gps/gps_us_supl.mk)
-
-## (3)  Finally, the least specific parts, i.e. the non-GSM-specific aspects
-
-# Device overlay
-DEVICE_PACKAGE_OVERLAYS += $(DEVICE_FOLDER)/overlay/aosp
-
-# high-density artwork where available
-PRODUCT_AAPT_CONFIG := normal hdpi
-PRODUCT_AAPT_PREF_CONFIG := hdpi
-
-PRODUCT_PACKAGES += \
-    charger \
-    charger_res_images
-
-# Hardware HALs
-PRODUCT_PACKAGES += \
-    audio.usb.default
+    audio.usb.default \
+    audio.a2dp.default \
 
 PRODUCT_PACKAGES += \
     libaudioutils \
     libaudiohw_legacy
 
-# BlueZ a2dp Audio HAL module
-PRODUCT_PACKAGES += \
-    audio.a2dp.default \
 
 # BlueZ test tools
 PRODUCT_PACKAGES += \
@@ -98,6 +27,7 @@ PRODUCT_PACKAGES += \
 
 # Modem
 PRODUCT_PACKAGES += \
+    libreference-cdma-sms \
     libaudiomodemgeneric \
     rild \
     radiooptions
@@ -149,15 +79,58 @@ PRODUCT_PACKAGES += \
     libtf_crypto_sst \
     libmm_osal
 
-# Release utilities
-PRODUCT_PACKAGES += \
-    solana_releaseutils-finalize_release \
-    solana_releaseutils-mke2fs \
-    solana_releaseutils-tune2fs
-
 PRODUCT_PACKAGES += \
     evtest \
     DockAudio \
+
+# Audio
+PRODUCT_COPY_FILES += \
+    $(DEVICE_FOLDER)/audio/alsa.omap4.so:/system/lib/hw/alsa.omap4.so \
+    $(DEVICE_FOLDER)/audio/audio.primary.omap4.so:/system/lib/hw/audio.primary.solana.so \
+    $(DEVICE_FOLDER)/audio/audio_policy.omap4.so:/system/lib/hw/audio_policy.omap4.so \
+    $(DEVICE_FOLDER)/audio/libasound.so:/system/lib/libasound.so \
+    $(DEVICE_FOLDER)/audio/libaudio_ext.so:/system/lib/libaudio_ext.so
+
+# Rootfs files
+PRODUCT_COPY_FILES += \
+    $(DEVICE_FOLDER)/root/default.prop:/root/default.prop \
+    $(DEVICE_FOLDER)/root/init.mapphone.rc:/root/init.mapphone_cdma.rc \
+    $(DEVICE_FOLDER)/root/init.mapphone.rc:/root/init.mapphone_umts.rc \
+    $(DEVICE_FOLDER)/root/init.usb.rc:/root/init.usb.rc \
+    $(DEVICE_FOLDER)/root/ueventd.mapphone.rc:/root/ueventd.mapphone_cdma.rc \
+    $(DEVICE_FOLDER)/root/ueventd.mapphone.rc:/root/ueventd.mapphone_umts.rc
+
+# Kexec files
+ifeq ($(TARGET_PRODUCT),full_solana)
+PRODUCT_COPY_FILES += $(DEVICE_FOLDER)/prebuilt/etc/rootfs/init:root/init
+endif
+PRODUCT_COPY_FILES += \
+    $(DEVICE_FOLDER)/kexec/arm_kexec.ko:system/etc/kexec/arm_kexec.ko \
+    $(DEVICE_FOLDER)/kexec/devtree:system/etc/kexec/devtree \
+    $(DEVICE_FOLDER)/kexec/kexec.ko:system/etc/kexec/kexec.ko \
+    $(DEVICE_FOLDER)/kexec/uart.ko:system/etc/kexec/uart.ko \
+    $(DEVICE_FOLDER)/kexec/atags:system/etc/kexec/atags \
+    $(DEVICE_FOLDER)/kexec/kexec:system/etc/kexec/kexec \
+    $(OUT)/ramdisk.img:system/etc/kexec/ramdisk.img \
+    $(OUT)/kernel:system/etc/kexec/kernel
+
+# Bin files for kexec load
+PRODUCT_COPY_FILES += \
+    $(DEVICE_FOLDER)/prebuilt/bin/bbx:/root/sbin/bbx \
+    $(DEVICE_FOLDER)/prebuilt/bin/fixboot.sh:/root/sbin/fixboot.sh
+
+# Prebuilts
+PRODUCT_COPY_FILES += \
+    $(DEVICE_FOLDER)/prebuilt/bin/battd:system/bin/battd \
+    $(DEVICE_FOLDER)/prebuilt/bin/mount_ext3.sh:system/bin/mount_ext3.sh \
+    $(DEVICE_FOLDER)/prebuilt/etc/firmware/ducati-m3.512MB.bin:system/etc/firmware/ducati-m3.512MB.bin \
+    $(DEVICE_FOLDER)/prebuilt/etc/gps.conf:system/etc/gps.conf \
+    $(DEVICE_FOLDER)/prebuilt/etc/media_codecs.xml:system/etc/media_codecs.xml \
+    $(DEVICE_FOLDER)/prebuilt/etc/media_profiles.xml:system/etc/media_profiles.xml \
+    $(DEVICE_FOLDER)/prebuilt/etc/audio_policy.conf:system/etc/audio_policy.conf \
+    $(DEVICE_FOLDER)/prebuilt/etc/vold.fstab:system/etc/vold.fstab \
+    $(DEVICE_FOLDER)/prebuilt/etc/apns-conf.xml:system/etc/apns-conf.xml
+
 
 # Permissions files
 PRODUCT_COPY_FILES += \
@@ -194,28 +167,11 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/firmware/wpan/bluetooth/TIInit_7.6.15.bts:system/etc/firmware/TIInit_7.6.15.bts \
     $(DEVICE_FOLDER)/firmware/wpan/bluetooth/TIInit_12.7.27.bts:system/etc/firmware/TIInit_12.7.27.bts \
 
-# Kexec files
-ifeq ($(BOARD_USES_KEXEC),true)
-# Common kexec files
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/kexec/atags:system/etc/kexec/atags \
-    $(DEVICE_FOLDER)/kexec/kexec:system/etc/kexec/kexec
-
-# Kexec Boot support for Safestrap v3
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/prebuilt/bin/bbx:/root/sbin/bbx \
-    $(DEVICE_FOLDER)/prebuilt/bin/fixboot.sh:/root/sbin/fixboot.sh
-else
-
 # non-kexec setting
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.hwc.sw_vsync=1
 
 endif
-
-# Rootfs
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/root/init.rc:/root/init.rc
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
@@ -223,9 +179,25 @@ PRODUCT_TAGS += dalvik.gc.type-precise
 # still need to set english for audio init
 PRODUCT_LOCALES += en_US
 
+# The gps config appropriate for this device
+$(call inherit-product, device/common/gps/gps_us_supl.mk)
+
+## (3)  Finally, the least specific parts, i.e. the non-GSM-specific aspects
+
+# Device overlay
+DEVICE_PACKAGE_OVERLAYS += $(DEVICE_FOLDER)/overlay/aosp
+
+# high-density artwork where available
+PRODUCT_AAPT_CONFIG := normal hdpi
+PRODUCT_AAPT_PREF_CONFIG := hdpi
+
+PRODUCT_PACKAGES += \
+    charger \
+    charger_res_images
+
 # stuff specific to ti OMAP4 hardware
 #$(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
-$(call inherit-product-if-exists, device/motorola/solana/imgtec/sgx-imgtec-bins.mk)
+$(call inherit-product-if-exists, $(DEVICE_FOLDER)/imgtec/sgx-imgtec-bins.mk)
 $(call inherit-product-if-exists, vendor/motorola/common/common-vendor.mk)
 $(call inherit-product-if-exists, vendor/motorola/solana/solana-vendor.mk)
 
