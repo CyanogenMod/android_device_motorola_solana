@@ -17,7 +17,7 @@ OMAP_ENHANCEMENT := true
 #OMAP_ENHANCEMENT_VTC := true
 #USE_ITTIAM_AAC := true
 #BLTSVILLE_ENHANCEMENT :=true
-ENHANCED_DOMX := true
+BOARD_USE_TI_ENHANCED_DOMX := true
 
 # inherit from the proprietary version
 -include vendor/motorola/common/BoardConfigVendor.mk
@@ -112,11 +112,10 @@ TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
 # Graphics
 BOARD_EGL_CFG := device/motorola/common/prebuilt/etc/egl.cfg
 USE_OPENGL_RENDERER := true
-TARGET_HAS_CUSTOM_LIBION := true
+BOARD_USE_CUSTOM_LIBION := true
 
 # Makefile variable and C/C++ macro to recognise DOMX version
-ifdef ENHANCED_DOMX
-    COMMON_GLOBAL_CFLAGS += -DENHANCED_DOMX
+ifdef BOARD_USE_TI_ENHANCED_DOMX
     DOMX_PATH := device/motorola/solana/domx
 else
     DOMX_PATH := hardware/ti/omap4xxx/domx
@@ -188,7 +187,6 @@ LEGACY_RIL := true
 
 # Processor
 TARGET_BOOTLOADER_BOARD_NAME := solana
-TARGET_HAS_CUSTOM_LIBION := true
 
 # Kernel
 BOARD_KERNEL_CMDLINE := root=/dev/ram0 rw mem=512M@0x80000000 console=ttyO2,115200n8 init=/init ip=off brdrev=P2A ramdisk_size=20480 mmcparts=mmcblk1:p7(pds),p15(boot),p16(recovery),p17(cdrom),p18(misc),p19(cid),p20(kpanic),p21(system),p22(cache),p23(preinstall),p24(userdata),p25(emstorage) androidboot.bootloader=0x0A64
