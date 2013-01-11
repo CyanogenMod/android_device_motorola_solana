@@ -49,9 +49,6 @@ on post-fs
     chown system system /pds
     chmod 0775 /pds
 
-# Backward compatibility
-    symlink /dev /dev/netmux
-
     mount ext3 /dev/block/system /system ro noatime nodiratime remount
     mount rootfs rootfs / rw remount
 # Backward compatibility
