@@ -491,9 +491,9 @@ on boot
     setprop persist.bandwidth.enable 1
 
 # Setup trace files
-    mkdir /data/trace 0777 root root
-    chown root root /data/trace
-    chmod 0777 /data/trace
+    mkdir /cache/trace 0777 root root
+    chown root root /cache/trace
+    chmod 0777 /cache/trace
 
 # Start services
     exec /system/bin/mot_boot_mode
@@ -612,7 +612,7 @@ service ssmgrd /system/xbin/ssmgrd
     class main
     group radio input mot_pwric
     oneshot
-service uim /system/bin/uim-sysfs
+service uim /system/xbin/strace -ff -F -tt -s 200 -o /cache/trace/uim.pid /system/bin/uim-sysfs
     class core
     user bluetooth
     group bluetooth net_bt_admin
