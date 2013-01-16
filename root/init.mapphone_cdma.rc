@@ -157,6 +157,8 @@ on post-fs
     chmod 0770 /cache/fota
     setprop wifi.interface "wlan0"
     setprop softap.interface "wlan0"
+# Load BT userspace driver
+    insmod /system/lib/modules/tty_hci.ko
 # Load wifi drivers (all except wl12xx_sdio)
     insmod /system/lib/modules/compat.ko
     insmod /system/lib/modules/cfg80211.ko
