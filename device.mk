@@ -16,6 +16,8 @@ PRODUCT_PACKAGES += \
     audio.a2dp.default \
 
 PRODUCT_PACKAGES += \
+    audio_policy.omap4 \
+    libasound \
     libaudioutils \
     libaudiohw_legacy
 
@@ -59,6 +61,16 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
 
+# Motorola Binaries
+PRODUCT_PACKAGES += \
+    aplogd \
+    charge_only_mode \
+    modemlog \
+    mot_boot_mode \
+    motobox \
+    serialno_tracker \
+    usbd
+
 # OMAP4
 PRODUCT_PACKAGES += \
     libdomx \
@@ -86,8 +98,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/audio/alsa.omap4.so:/system/lib/hw/alsa.omap4.so \
     $(DEVICE_FOLDER)/audio/audio.primary.omap4.so:/system/lib/hw/audio.primary.solana.so \
-    $(DEVICE_FOLDER)/audio/audio_policy.omap4.so:/system/lib/hw/audio_policy.omap4.so \
-    $(DEVICE_FOLDER)/audio/libasound.so:/system/lib/libasound.so \
     $(DEVICE_FOLDER)/audio/libaudio_ext.so:/system/lib/libaudio_ext.so
 
 # Rootfs files
@@ -177,9 +187,8 @@ PRODUCT_TAGS += dalvik.gc.type-precise
 PRODUCT_LOCALES += en_US
 
 # The gps config appropriate for this device
-$(call inherit-product, device/common/gps/gps_us_supl.mk)
-
-## (3)  Finally, the least specific parts, i.e. the non-GSM-specific aspects
+PRODUCT_COPY_FILES += \
+    $(DEVICE_FOLDER)/prebuilt/etc/gps.conf:system/etc/gps.conf
 
 # Device overlay
 DEVICE_PACKAGE_OVERLAYS += $(DEVICE_FOLDER)/overlay/aosp
@@ -194,6 +203,7 @@ PRODUCT_PACKAGES += \
 
 # stuff specific to ti OMAP4 hardware
 #$(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
+$(call inherit-product, hardware/ti/omap4xxx/security/Android.mk)
 $(call inherit-product-if-exists, $(DEVICE_FOLDER)/imgtec/sgx-imgtec-bins.mk)
 $(call inherit-product-if-exists, vendor/motorola/common/common-vendor.mk)
 $(call inherit-product-if-exists, vendor/motorola/solana/solana-vendor.mk)
