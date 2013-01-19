@@ -12,6 +12,7 @@ DEVICE_PACKAGE_OVERLAYS += $(DEVICE_FOLDER)/overlay/aosp
 PRODUCT_PACKAGES += \
     hwcomposer.solana \
     sensors.solana \
+    lights.solana \
     audio.usb.default \
     audio.a2dp.default \
 
