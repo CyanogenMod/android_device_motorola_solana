@@ -202,6 +202,7 @@ PRODUCT_PACKAGES += \
     charger \
     charger_res_images
 
+$(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 # stuff specific to ti OMAP4 hardware
 #$(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
 $(call inherit-product, hardware/ti/omap4xxx/security/Android.mk)
