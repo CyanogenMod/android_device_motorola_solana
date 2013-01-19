@@ -2,7 +2,7 @@
 $(call inherit-product, device/motorola/solana/full_solana.mk)
 
 # Inherit common product files.
-$(call inherit-product, vendor/aokp/configs/common_phone.mk)
+$(call inherit-product, vendor/aokp/configs/common.mk)
 
 DEVICE_PACKAGE_OVERLAYS += device/motorola/solana/overlay/aokp
 
