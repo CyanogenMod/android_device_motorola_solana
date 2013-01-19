@@ -14,7 +14,7 @@ PRODUCT_PACKAGES += \
     sensors.solana \
     lights.solana \
     audio.usb.default \
-    audio.a2dp.default \
+    audio.a2dp.default
 
 PRODUCT_PACKAGES += \
     audio_policy.omap4 \
@@ -94,6 +94,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     evtest \
     DockAudio \
+    libjni_mosaic
 
 # Audio
 PRODUCT_COPY_FILES += \
@@ -161,7 +162,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
-    frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
+    frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml
 
 # WLAN firmware
 PRODUCT_COPY_FILES += \
@@ -175,7 +176,7 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/firmware/wpan/bluetooth/TIInit_10.6.15.bts:system/etc/firmware/TIInit_10.6.15.bts \
     $(DEVICE_FOLDER)/firmware/wpan/bluetooth/TIInit_7.2.31.bts:system/etc/firmware/TIInit_7.2.31.bts \
     $(DEVICE_FOLDER)/firmware/wpan/bluetooth/TIInit_7.6.15.bts:system/etc/firmware/TIInit_7.6.15.bts \
-    $(DEVICE_FOLDER)/firmware/wpan/bluetooth/TIInit_12.7.27.bts:system/etc/firmware/TIInit_12.7.27.bts \
+    $(DEVICE_FOLDER)/firmware/wpan/bluetooth/TIInit_12.7.27.bts:system/etc/firmware/TIInit_12.7.27.bts
 
 # non-kexec setting
 PRODUCT_PROPERTY_OVERRIDES += \
