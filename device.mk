@@ -94,6 +94,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     evtest \
     DockAudio \
+    libjni_filtershow_filters \
     libjni_mosaic
 
 # Audio
