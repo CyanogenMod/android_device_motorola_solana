@@ -51,13 +51,14 @@ public:
                     const char* dev_name,
                     const char* data_name);
 
-    virtual ~SensorBase();
+    virtual ~SensorBase(); 
 
     virtual int readEvents(sensors_event_t* data, int count) = 0;
     virtual bool hasPendingEvents() const;
     virtual int getFd() const;
     virtual int setDelay(int32_t handle, int64_t ns);
     virtual int enable(int32_t handle, int enabled) = 0;
+	virtual int forwardEvents(sensors_event_t *data) { return 0;};
 };
 
 /*****************************************************************************/

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+	
 #ifndef ANDROID_AKM_SENSOR_H
 #define ANDROID_AKM_SENSOR_H
 
@@ -21,7 +22,6 @@
 #include <errno.h>
 #include <sys/cdefs.h>
 #include <sys/types.h>
-
 
 #include "nusensors.h"
 #include "SensorBase.h"
@@ -35,28 +35,39 @@ class AkmSensor : public SensorBase {
 public:
             AkmSensor();
     virtual ~AkmSensor();
-
     enum {
-        Accelerometer   = 0,
-        MagneticField   = 1,
-        Orientation     = 2,
+        MagneticField = 0,
+        Orientation,
         numSensors
     };
-
     virtual int setDelay(int32_t handle, int64_t ns);
     virtual int enable(int32_t handle, int enabled);
+    virtual int forwardEvents(sensors_event_t *data);
+    virtual bool isEnabled(int32_t handle);
     virtual int readEvents(sensors_event_t* data, int count);
     void processEvent(int code, int value);
 
 private:
     int update_delay();
+        int is_sensor_enabled(uint32_t sensor_type);
+        int enable_sensor(uint32_t sensor_type);
+        int disable_sensor(uint32_t sensor_type);
+        int set_delay(int64_t ns[3]);
+
+		enum {
+        AccelAxisX = 0,
+        AccelAxisY,
+        AccelAxisZ,
+        numAccelAxises,
+    };
+
     uint32_t mEnabled;
     uint32_t mPendingMask;
     InputEventCircularReader mInputReader;
     sensors_event_t mPendingEvents[numSensors];
-    uint64_t mDelays[numSensors];
+    int64_t mDelays[numSensors];
+        int16_t mAccels[numAccelAxises];
 };
 
 /*****************************************************************************/
-
 #endif  // ANDROID_AKM_SENSOR_H

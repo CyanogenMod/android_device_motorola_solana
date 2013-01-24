@@ -159,6 +159,9 @@ int sensors_poll_context_t::pollEvents(sensors_event_t* data, int count)
                     // no more data for this sensor
                     mPollFds[i].revents = 0;
                 }
+				if((0 != nb) && (KXTF9 == i)) {
+					mSensors[Akm]->forwardEvents(&data[nb-1]);
+				}
                 count -= nb;
                 nbEvents += nb;
                 data += nb;

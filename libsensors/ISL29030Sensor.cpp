@@ -25,7 +25,7 @@
 
 #include <cutils/log.h>
 
-#include "isl29030.h"
+#include "inc/isl29030.h"
 
 #include "ISL29030Sensor.h"
 

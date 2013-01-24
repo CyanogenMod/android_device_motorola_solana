@@ -33,6 +33,7 @@ LOCAL_SRC_FILES := 									\
 							nusensors.cpp 			\
 							InputEventReader.cpp 	\
 							SensorBase.cpp			\
+							AkmAotController.cpp		\
 							AkmSensor.cpp			\
 							ISL29030Sensor.cpp		\
 							KXTF9Sensor.cpp		

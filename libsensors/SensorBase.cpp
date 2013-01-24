@@ -65,6 +65,9 @@ int SensorBase::close_device() {
 }
 
 int SensorBase::getFd() const {
+	if (!data_name) {
+		return dev_fd;
+	}
     return data_fd;
 }
 
