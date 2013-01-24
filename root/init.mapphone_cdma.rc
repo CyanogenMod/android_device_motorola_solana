@@ -672,6 +672,10 @@ service dhcpcd_bnep0 /system/bin/dhcpcd -ABKL
     class main
     disabled
     oneshot
+service iprenew_bnep0 /system/bin/dhcpcd -n
+    class main
+    disabled
+    oneshot
 service dhcpcd_usbeth0 /system/bin/dhcpcd -ABKL
     class main
     disabled
