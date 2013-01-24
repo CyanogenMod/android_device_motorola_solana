@@ -1,6 +1,4 @@
-ifeq ($(TARGET_DEVICE),solana)
 BOARD_USES_KEXEC := true
-endif
 ifdef BOARD_USES_KEXEC
 COMMON_GLOBAL_CFLAGS += -DBOARD_USES_KEXEC
 endif
