@@ -1,0 +1,7 @@
+[
+  {
+    "repository": "android_kernel_motorola_omap4-common-kexec",
+    "target_path": "kernel/motorola/omap4-common-kexec"
+  }
+]
+
