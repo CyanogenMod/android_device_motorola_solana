@@ -69,7 +69,6 @@ PRODUCT_PACKAGES += \
     modemlog \
     mot_boot_mode \
     motobox \
-    serialno_tracker \
     usbd
 
 # OMAP4
