@@ -97,12 +97,6 @@ PRODUCT_PACKAGES += \
     libjni_filtershow_filters \
     libjni_mosaic
 
-# Audio
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/audio/alsa.omap4.so:/system/lib/hw/alsa.omap4.so \
-    $(DEVICE_FOLDER)/audio/audio.primary.omap4.so:/system/lib/hw/audio.primary.solana.so \
-    $(DEVICE_FOLDER)/audio/libaudio_ext.so:/system/lib/libaudio_ext.so
-
 # Rootfs files
 PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/root/default.prop:/root/default.prop \
