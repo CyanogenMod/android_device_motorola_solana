@@ -69,7 +69,7 @@ TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.4.3
 #TARGET_PROVIDES_INIT_RC := true
 
 # Kernel Build
-TARGET_KERNEL_SOURCE := kernel/motorola/omap4-common-kexec
+TARGET_KERNEL_SOURCE := kernel/motorola/omap4-kexec-common
 TARGET_KERNEL_CONFIG := mapphone_solana_jb_defconfig
 
 WLAN_MODULES:
