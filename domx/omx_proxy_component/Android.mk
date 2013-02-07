@@ -1,4 +1,5 @@
 LOCAL_PATH:= $(call my-dir)
+DEVICE_FOLDER := device/motorola/solana
 
 #
 # libOMX.TI.DUCATI1.VIDEO.DECODER
@@ -12,7 +13,7 @@ LOCAL_C_INCLUDES += \
 	$(LOCAL_PATH)/../domx \
 	$(LOCAL_PATH)/../domx/omx_rpc/inc \
 	$(HARDWARE_TI_OMAP4_BASE)/../../libhardware/include \
-	device/amazon/otter/hwc/
+	$(DEVICE_FOLDER)/hwc/
 
 LOCAL_SHARED_LIBRARIES := \
 	libmm_osal \
@@ -78,7 +79,7 @@ LOCAL_C_INCLUDES += \
 	$(LOCAL_PATH)/../omx_core/inc \
 	$(LOCAL_PATH)/../mm_osal/inc \
 	$(LOCAL_PATH)/../domx \
-	device/amazon/otter/include/ \
+	$(DEVICE_FOLDER)/include/ \
 	$(LOCAL_PATH)/../domx/omx_rpc/inc
 
 LOCAL_SHARED_LIBRARIES := \
@@ -110,10 +111,10 @@ LOCAL_C_INCLUDES += \
 	$(LOCAL_PATH)/../domx \
 	$(LOCAL_PATH)/../domx/omx_rpc/inc \
 	system/core/include/cutils \
-	device/amazon/otter/hwc \
+	$(DEVICE_FOLDER)/hwc \
 	$(HARDWARE_TI_OMAP4_BASE)/camera/inc \
 	frameworks/native/include/media/hardware \
-	device/amazon/otter/include/camera \
+	$(DEVICE_FOLDER)/include/camera \
 
 LOCAL_SHARED_LIBRARIES := \
 	libmm_osal \
@@ -146,10 +147,10 @@ LOCAL_C_INCLUDES += \
 	$(LOCAL_PATH)/../domx \
 	$(LOCAL_PATH)/../domx/omx_rpc/inc \
 	system/core/include/cutils \
-	device/amazon/otter/hwc \
+	$(DEVICE_FOLDER)/hwc \
 	$(HARDWARE_TI_OMAP4_BASE)/camera/inc \
 	frameworks/native/include/media/hardware \
-	device/amazon/otter/include/camera \
+	$(DEVICE_FOLDER)/include/camera \
 
 LOCAL_SHARED_LIBRARIES := \
 	libmm_osal \
@@ -182,7 +183,7 @@ LOCAL_C_INCLUDES += \
 	$(LOCAL_PATH)/../domx \
 	$(LOCAL_PATH)/../domx/omx_rpc/inc \
 	$(HARDWARE_TI_OMAP4_BASE)/../../libhardware/include \
-	device/amazon/otter/hwc/
+	$(DEVICE_FOLDER)/hwc/
 
 LOCAL_SHARED_LIBRARIES := \
 	libmm_osal \

@@ -1,4 +1,5 @@
 LOCAL_PATH:= $(call my-dir)
+DEVICE_FOLDER := device/motorola/solana
 
 include $(CLEAR_VARS)
 
@@ -16,7 +17,7 @@ LOCAL_C_INCLUDES += \
     $(LOCAL_PATH)/../omx_core/inc \
     $(LOCAL_PATH)/../mm_osal/inc \
     $(LOCAL_PATH)/profiling/inc \
-    device/amazon/otter/hwc/ \
+    $(DEVICE_FOLDER)/hwc/ \
     $(LOCAL_PATH)/../../include/ \
     system/core/include/cutils \
     $(HARDWARE_TI_OMAP4_BASE)/../../libhardware/include
