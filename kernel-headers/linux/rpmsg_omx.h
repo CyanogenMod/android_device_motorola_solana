@@ -16,42 +16,36 @@
  ***
  ****************************************************************************
  ****************************************************************************/
-#ifndef BVBUFFDESC_H
-#define BVBUFFDESC_H
-struct bvbuffmap;
-#define BVATDEF_VENDOR_SHIFT 24
+#ifndef RPMSG_OMX_H
+#define RPMSG_OMX_H
+#include <linux/ioctl.h>
+struct omx_pvr_data {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define BVATDEF_VENDOR_MASK (0xFF << BVATDEF_VENDOR_SHIFT)
-#define BVATDEF_VENDOR_ALL (0x00 << BVATDEF_VENDOR_SHIFT)
-#define BVATDEF_VENDOR_TI (0x01 << BVATDEF_VENDOR_SHIFT)
-enum bvauxtype {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- BVAT_NONE = 0,
- BVAT_PHYSDESC =
- BVATDEF_VENDOR_ALL + 1,
-#ifdef BVAT_EXTERNAL_INCLUDE
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#include BVAT_EXTERNAL_INCLUDE
-#endif
+ int fd;
+ unsigned int num_handles;
+ void *handles[2];
 };
-struct bvphysdesc {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- unsigned int structsize;
- unsigned long pagesize;
- unsigned long *pagearray;
- unsigned int pagecount;
+#define OMX_IOC_MAGIC 'X'
+#define OMX_IOCCONNECT _IOW(OMX_IOC_MAGIC, 1, char *)
+#define OMX_IOCIONREGISTER _IOWR(OMX_IOC_MAGIC, 2, struct ion_fd_data)
+#define OMX_IOCIONUNREGISTER _IOWR(OMX_IOC_MAGIC, 3, struct ion_fd_data)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- unsigned long pageoffset;
-};
-struct bvbuffdesc {
- unsigned int structsize;
+#define OMX_IOCPVRREGISTER _IOWR(OMX_IOC_MAGIC, 4, struct omx_pvr_data)
+#define OMX_IOC_MAXNR (4)
+struct omx_conn_req {
+ char name[48];
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- void *virtaddr;
- unsigned long length;
- struct bvbuffmap *map;
- enum bvauxtype auxtype;
+} __packed;
+struct omx_packet {
+ uint16_t desc;
+ uint16_t msg_id;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- void *auxptr;
+ uint32_t flags;
+ uint32_t fxn_idx;
+ int32_t result;
+ uint32_t data_size;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+ uint32_t data[0];
 };
 #endif
-
