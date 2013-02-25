@@ -1,5 +1,4 @@
 LOCAL_PATH:= $(call my-dir)
-DEVICE_FOLDER := device/motorola/solana
 
 include $(CLEAR_VARS)
 
@@ -10,17 +9,21 @@ LOCAL_SRC_FILES:= \
     omx_rpc/src/omx_rpc_config.c \
     omx_rpc/src/omx_rpc_platform.c \
     omx_proxy_common/src/omx_proxy_common.c \
-    profiling/src/profile.c
+    profiling/src/profile.c \
+    plugins/memplugin.c \
+    plugins/memplugin_table.c \
+    plugins/memplugin_ion.c
 
 LOCAL_C_INCLUDES += \
     $(LOCAL_PATH)/omx_rpc/inc \
     $(LOCAL_PATH)/../omx_core/inc \
     $(LOCAL_PATH)/../mm_osal/inc \
     $(LOCAL_PATH)/profiling/inc \
+    $(LOCAL_PATH)/plugins/inc/ \
     $(DEVICE_FOLDER)/hwc/ \
-    $(LOCAL_PATH)/../../include/ \
+    $(DEVICE_FOLDER)/ion_ti/ \
     system/core/include/cutils \
-    $(HARDWARE_TI_OMAP4_BASE)/../../libhardware/include
+    hardware/libhardware/include
 
 LOCAL_CFLAGS += -D_Android -DENABLE_GRALLOC_BUFFERS -DUSE_ENHANCED_PORTRECONFIG -DANDROID_QUIRK_LOCK_BUFFER -DUSE_ION
 
@@ -35,4 +38,4 @@ LOCAL_SHARED_LIBRARIES := \
 LOCAL_MODULE:= libdomx
 LOCAL_MODULE_TAGS:= optional
 
-include $(BUILD_HEAPTRACKED_SHARED_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)

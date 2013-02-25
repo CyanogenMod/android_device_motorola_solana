@@ -71,6 +71,7 @@ extern "C"
 #include "omx_rpc.h"
 #include "omx_rpc_internal.h"
 #include "omx_rpc_utils.h"
+#include "memplugin.h"
 
 /****************************************************************
  * PUBLIC DECLARATIONS Defined here, used elsewhere
@@ -143,6 +144,14 @@ extern "C"
     } \
 } while(0)
 
+#define MEMPLUGIN_BUFFER_PARAMS_INIT(MEMPLUGIN_bufferinfo) do {\
+        MEMPLUGIN_bufferinfo.eBuffer_type = DEFAULT;\
+        MEMPLUGIN_bufferinfo.nHeight = 1;\
+        MEMPLUGIN_bufferinfo.nWidth  = -1;\
+        MEMPLUGIN_bufferinfo.bMap   = OMX_FALSE;\
+        MEMPLUGIN_bufferinfo.eTiler_format = -1;\
+} while(0)
+
 	typedef OMX_ERRORTYPE(*PROXY_EMPTYBUFFER_DONE) (OMX_HANDLETYPE
 	    hComponent, OMX_U32 remoteBufHdr, OMX_U32 nfilledLen,
 	    OMX_U32 nOffset, OMX_U32 nFlags);
@@ -167,26 +176,15 @@ extern "C"
  *
  * @param pBufHeaderRemote   : This is pointer to Ducati side bufferheader.
  *
- * @param pRegisteredAufBux0
- * @param pRegisteredAufBux1
- * @param pRegisteredAufBux2 : These are pointers to buffers registered with rpc driver
- *                             They will assigned when registering and used when
- *                             unregistering the buffer
+ * @param bufferAccessors[]	: This array contains the accessors {handle,reg handle, fd}
+ * 							  for Y,UV and metadata buffer in elements [0] [1] [2]
  */
 /*===============================================================*/
 	typedef struct PROXY_BUFFER_INFO
 	{
 		OMX_BUFFERHEADERTYPE *pBufHeader;
 		OMX_U32 pBufHeaderRemote;
-		OMX_PTR pYBuffer;
-		OMX_PTR pMetaDataBuffer;
-#ifdef USE_ION
-		int mmap_fd;
-		int mmap_fd_metadata_buff;
-		OMX_PTR pRegisteredAufBux0;
-		OMX_PTR pRegisteredAufBux1;
-		OMX_PTR pRegisteredAufBux2;
-#endif
+		MEMPLUGIN_BUFFER_ACCESSOR bufferAccessors[3];
 	} PROXY_BUFFER_INFO;
 
 /*===============================================================*/
@@ -234,7 +232,8 @@ extern "C"
 		OMX_U32 frame_width;
 		OMX_U32 frame_height;
 		OMX_U32 frame_xoffset;
-		OMX_U32	frame_yoffset;
+		OMX_U32 frame_yoffset;
+		OMX_U32 decoded_height;
 		OMX_U32 stride;
 		OMX_S32 runningFrame;
 		OMX_U32 *y_uv[2];
@@ -243,8 +242,9 @@ extern "C"
 
 /* ========================================================================== */
 /**
-* PROXY_COMPONENT_PRIVATE
-*
+* struct PROXY_COMPONENT_PRIVATE
+*		@param nMemmgr_client_desc: Memory manager client descriptor
+* 		@param bMapBuffers: buffers need to be mapped or not
 */
 /* ========================================================================== */
 	typedef struct PROXY_COMPONENT_PRIVATE
@@ -271,11 +271,9 @@ extern "C"
 #ifdef ANDROID_QUIRK_LOCK_BUFFER
 		gralloc_module_t const *grallocModule;
 #endif
-#ifdef USE_ION
-		int ion_fd;
-		OMX_BOOL bUseIon;
-		OMX_BOOL bMapIonBuffers;
-#endif
+		OMX_U32 nMemmgrClientDesc;
+		OMX_BOOL bMapBuffers;
+		OMX_PTR  pMemPluginHandle;
 #ifdef ENABLE_RAW_BUFFERS_DUMP_UTILITY
 		DebugFrame_Dump debugframeInfo;
 #endif

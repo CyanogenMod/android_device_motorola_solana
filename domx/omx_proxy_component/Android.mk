@@ -1,5 +1,4 @@
 LOCAL_PATH:= $(call my-dir)
-DEVICE_FOLDER := device/motorola/solana
 
 #
 # libOMX.TI.DUCATI1.VIDEO.DECODER
@@ -12,8 +11,9 @@ LOCAL_C_INCLUDES += \
 	$(LOCAL_PATH)/../mm_osal/inc \
 	$(LOCAL_PATH)/../domx \
 	$(LOCAL_PATH)/../domx/omx_rpc/inc \
-	$(HARDWARE_TI_OMAP4_BASE)/../../libhardware/include \
-	$(DEVICE_FOLDER)/hwc/
+	hardware/libhardware/include \
+	$(DEVICE_FOLDER)/hwc/ \
+    $(LOCAL_PATH)/../domx/plugins/inc/
 
 LOCAL_SHARED_LIBRARIES := \
 	libmm_osal \
@@ -38,7 +38,7 @@ LOCAL_SRC_FILES:= omx_video_dec/src/omx_proxy_videodec.c \
 #LOCAL_SHARED_LIBRARIES += libcutils
 
 LOCAL_MODULE:= libOMX.TI.DUCATI1.VIDEO.DECODER
-include $(BUILD_HEAPTRACKED_SHARED_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)
 
 #
 # libOMX.TI.DUCATI1.MISC.SAMPLE
@@ -50,7 +50,8 @@ LOCAL_C_INCLUDES += \
 	$(LOCAL_PATH)/../omx_core/inc \
 	$(LOCAL_PATH)/../mm_osal/inc \
 	$(LOCAL_PATH)/../domx \
-	$(LOCAL_PATH)/../domx/omx_rpc/inc
+	$(LOCAL_PATH)/../domx/omx_rpc/inc \
+	$(LOCAL_PATH)/../domx/plugins/inc/
 
 LOCAL_SHARED_LIBRARIES := \
 	libmm_osal \
@@ -66,7 +67,7 @@ LOCAL_MODULE_TAGS:= optional
 
 LOCAL_SRC_FILES:= omx_sample/src/omx_proxy_sample.c
 LOCAL_MODULE:= libOMX.TI.DUCATI1.MISC.SAMPLE
-include $(BUILD_HEAPTRACKED_SHARED_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)
 
 
 #
@@ -79,8 +80,10 @@ LOCAL_C_INCLUDES += \
 	$(LOCAL_PATH)/../omx_core/inc \
 	$(LOCAL_PATH)/../mm_osal/inc \
 	$(LOCAL_PATH)/../domx \
-	$(DEVICE_FOLDER)/include/ \
-	$(LOCAL_PATH)/../domx/omx_rpc/inc
+	$(DEVICE_FOLDER)/libion_ti \
+	$(LOCAL_PATH)/../domx/omx_rpc/inc \
+	$(LOCAL_PATH)/../domx/plugins/inc/ \
+	$(LOCAL_PATH)/omx_camera/inc/
 
 LOCAL_SHARED_LIBRARIES := \
 	libmm_osal \
@@ -95,9 +98,11 @@ LOCAL_CFLAGS += -D_Android -DSET_STRIDE_PADDING_FROM_PROXY -DANDROID_QUIRK_CHANG
 LOCAL_CFLAGS += -DANDROID_QUIRK_LOCK_BUFFER -DUSE_ION
 LOCAL_MODULE_TAGS:= optional
 
-LOCAL_SRC_FILES:= omx_camera/src/omx_proxy_camera.c
+LOCAL_SRC_FILES:= omx_camera/src/omx_proxy_camera.c \
+                  omx_camera/src/proxy_camera_android_glue.c
+
 LOCAL_MODULE:= libOMX.TI.DUCATI1.VIDEO.CAMERA
-include $(BUILD_HEAPTRACKED_SHARED_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)
 
 #
 # libOMX.TI.DUCATI1.VIDEO.H264E
@@ -112,9 +117,12 @@ LOCAL_C_INCLUDES += \
 	$(LOCAL_PATH)/../domx/omx_rpc/inc \
 	system/core/include/cutils \
 	$(DEVICE_FOLDER)/hwc \
-	$(HARDWARE_TI_OMAP4_BASE)/camera/inc \
-	frameworks/native/include/media/hardware \
 	$(DEVICE_FOLDER)/include/camera \
+	$(DEVICE_FOLDER)/camera/inc \
+	frameworks/native/include/media/stagefright \
+	frameworks/native/include/media/hardware \
+	$(LOCAL_PATH)/../domx/plugins/inc/ \
+    $(LOCAL_PATH)/omx_video_enc/inc
 
 LOCAL_SHARED_LIBRARIES := \
 	libmm_osal \
@@ -131,8 +139,86 @@ LOCAL_CFLAGS += -DUSE_ENHANCED_PORTRECONFIG -DENABLE_GRALLOC_BUFFER -DANDROID_QU
 LOCAL_CFLAGS += -DANDROID_CUSTOM_OPAQUECOLORFORMAT
 LOCAL_MODULE_TAGS:= optional
 
-LOCAL_SRC_FILES:= omx_h264_enc/src/omx_proxy_h264enc.c
+LOCAL_SRC_FILES:= omx_video_enc/src/omx_h264_enc/src/omx_proxy_h264enc.c
 LOCAL_MODULE:= libOMX.TI.DUCATI1.VIDEO.H264E
+include $(BUILD_SHARED_LIBRARY)
+
+#
+# libOMX.TI.DUCATI1.VIDEO.VC1E
+#
+
+include $(CLEAR_VARS)
+
+LOCAL_C_INCLUDES += \
+	$(LOCAL_PATH)/../omx_core/inc \
+	$(LOCAL_PATH)/../mm_osal/inc \
+	$(LOCAL_PATH)/../domx \
+	$(LOCAL_PATH)/../domx/omx_rpc/inc \
+	system/core/include/cutils \
+	$(DEVICE_FOLDER)/hwc \
+	$(DEVICE_FOLDER)/include/camera \
+	$(DEVICE_FOLDER)/camera/inc \
+	frameworks/native/include/media/stagefright \
+	frameworks/native/include/media/hardware \
+	$(LOCAL_PATH)/../domx/plugins/inc/ \
+    $(LOCAL_PATH)/omx_video_enc/inc
+
+LOCAL_SHARED_LIBRARIES := \
+	libmm_osal \
+	libc \
+	libOMX_Core \
+	liblog \
+	libdomx \
+	libhardware \
+	libcutils
+
+LOCAL_CFLAGS += -DLINUX -DTMS32060 -D_DB_TIOMAP -DSYSLINK_USE_SYSMGR -DSYSLINK_USE_LOADER
+LOCAL_CFLAGS += -D_Android -DSET_STRIDE_PADDING_FROM_PROXY -DANDROID_QUIRK_CHANGE_PORT_VALUES
+LOCAL_CFLAGS += -DUSE_ENHANCED_PORTRECONFIG -DENABLE_GRALLOC_BUFFER -DANDROID_QUIRK_LOCK_BUFFER -DUSE_ION
+LOCAL_CFLAGS += -DANDROID_CUSTOM_OPAQUECOLORFORMAT
+LOCAL_MODULE_TAGS:= optional
+
+LOCAL_SRC_FILES:= omx_video_enc/src/omx_vc1_enc/src/omx_proxy_vc1enc.c
+LOCAL_MODULE:= libOMX.TI.DUCATI1.VIDEO.VC1E
+include $(BUILD_HEAPTRACKED_SHARED_LIBRARY)
+
+#
+# libOMX.TI.DUCATI1.VIDEO.H264SVCE
+#
+
+include $(CLEAR_VARS)
+
+LOCAL_C_INCLUDES += \
+	$(LOCAL_PATH)/../omx_core/inc \
+	$(LOCAL_PATH)/../mm_osal/inc \
+	$(LOCAL_PATH)/../domx \
+	$(LOCAL_PATH)/../domx/omx_rpc/inc \
+	system/core/include/cutils \
+	$(DEVICE_FOLDER)/hwc \
+	$(DEVICE_FOLDER)/include/camera \
+	$(DEVICE_FOLDER)/camera/inc \
+	frameworks/native/include/media/stagefright \
+	frameworks/native/include/media/hardware \
+	$(LOCAL_PATH)/../domx/plugins/inc/ \
+    $(LOCAL_PATH)/omx_video_enc/inc
+
+LOCAL_SHARED_LIBRARIES := \
+	libmm_osal \
+	libc \
+	libOMX_Core \
+	liblog \
+	libdomx \
+	libhardware \
+	libcutils
+
+LOCAL_CFLAGS += -DLINUX -DTMS32060 -D_DB_TIOMAP -DSYSLINK_USE_SYSMGR -DSYSLINK_USE_LOADER
+LOCAL_CFLAGS += -D_Android -DSET_STRIDE_PADDING_FROM_PROXY -DANDROID_QUIRK_CHANGE_PORT_VALUES
+LOCAL_CFLAGS += -DUSE_ENHANCED_PORTRECONFIG -DENABLE_GRALLOC_BUFFER -DANDROID_QUIRK_LOCK_BUFFER -DUSE_ION
+LOCAL_CFLAGS += -DANDROID_CUSTOM_OPAQUECOLORFORMAT
+LOCAL_MODULE_TAGS:= optional
+
+LOCAL_SRC_FILES:= omx_video_enc/src/omx_h264svc_enc/src/omx_proxy_h264svcenc.c
+LOCAL_MODULE:= libOMX.TI.DUCATI1.VIDEO.H264SVCE
 include $(BUILD_HEAPTRACKED_SHARED_LIBRARY)
 
 #
@@ -148,9 +234,12 @@ LOCAL_C_INCLUDES += \
 	$(LOCAL_PATH)/../domx/omx_rpc/inc \
 	system/core/include/cutils \
 	$(DEVICE_FOLDER)/hwc \
-	$(HARDWARE_TI_OMAP4_BASE)/camera/inc \
-	frameworks/native/include/media/hardware \
 	$(DEVICE_FOLDER)/include/camera \
+	$(DEVICE_FOLDER)/camera/inc \
+	frameworks/base/include/media/stagefright \
+	frameworks/native/include/media/hardware \
+	$(LOCAL_PATH)/../domx/plugins/inc/ \
+    $(LOCAL_PATH)/omx_video_enc/inc
 
 LOCAL_SHARED_LIBRARIES := \
 	libmm_osal \
@@ -167,9 +256,9 @@ LOCAL_CFLAGS += -DUSE_ENHANCED_PORTRECONFIG -DENABLE_GRALLOC_BUFFER -DANDROID_QU
 LOCAL_CFLAGS += -DANDROID_CUSTOM_OPAQUECOLORFORMAT
 LOCAL_MODULE_TAGS:= optional
 
-LOCAL_SRC_FILES:= omx_mpeg4_enc/src/omx_proxy_mpeg4enc.c
+LOCAL_SRC_FILES:= omx_video_enc/src/omx_mpeg4_enc/src/omx_proxy_mpeg4enc.c
 LOCAL_MODULE:= libOMX.TI.DUCATI1.VIDEO.MPEG4E
-include $(BUILD_HEAPTRACKED_SHARED_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)
 
 #
 # libOMX.TI.DUCATI1.VIDEO.DECODER.secure
@@ -182,8 +271,9 @@ LOCAL_C_INCLUDES += \
 	$(LOCAL_PATH)/../mm_osal/inc \
 	$(LOCAL_PATH)/../domx \
 	$(LOCAL_PATH)/../domx/omx_rpc/inc \
-	$(HARDWARE_TI_OMAP4_BASE)/../../libhardware/include \
-	$(DEVICE_FOLDER)/hwc/
+	hardware/libhardware/include \
+	$(DEVICE_FOLDER)/hwc/ \
+	$(LOCAL_PATH)/../domx/plugins/inc/
 
 LOCAL_SHARED_LIBRARIES := \
 	libmm_osal \
@@ -201,4 +291,42 @@ LOCAL_MODULE_TAGS:= optional
 
 LOCAL_SRC_FILES:= omx_video_dec/src/omx_proxy_videodec_secure.c
 LOCAL_MODULE:= libOMX.TI.DUCATI1.VIDEO.DECODER.secure
-include $(BUILD_HEAPTRACKED_SHARED_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)
+
+#
+# libOMX.TI.DUCATI1.VIDEO.H264E.secure
+#
+include $(CLEAR_VARS)
+
+LOCAL_C_INCLUDES += \
+	$(LOCAL_PATH)/../omx_core/inc \
+	$(LOCAL_PATH)/../mm_osal/inc \
+	$(LOCAL_PATH)/../domx \
+	$(LOCAL_PATH)/../domx/omx_rpc/inc \
+	system/core/include/cutils \
+	$(DEVICE_FOLDER)/hwc \
+	$(DEVICE_FOLDER)/include/camera \
+	$(DEVICE_FOLDER)/camera/inc \
+	frameworks/base/include/media/stagefright \
+	frameworks/native/include/media/hardware \
+	$(LOCAL_PATH)/../domx/plugins/inc/ \
+    $(LOCAL_PATH)/omx_video_enc/inc
+
+LOCAL_SHARED_LIBRARIES := \
+	libmm_osal \
+	libc \
+	libOMX_Core \
+	liblog \
+	libdomx \
+	libhardware \
+	libcutils
+
+LOCAL_CFLAGS += -DLINUX -DTMS32060 -D_DB_TIOMAP -DSYSLINK_USE_SYSMGR -DSYSLINK_USE_LOADER
+LOCAL_CFLAGS += -D_Android -DSET_STRIDE_PADDING_FROM_PROXY -DANDROID_QUIRK_CHANGE_PORT_VALUES
+LOCAL_CFLAGS += -DUSE_ENHANCED_PORTRECONFIG -DENABLE_GRALLOC_BUFFER -DANDROID_QUIRK_LOCK_BUFFER -DUSE_ION
+LOCAL_CFLAGS += -DANDROID_CUSTOM_OPAQUECOLORFORMAT
+LOCAL_MODULE_TAGS:= optional
+
+LOCAL_SRC_FILES:= omx_video_enc/src/omx_h264_enc/src/omx_proxy_h264enc_secure.c
+LOCAL_MODULE:= libOMX.TI.DUCATI1.VIDEO.H264E.secure
+include $(BUILD_SHARED_LIBRARY)

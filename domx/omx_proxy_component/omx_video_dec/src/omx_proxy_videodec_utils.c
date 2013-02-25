@@ -49,10 +49,8 @@
 #include "OMX_TI_Index.h"
 
 #ifdef ENABLE_RAW_BUFFERS_DUMP_UTILITY
-#define LOG_TAG "OMXPROXYVIDEODEC"
 #include <fcntl.h>
 #include <cutils/properties.h>
-#include <utils/Log.h>
 #include <stdlib.h>
 #include <errno.h>
 #endif
@@ -242,7 +240,7 @@ static void convertNV12ToYuv420(DebugFrame_Dump *frameInfo, void *dst)
 	int width = frameInfo->frame_width;
 	int height = frameInfo->frame_height;
 
-	LOGD("Coverting NV-12 to YUV420p Width[%d], Height[%d] and Stride[%d] offset[%d]",
+	DOMX_DEBUG("Coverting NV-12 to YUV420p Width[%d], Height[%d] and Stride[%d] offset[%d]",
 	width, height, stride, ybuf_offset);
 
 	/* copy y-buffer, almost bytewise copy, except for stride jumps.*/
@@ -256,10 +254,13 @@ static void convertNV12ToYuv420(DebugFrame_Dump *frameInfo, void *dst)
 	* rearrange from  packed planar [uvuvuv] to planar [uuu][vvvv] packages pixel wise
 	* calculate the offset for UV buffer
 	*/
-	uint32_t UV_offset = frameInfo->frame_xoffset +
-                             (frameInfo->frame_yoffset * stride)/2;
 
-	const uint8_t* p1uv = (uint8_t*)frameInfo->y_uv[1] + UV_offset;
+	uint32_t UV_offset = frameInfo->frame_xoffset
+	        + (frameInfo->decoded_height
+	        + frameInfo->frame_yoffset / 2)
+	        * stride;
+
+	const uint8_t* p1uv = (uint8_t*)frameInfo->y_uv[0] + UV_offset;
 
 	uint8_t* p2u = ((uint8_t*) dst + (width * height));
 	uint8_t* p2v = ((uint8_t*) p2u + ((width/2) * (height/2)));
@@ -284,24 +285,24 @@ void DumpVideoFrame(DebugFrame_Dump *frameInfo)
 	OMX_U8* localbuffer = malloc(framesize);
 	if (localbuffer == NULL)
 	{
-		LOGE("NO HEAP");
+		DOMX_ERROR("NO HEAP");
 		goto EXIT;
 	}
 	convertNV12ToYuv420(frameInfo, localbuffer);
 	int filedes = -1;
 	char framenumber[100];
 	sprintf(framenumber, "/data/frame_%ld.txt", frameInfo->runningFrame);
-	LOGD("file path %s",framenumber);
+	DOMX_ERROR("file path %s",framenumber);
 	filedes = open(framenumber, O_CREAT | O_WRONLY | O_SYNC | O_TRUNC, 0777);
 	if(filedes < 0)
 	{
-		LOGE("\n!!!!!!!!!Error in file open!!!!!!!! [%d][%s]\n", filedes, strerror(errno));
+		DOMX_ERROR("\n!!!!!!!!!Error in file open!!!!!!!! [%d][%s]\n", filedes, strerror(errno));
 		goto EXIT;
 	}
 	int ret = write (filedes, (void*)localbuffer, framesize);
 	if (ret < (int)framesize)
 	{
-		LOGE("File Write Failed");
+		DOMX_ERROR("File Write Failed");
 	}
 EXIT:
 	if (localbuffer)

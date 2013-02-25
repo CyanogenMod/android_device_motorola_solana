@@ -529,6 +529,10 @@ typedef enum OMX_CAMOPERATINGMODETYPE {
         OMX_TI_CPCam,
         OMX_TI_StereoVideo,
         OMX_CaptureHighQualityVideo,
+        OMX_TI_SimultaneousSensorsGesture,
+        OMX_TI_CaptureVideoLowLatency,
+        OMX_TI_HQBurst,
+        OMX_TI_Reprocessing,
         // Put new entries here so OMX_CamOperatingModeMax always points to
         // the last one
         OMX_TI_CamOperatingModeCount,
@@ -1025,6 +1029,54 @@ typedef enum OMX_TI_CAMERAVIEWTYPE {
     OMX_3D_Right_Cap,   /**< Right camera view in 3D for capture */
     OMX_TI_CAMERAVIEWTYPE_32BIT_PATCH = 0x7FFFFFFF
 } OMX_TI_CAMERAVIEWTYPE;
+
+/**
+ *  nSize is the size of the structure including the length of data field containing
+ *  the Histogram Matched for Stereo Gamma data.
+ *  nItems is the number of items in the Gamma table.
+ *  data[1] first byte of the Gamma data
+ */
+typedef struct OMX_HMSGAMMATYPE {
+    OMX_U32 nSize;                          /**< The size of the structure
+                                                 including the length of data field containing the gamma data */
+    OMX_VERSIONTYPE       nVersion;
+    OMX_U32               nPortIndex;
+    OMX_TI_CAMERAVIEWTYPE eCameraView;
+    OMX_U32               nItems;            /**< The number of items in Gamma */
+    OMX_U8                data[1];
+} OMX_HMSGAMMATYPE;
+
+/**
+ *  Structure describes properties of pyramid level
+ *  nOffset : nOffset from start of buffer in bytes
+ *  nWidth  : nWidth  in pixels
+ *  nHeight : nHeight in pixels
+ *  nStride : nStride in bytes
+ */
+typedef struct OMX_TI_IMAGEPYRAMIDDESCTYPE {
+    OMX_U32     nOffset;
+    OMX_U16     nWidth;
+    OMX_U16     nHeight;
+    OMX_U32     nStride;
+} OMX_TI_IMAGEPYRAMIDDESCTYPE;
+
+/**
+ *  The extra data having pyramid data,
+ *  It is described with the following structure.
+ *  nLevelsCount - Number of levels of pyramid
+ *  PyramidData - first element of array with description
+ *  of levels of pyramid. Size of array will describe
+ *  by nLevelsCount.
+ */
+typedef struct OMX_TI_IMAGEPYRAMIDTYPE {
+    OMX_U32                     nSize;
+    OMX_VERSIONTYPE             nVersion;
+    OMX_U32                     nPortIndex;
+    OMX_TI_CAMERAVIEWTYPE       eCameraView;
+    OMX_U32                     nLevelsCount;
+    OMX_TI_IMAGEPYRAMIDDESCTYPE PyramidData[1];
+} OMX_TI_IMAGEPYRAMIDTYPE;
+
 
 #define OMX_OTHER_EXTRADATATYPE_SIZE ((OMX_U32)(((OMX_OTHER_EXTRADATATYPE *)0x0)->data))  /**< Size of OMX_OTHER_EXTRADATATYPE
                                                                                 without Data[1] and without padding */
@@ -1617,51 +1669,57 @@ typedef struct OMX_TI_MTISTYPE {
  * possible extra data payload types.
  */
 typedef enum OMX_EXT_EXTRADATATYPE {
-    OMX_ExifAttributes = 0x7F000001,     /**< 0x7F000001 Reserved region for introducing Vendor Extensions */
-   OMX_AncillaryData,                   /**< 0x7F000002 ancillary data */
-   OMX_WhiteBalance,                    /**< 0x7F000003 white balance resultant data */
-   OMX_UnsaturatedRegions,              /**< 0x7F000004 unsaturated regions data */
-    OMX_FaceDetection,              /**< 0x7F000005 face detect data */
-    OMX_BarcodeDetection,           /**< 0x7F000006 bar-code detct data */
-    OMX_FrontObjectDetection,       /**< 0x7F000007 Front object detection data */
-    OMX_MotionEstimation,           /**< 0x7F000008 motion Estimation data */
-    OMX_MTISType,                   /**< 0x7F000009 MTIS motion Estimation data */
-    OMX_DistanceEstimation,         /**< 0x7F00000A disctancedistance estimation */
-    OMX_Histogram,                  /**< 0x7F00000B histogram */
-    OMX_FocusRegion,                /**< 0x7F00000C focus region data */
-   OMX_ExtraDataPanAndScan,             /**< 0x7F00000D pan and scan data */
-    OMX_RawFormat,                  /**< 0x7F00000E custom RAW data format */
-    OMX_SensorType,                 /**< 0x7F00000F vendor & model of the sensor being used */
-    OMX_SensorCustomDataLength,     /**< 0x7F000010 vendor specific custom data length */
-    OMX_SensorCustomData,           /**< 0x7F000011 vendor specific data */
-   OMX_TI_FrameLayout,                  /**< 0x7F000012 vendor specific data */
-   OMX_TI_SEIinfo2004Frame1,    /**< 0x7F000013 Used for 2004 SEI message to be provided by video decoders */
-   OMX_TI_SEIinfo2004Frame2,    /**< 0x7F000014 Used for 2004 SEI message to be provided by video decoders */
-   OMX_TI_SEIinfo2010Frame1,    /**< 0x7F000015 Used for 2010 SEI message to be provided by video decoders */
-   OMX_TI_SEIinfo2010Frame2,    /**< 0x7F000016 Used for 2010 SEI message to be provided by video decoders */
-   OMX_TI_RangeMappingInfo,     /**< 0x7F000017 Used for Range mapping info provided by Video Decoders */
-   OMX_TI_RescalingInfo,        /**< 0x7F000018 Used for width/height rescaling info provided by Video Decoders */
-   OMX_TI_WhiteBalanceOverWrite,        /**< 0x7F000019 Used for manual AWB settings */
-    OMX_TI_CPCamData,               /**< 0x7F00001A Used for cp cam data */
-    OMX_TI_H264ESliceDataInfo,      /**< 0x7F00001B */
-    OMX_TI_DccData,                 /**< 0x7F00001C Used for dcc data overwrite in the file system */
-    OMX_TI_ProfilerData,            /**< 0x7F00001D Used for profiling data */
-    OMX_TI_VectShotInfo,            /**< 0x7F00001E Used for vector shot feedback notification */
-    OMX_TI_CamReProcMeta,           /**< 0x7F00001F Used for meta data input to camera re-proc function */
-    OMX_TI_LSCTable,                /**< 0x7F000020 Lens shading table for corresponding frame */
-    OMX_TI_CodecExtenderErrorFrame1, /**< 0x7F000021 Used for Codec Extended Error to be provided byvideo decoders */
-    OMX_TI_CodecExtenderErrorFrame2, /**< 0x7F000022 Used for Codec Extended Error to be provided byvideo decoders */
-    OMX_TI_MBInfoFrame1,            /**< 0x7F000023 Used for MBError message to be provided by videodecoders */
-    OMX_TI_MBInfoFrame2,            /**< 0x7F000024 Used for MBError message to be provided by videodecoders */
-    OMX_TI_SEIInfoFrame1,           /**< 0x7F000025 Used for SEI message to be provided by video decoders*/
-    OMX_TI_SEIInfoFrame2,           /**< 0x7F000026 Used for SEI message to be provided by video decoders*/
-    OMX_TI_VUIInfoFrame1,           /**< 0x7F000027 Used for VUI message to be provided by video decoders */
-    OMX_TI_VUIInfoFrame2,           /**< 0x7F000028 Used for VUI message to be provided by video decoders */
-   OMX_TI_ExtraData_Count,
-   OMX_TI_ExtraData_Max = OMX_TI_ExtraData_Count - 1,
-   OMX_TI_ExtraData_32Bit_Patch = 0x7fffffff
+    OMX_ExifAttributes = 0x7F000001,    /**< 0x7F000001 Reserved region for introducing Vendor Extensions */
+    OMX_AncillaryData,                  /**< 0x7F000002 ancillary data */
+    OMX_WhiteBalance,                   /**< 0x7F000003 white balance resultant data */
+    OMX_UnsaturatedRegions,             /**< 0x7F000004 unsaturated regions data */
+    OMX_FaceDetection,                  /**< 0x7F000005 face detect data */
+    OMX_BarcodeDetection,               /**< 0x7F000006 bar-code detct data */
+    OMX_FrontObjectDetection,           /**< 0x7F000007 Front object detection data */
+    OMX_MotionEstimation,               /**< 0x7F000008 motion Estimation data */
+    OMX_MTISType,                       /**< 0x7F000009 MTIS motion Estimation data */
+    OMX_DistanceEstimation,             /**< 0x7F00000A disctancedistance estimation */
+    OMX_Histogram,                      /**< 0x7F00000B histogram */
+    OMX_FocusRegion,                    /**< 0x7F00000C focus region data */
+    OMX_ExtraDataPanAndScan,            /**< 0x7F00000D pan and scan data */
+    OMX_RawFormat,                      /**< 0x7F00000E custom RAW data format */
+    OMX_SensorType,                     /**< 0x7F00000F vendor & model of the sensor being used */
+    OMX_SensorCustomDataLength,         /**< 0x7F000010 vendor specific custom data length */
+    OMX_SensorCustomData,               /**< 0x7F000011 vendor specific data */
+    OMX_TI_FrameLayout,                 /**< 0x7F000012 vendor specific data */
+    OMX_TI_SEIinfo2004Frame1,           /**< 0x7F000013 Used for 2004 SEI message to be provided by video decoders */
+    OMX_TI_SEIinfo2004Frame2,           /**< 0x7F000014 Used for 2004 SEI message to be provided by video decoders */
+    OMX_TI_SEIinfo2010Frame1,           /**< 0x7F000015 Used for 2010 SEI message to be provided by video decoders */
+    OMX_TI_SEIinfo2010Frame2,           /**< 0x7F000016 Used for 2010 SEI message to be provided by video decoders */
+    OMX_TI_RangeMappingInfo,            /**< 0x7F000017 Used for Range mapping info provided by Video Decoders */
+    OMX_TI_RescalingInfo,               /**< 0x7F000018 Used for width/height rescaling info provided by Video Decoders */
+    OMX_TI_WhiteBalanceOverWrite,       /**< 0x7F000019 Used for manual AWB settings */
+    OMX_TI_CPCamData,                   /**< 0x7F00001A Used for cp cam data */
+    OMX_TI_H264ESliceDataInfo,          /**< 0x7F00001B */
+    OMX_TI_DccData,                     /**< 0x7F00001C Used for dcc data overwrite in the file system */
+    OMX_TI_ProfilerData,                /**< 0x7F00001D Used for profiling data */
+    OMX_TI_VectShotInfo,                /**< 0x7F00001E Used for vector shot feedback notification */
+    OMX_TI_CamReProcMeta,               /**< 0x7F00001F Used for meta data input to camera re-proc function */
+    OMX_TI_LSCTable,                    /**< 0x7F000020 Lens shading table for corresponding frame */
+    OMX_TI_CodecExtenderErrorFrame1,    /**< 0x7F000021 Used for Codec Extended Error to be provided byvideo decoders */
+    OMX_TI_CodecExtenderErrorFrame2,    /**< 0x7F000022 Used for Codec Extended Error to be provided byvideo decoders */
+    OMX_TI_MBInfoFrame1,                /**< 0x7F000023 Used for MBError message to be provided by videodecoders */
+    OMX_TI_MBInfoFrame2,                /**< 0x7F000024 Used for MBError message to be provided by videodecoders */
+    OMX_TI_SEIInfoFrame1,               /**< 0x7F000025 Used for SEI message to be provided by video decoders*/
+    OMX_TI_SEIInfoFrame2,               /**< 0x7F000026 Used for SEI message to be provided by video decoders*/
+    OMX_TI_VUIInfoFrame1,               /**< 0x7F000027 Used for VUI message to be provided by video decoders */
+    OMX_TI_VUIInfoFrame2,               /**< 0x7F000028 Used for VUI message to be provided by video decoders */
+    OMX_TI_FaceDetectionRaw,            /**< 0x7F000029 Face detect data without face tracking calculations */
+    OMX_TI_HMSGamma,                    /**< 0x7F00002A Histogram Matched for Stereo Gamma table */
+    OMX_TI_ImagePyramid,                /**< 0x7F00002B Describe image piramid sizes for each level of pyramid */
+    OMX_TI_ExtraData_AFStatistics,      /**< 0x7F00002C Auto Focus buffer and settings for corresponding frame */
+    OMX_TI_ExtraData_AEWBStatistics,    /**< 0x7F00002D Auto Exppsure, white balance buffer and settings for corresponding frame */
+    OMX_TI_ExtraData_BSCStatistics,     /**< 0x7F00002E Boundary signal calculator statistics for corresponding frame */
+    OMX_TI_ExtraData_AuxiliaryImage,    /**< 0x7F00002F Auxiliary image contains rescaled image at QVGA resolution */
+    OMX_TI_ExtraData_Count,
+    OMX_TI_ExtraData_Max = OMX_TI_ExtraData_Count - 1,
+    OMX_TI_ExtraData_32Bit_Patch = 0x7fffffff
 } OMX_EXT_EXTRADATATYPE;
-
 
 /**
  * Enable Extra-data on a specific port.
@@ -3068,17 +3126,87 @@ typedef struct OMX_TI_PARAM_ENHANCEDPORTRECONFIG {
     OMX_BOOL bUsePortReconfigForPadding;
 } OMX_TI_PARAM_ENHANCEDPORTRECONFIG;
 
-
+/**
+* OMX_TI_H3aPAXELCFG: AF/AEWB paxel description structure
+* @param nVPos: vertical start point of paxel grid w.r.t first pixel of input image frame
+* @param nVSize: vertical paxel size
+* @param nHPos: horizontal start point of paxel grid w.r.t first pixel of input image frame
+* @param nHSize: horizontal paxel size
+* @param nVCount: num of vert paxels. AF/AEWB paxels are always adjacent to each other
+* @param nVIncr: num of pixels to skip within a paxel, vertically
+* @param nHCount: num of horz paxels. AF/AEWB paxels are always adjacent to each other
+* @param nHIncr: num of pixels to skip within a paxel, horizontally
+**/
 typedef struct {
-    OMX_U16 nVPos; //!< AEWINSTART WINSV  //AFPAXSTART PAXSV
-    OMX_U8  nVSize; //!< AEWWIN1 WINW      //AFPAX1 PAXH
-    OMX_U16 nHPos; //!< AEWINSTART WINSH  //AFPAXSTART PAXSH
-    OMX_U8  nHSize; //!< AEWWIN1 WINH      //AFPAX1 PAXW
-    OMX_U8  nVCount; //!< AEWWIN1 WINVC     //AFPAX2 PAXVC
-    OMX_U8  nVIncr; //!< AEWSUBWIN AEWINCV //AFPAX2 AFINCV
-    OMX_U8  nHCount; //!< AEWWIN1 WINHC     //AFPAX2 PAXHC
-    OMX_U8  nHIncr; //!< AEWSUBWIN AEWINCH //AFPAX2 AFINCH
-}OMX_TI_H3aPAXELCFG;
+    OMX_U16 nVPos;
+    OMX_U8  nVSize;
+    OMX_U16 nHPos;
+    OMX_U8  nHSize;
+    OMX_U8  nVCount;
+    OMX_U8  nVIncr;
+    OMX_U8  nHCount;
+    OMX_U8  nHIncr;
+} OMX_TI_H3aPAXELCFG;
+
+/**
+* OMX_TI_AF_COLOR_PAXEL_STATS: struct af_h3a_color_paxel
+* @param nSum                 : Sum of the pixels used to arrive at the statistics for a paxel
+* @param nFVSum             : Focus Value (sum/peak) for a paxel
+* @param nFVSquaredSum : Focus Value Squared (sum/peak) for a paxel
+* @param nReserved           : To be ignored
+**/
+typedef struct OMX_TI_AF_COLOR_PAXEL_STATS {
+    OMX_U32 nSum;
+    OMX_U32 nFVSum;
+    OMX_U32 nFVSquaredSum;
+    OMX_U32 nReserved;
+} OMX_TI_AF_COLOR_PAXEL_STATS;
+
+/**
+* OMX_TI_AFPAXELDATA
+* @param tGPaxel     : Paxel information for green color
+* @param tRBPaxel   : Paxel information for red/blue color
+* @param tBRPaxel   : Paxel information for blue/red color
+**/
+typedef struct {
+    OMX_TI_AF_COLOR_PAXEL_STATS tGPaxel;
+    OMX_TI_AF_COLOR_PAXEL_STATS tRBPaxel;
+    OMX_TI_AF_COLOR_PAXEL_STATS tBRPaxel;
+} OMX_TI_AFPAXELDATA;
+
+/**
+* OMX_TI_AF_RGB_POS_TYPE
+* Defines the RGB bayer pattern assumed while extracting AF statistics individually for R,G,B colour channels
+**/
+typedef enum OMX_TI_AF_RGB_POS_TYPE {
+    OMX_TI_AF_RGBPOSITION_BAYER_GR_GB = 0,
+    OMX_TI_AF_RGBPOSITION_BAYER_RG_GB = 1,
+    OMX_TI_AF_RGBPOSITION_BAYER_GR_BG = 2,
+    OMX_TI_AF_RGBPOSITION_BAYER_RG_BG = 3,
+    OMX_TI_AF_RGBPOSITION_CUSTOM_GG_RB = 4,
+    OMX_TI_AF_RGBPOSITION_CUSTOM_RB_GG = 5,
+    OMX_TI_AF_RGBPOSITION_BAYER_FORMAT = 0x7FFFFFFF
+} OMX_TI_AF_RGB_POS_TYPE;
+
+/* Max size of AF buffer output by ISP H3A engine */
+#define OMX_TI_AF_MAX_NUM_PAXELS (127 * 35)
+
+/**
+ * The extra data for AutoFocus data
+ * @param eAFBayerRgbPosition : When Vertical focus is disabled, R,G,B location w.r.t. to paxel start location is specified by this field.
+ * @param bAFPeakModeEnable : If enabled, peak for FV, FV^2 is computed for a paxel. If disabled, average of FV, FV^2 is computed for a paxel
+ * @param bAFVerticalFocusEnable : Whether vertical focus is enabled.
+ * @param tAFPaxelWindow : AF paxel description
+ * @param ptAFPaxelStatistics : Output AF buffer
+ */
+typedef struct OMX_TI_AF_STATISTICS_TYPE {
+    OMX_TI_AF_RGB_POS_TYPE eAFBayerRgbPosition;
+    OMX_BOOL               bAFPeakModeEnable;
+    OMX_BOOL               bAFVerticalFocusEnable;
+    OMX_TI_H3aPAXELCFG     tAFPaxelWindow;
+    OMX_TI_AFPAXELDATA     ptAFPaxelStatistics[OMX_TI_AF_MAX_NUM_PAXELS];
+} OMX_TI_AF_STATISTICS_TYPE;
+
 
 typedef struct {
     /** Average value for red pixels in current paxel */
@@ -3099,6 +3227,127 @@ typedef struct OMX_TI_H3AAFDATA {
     OMX_TI_CAMERAVIEWTYPE eCameraView;
     OMX_U8               *data;
 } OMX_TI_H3AAFDATA;
+
+
+#define OMX_TI_AEWB_MAX_NUM_PAXELS (35 * 127)
+
+/**
+* OMX_TI_AEWBPAXELDATA
+* @param nSubsampleAccumulatedValues[4]         : Sub sample accumulator(s), not-clipped. Seperate for each pixel in 2x2 sub-sample
+* @param nSaturatorAccumulatedValues[4]           : Saturator accumulator(s), clipped based upon threshold. Seperate for each pixel in 2x2 sub-sample
+* @param nUnsaturatedCount : Count of unsaturated 2x2 sub-samples in a paxel
+**/
+typedef struct OMX_TI_AEWBPAXELDATA {
+    OMX_U16 nSubsampleAccumulatedValues[4];
+    OMX_U16 nSaturatorAccumulatedValues[4];
+    OMX_U32 nUnsaturatedCount;
+} OMX_TI_AEWBPAXELDATA;
+
+/**
+* OMX_TI_AEWBMODE
+* @enum OMX_TI_AEWB_MODE_SUM_OF_SQUARE    : Sum of square calculated across sub-samples in a paxel
+* @enum OMX_TI_AEWB_MODE_MINMAX                  : Min-max calculted across sub-samples in a paxel
+* @enum OMX_TI_AEWB_MODE_SUM_ONLY              : Only Sum calculated across sub-samples in a paxel
+**/
+typedef enum {
+    OMX_TI_AEWB_MODE_SUM_OF_SQUARE=0,
+    OMX_TI_AEWB_MODE_MINMAX=1,
+    OMX_TI_AEWB_MODE_SUM_ONLY=2,
+    OMX_TI_AEWB_MODE_MAX = 0x7FFFFFFF
+} OMX_TI_AEWBMODE;
+
+/**
+ * The extra data for AutoExposure, AutoWhiteBalance data
+ * @param eAEWBMode : AEWB mode
+ * @param nAEWBThresholdPixelValue : Threshold against which pixel values are compared
+ * @param nAccumulationShift : Right shift value applied on result of pixel accumulation
+ * @param tAEWBPaxelWindow : AE/AWB paxel description
+ * @param ptAEWBPaxelStatistics : Output AE/AWB buffer
+ */
+typedef struct OMX_TI_AEWB_STATISTICS_TYPE {
+    OMX_TI_AEWBMODE               eAEWBMode;
+    OMX_U16                       nAEWBThresholdPixelValue;
+    OMX_U8                        nAccumulationShift;
+    OMX_TI_H3aPAXELCFG            tAEWBPaxelWindow;
+    OMX_TI_AEWBPAXELDATA          ptAEWBPaxelStatistics[OMX_TI_AEWB_MAX_NUM_PAXELS];
+} OMX_TI_AEWB_STATISTICS_TYPE;
+
+
+
+typedef enum OMX_TI_BSC_COLOUR_ELEMENT_TYPE {
+    OMX_TI_BSC_COLOUR_ELEMENT_Y = 0,
+    OMX_TI_BSC_COLOUR_ELEMENT_Cb = 1,
+    OMX_TI_BSC_COLOUR_ELEMENT_Cr = 2,
+    OMX_TIBSC_COLOUR_ELEMENT_MAX = 0x7FFFFFFF
+} OMX_TI_BSC_COLOUR_ELEMENT_TYPE;
+
+
+/**
+ * OMX_TI_BSC_POSITIONPARAMETERS
+ * @param nVectors : number of row/column sum vectors. Max value = 4
+ * @param nShift : down-shift of input data
+ * @param nVPos : vertical position of first pixel to be summed
+ * @param nHPos : horizontal position of first pixel to be summed
+ * @param nVNum : number of pixels sampled vertically
+ * @param nHNum : number of pixels sampled horizontally
+ * @param nVSkip : vertical spacing between adjacent pixels to be summed
+ * @param nHSkip : horizontal pixel spacing between adjacent pixels to be summed
+ *
+ * The number of row/column sums cannot exceed 1920, implies:
+ *   -  (nVectors + 1) * (nVNum) <=1920, for row sums
+ *   -  (nVectors + 1) * (nHNum) <=1920, for column sums
+ */
+typedef struct OMX_TI_BSC_POSITIONPARAMETERS {
+    OMX_U8  nVectors;
+    OMX_U8  nShift;
+    OMX_U16 nVPos;
+    OMX_U16 nHPos;
+    OMX_U16 nVNum;
+    OMX_U16 nHNum;
+    OMX_U8  nVSkip;
+    OMX_U8  nHSkip;
+} OMX_TI_BSC_POSITIONPARAMETERS;
+
+/* Max number of row/column sums supported by Bsc engine*/
+#define OMX_TI_BSC_MAX_NUM_ROW_COLUMN_SUMS (1920)
+
+/**
+ * The extra data for ISP Boundary Signal Calculator engine
+ * @param eBscColourElement : Selects the element to be summed (Y, Cb or Cr)
+ * @param nRowPosition : Bsc row sum descriptor
+ * @param nColumnPosition : Bsc column sum descriptor
+ * @param ptBscRowSumData : Each value corresponds to sum value in a row.
+ *                          Num of row sums = nRowPosition.nVectors * nRowPosition.VNum
+ * @param ptBscColumnSumData : Each value corresponds to sum value in a column.
+ *                             Num of column sums = nColumnPosition.nVectors * nColumnPosition.HNum
+ */
+typedef struct OMX_TI_BSC_STATISTICS_TYPE {
+    OMX_TI_BSC_COLOUR_ELEMENT_TYPE eBscColourElement;
+    OMX_TI_BSC_POSITIONPARAMETERS  nRowPosition;
+    OMX_TI_BSC_POSITIONPARAMETERS  nColumnPosition;
+    OMX_U16                        ptBscRowSumData[OMX_TI_BSC_MAX_NUM_ROW_COLUMN_SUMS];
+    OMX_U16                        ptBscColumnSumData[OMX_TI_BSC_MAX_NUM_ROW_COLUMN_SUMS];
+} OMX_TI_BSC_STATISTICS_TYPE;
+
+
+#define AUX_IMAGEDATA_MAX_SIZE_BYTES     ((320 * 240 * 3)/2)
+
+/**
+ * The extra data for AuxiliaryImageData
+ * @param eAuxImageFormat : Format of image. In case of Aux buffer, it is OMX_COLOR_FormatYUV420SemiPlanar (YUV 4:2:0)
+ * @param nAuxImageWidth : Width of Auxiliary Image (<=320)
+ * @param nAuxImageHeight : Height of Auxiliary Image (<=240)
+ * @param nAuxImageStrideBytes : Width in bytes for auxiliary buffer. In case of YUV4:2:0, stride for UV component is half of this value.
+ * @param ptAuxImage : Data Pointer for Auxiliary data. First 320*240 bytes is Y Component. Remaining is UV component.
+ */
+typedef struct OMX_TI_AUX_IMAGEDATA_TYPE {
+    OMX_COLOR_FORMATTYPE      eAuxImageFormat;
+    OMX_U16                   nAuxImageWidth;
+    OMX_U16                   nAuxImageHeight;
+    OMX_U16                   nAuxImageStrideBytes;
+    OMX_U8                    ptAuxImage[AUX_IMAGEDATA_MAX_SIZE_BYTES];
+} OMX_TI_AUX_IMAGEDATA_TYPE;
+
 
 /**
 * Data structure carrying information about
@@ -3232,12 +3481,14 @@ typedef struct OMX_TI_CPCAMDATA {
 * STRUCT MEMBERS:
 * nSize: Size of the structure in bytes
 * nVersion: OMX specification version information
-* nDelay: Capture frame delay in ms
+* nPortIndex: Index of the port on which Mechanical Misalignment to be enabled/disabled
+* bMM: Mechanical Misalignment enable/disable flag
 */
     typedef struct OMX_TI_CONFIG_MM {
         OMX_U32         nSize;
         OMX_VERSIONTYPE nVersion;
-       OMX_BOOL        bMM;
+        OMX_U32         nPortIndex;
+        OMX_BOOL        bMM;
     } OMX_TI_CONFIG_MM;
 
 /**
@@ -3608,6 +3859,1043 @@ typedef struct OMX_TI_CONFIG_VECTSHOTSTOPMETHODTYPE {
     OMX_TI_VECTSHOTSTOPMETHOD   eStopMethod;
 } OMX_TI_CONFIG_VECTSHOTSTOPMETHODTYPE;
 
+/* Number of elements per color */
+#define OMX_TI_GAMMATABLE_SIZE (512)
+
+/**
+ * Describes each element of gamma table
+ */
+typedef struct OMX_TI_GAMMATABLE_ELEM_TYPE {
+    OMX_S16 nOffset;
+    OMX_S16 nSlope;
+} OMX_TI_GAMMATABLE_ELEM_TYPE;
+
+/**
+ * Gamma table
+ *
+ * STRUCT MEMBERS:
+ *  pR  : Red color table
+ *  pG  : Blue color table
+ *  pB  : Green color table
+ */
+typedef struct OMX_TI_CONFIG_GAMMATABLE_TYPE {
+    OMX_TI_GAMMATABLE_ELEM_TYPE pR[OMX_TI_GAMMATABLE_SIZE];
+    OMX_TI_GAMMATABLE_ELEM_TYPE pG[OMX_TI_GAMMATABLE_SIZE];
+    OMX_TI_GAMMATABLE_ELEM_TYPE pB[OMX_TI_GAMMATABLE_SIZE];
+} OMX_TI_CONFIG_GAMMATABLE_TYPE;
+/**
+ * Define configuration structure to
+ * specify computing of image pyramids
+ *
+ * STRUCT MEMBERS:
+ *  nSize           : Size of the structure in bytes
+ *  nVersion        : OMX specification version information
+ *  nPortIndex      : Port that this structure applies to
+ *  nLevelsCount    : Number of levels of the pyramid
+ *  nScalingFactor  : (Format: Q16) Scaling factor for
+ *                    the levels of the pyramid
+ */
+typedef struct OMX_TI_PARAM_IMAGEPYRAMIDTYPE {
+    OMX_U32                 nSize;
+    OMX_VERSIONTYPE         nVersion;
+    OMX_U32                 nPortIndex;
+    OMX_U32                 nLevelsCount;
+    OMX_U32                 nScalingFactor; // Q16
+} OMX_TI_PARAM_IMAGEPYRAMIDTYPE;
+
+
+
+/* 16 Extended to allow precise H3A for preview */
+#define OMX_MAX_WINHC                       (36)
+/* 32 Extended to allow precise H3A for preview */
+#define OMX_MAX_WINVC                       (128)
+/* One paxel is 32 Bytes + on every 8 paxel 8*2 Bytes for number of unsaturated pixels in previouse 8 paxels */
+#define OMX_AWWB_H3A_PAXEL_SIZE_BYTES       (32 + 2)
+/*AF SCM Range Constants */
+#define OMX_AF_PAXEL_VERTICAL_COUNT_MAX     (127)
+/*AF SCM Range Constants */
+#define OMX_AF_PAXEL_HORIZONTAL_COUNT_MAX   (35)
+/* Max sensor with */
+#define OMX_ISP_IN_WIDTH                    (4032)
+/* Max sensor height */
+#define OMX_ISP_IN_HEIGHT                   (3024)
+
+
+//!< Noise filter number of THR coefficients
+#define OMX_ISS_NF_THR_COUNT        (8)
+//!< Noise filter number of STR coefficients
+#define OMX_ISS_NF_STR_COUNT        (8)
+//!< Noise filter number of SPR coefficients
+#define OMX_ISS_NF_SPR_COUNT        (8)
+//!< Numbers of values in Gamma table
+#define OMX_ISS_PREV_GAMMA_TABLE    (1024)
+//!< Number of offset values on table
+#define OMX_ISS_PREV_RGB2RGB_OFFSET (3)
+//!< Numbers of values in rows and colomns
+#define OMX_ISS_PREV_RGB2RGB_MATRIX (3)
+//!< GBCE enhancement table size
+#define OMX_ISS_GBCE_TABLE_SIZE     (1024)
+//!< Edge enhancement table size
+#define OMX_ISS_EE_TABLE_SIZE       (1024)
+//!< Edge enhancement number of coefficients
+#define OMX_ISS_COEFF               (9)
+//!< Histogram dims count
+#define OMX_ISS_HIST_DIMS_COUNT     (4)
+//!< Histogram gain table size
+#define OMX_ISS_HIST_GAIN_TBL       (4)
+//!< Number of offset values on table
+#define OMX_ISS_PREV_RGB2YUV_OFFSET (3)
+//!< Numbers of values in rows and colomns
+#define OMX_ISS_PREV_RGB2YUV_MATRIX (3)
+
+/*--------data declarations -----------------------------------*/
+typedef enum {
+    OMX_IPIPE_BAYER_PATTERN_RGGB,
+    OMX_IPIPE_BAYER_PATTERN_GRBG,
+    OMX_IPIPE_BAYER_PATTERN_GBRG,
+    OMX_IPIPE_BAYER_PATTERN_BGGR,
+    OMX_IPIPE_BAYER_PATTERN_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_BAYER_PATTERNTYPE;
+
+typedef enum {
+    OMX_IPIPE_BAYER_MSB_BIT15,
+    OMX_IPIPE_BAYER_MSB_BIT14,
+    OMX_IPIPE_BAYER_MSB_BIT13,
+    OMX_IPIPE_BAYER_MSB_BIT12,
+    OMX_IPIPE_BAYER_MSB_BIT11,
+    OMX_IPIPE_BAYER_MSB_BIT10,
+    OMX_IPIPE_BAYER_MSB_BIT9,
+    OMX_IPIPE_BAYER_MSB_BIT8,
+    OMX_IPIPE_BAYER_MSB_BIT7,
+    OMX_IPIPE_BAYER_MSB_BIT_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_BAYER_MSB_POSTYPE;
+
+typedef enum {
+    OMX_ISIF_LSC_8_PIXEL       = 3,
+    OMX_ISIF_LSC_16_PIXEL      = 4,
+    OMX_ISIF_LSC_32_PIXEL      = 5,
+    OMX_ISIF_LSC_64_PIXEL      = 6,
+    OMX_ISIF_LSC_128_PIXEL     = 7,
+    OMX_ISIF_LSC_128_PIXEL_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_ISIF_LSC_GAIN_MODE_MNTYPE;
+
+typedef enum {
+    OMX_LSC_GAIN_0Q8        = 0,
+    OMX_LSC_GAIN_0Q8_PLUS_1 = 1,
+    OMX_LSC_GAIN_1Q7        = 2,
+    OMX_LSC_GAIN_1Q7_PLUS_1 = 3,
+    OMX_LSC_GAIN_2Q6        = 4,
+    OMX_LSC_GAIN_2Q6_PLUS_1 = 5,
+    OMX_LSC_GAIN_3Q5        = 6,
+    OMX_LSC_GAIN_3Q5_PLUS_1 = 7,
+    OMX_LSC_GAIN_MAX        = 0x7FFFFFFF
+} OMX_TI_3ASKIP_ISIF_LSC_GAIN_FORMATTYPE;
+
+typedef enum {
+    OMX_ISIF_LSC_OFFSET_NO_SHIFT         = 0,
+    OMX_ISIF_LSC_OFFSET_1_LEFT_SHIFT     = 1,
+    OMX_ISIF_LSC_OFFSET_2_LEFT_SHIFT     = 2,
+    OMX_ISIF_LSC_OFFSET_3_LEFT_SHIFT     = 3,
+    OMX_ISIF_LSC_OFFSET_4_LEFT_SHIFT     = 4,
+    OMX_ISIF_LSC_OFFSET_5_LEFT_SHIFT     = 5,
+    OMX_ISIF_LSC_OFFSET_5_LEFT_SHIFT_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_ISIF_LSC_OFFSET_SHIFTTYPE;
+
+typedef enum {
+    OMX_ISIF_LSC_OFFSET_OFF = 0,
+    OMX_ISIF_LSC_OFFSET_ON  = 1,
+    OMX_ISIF_LSC_OFFSET_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_ISIF_LSC_OFFSET_ENABLETYPE;
+
+typedef struct {
+    //!< DLSCCFG ENABLE-- enable 2d LSC module
+    OMX_U8 nEnable;
+    //!< HVAL LSCHVAL--LSC HSIZE
+    OMX_U16 nLscHSize;
+    //!< HVAL LSCHVAL--LSC VSIZE
+    OMX_U16 nLscVSize;
+    //!< HOFST LSCHOFST DATAHOFST 0-16383-- H-direction data offset
+    OMX_U16 nHDirDataOffset;
+    //!< VOFST LSCVOFST DATAHOFST 0-16383-- V-direction data offset
+    OMX_U16 nVDirDataOffset;
+    //!< X DLSCINI   6:0-- H-position of the paxel
+    OMX_U8 nHPosInPaxel;
+    //!< Y DLSCINI   6:0-- V-position of the paxel
+    OMX_U8 nVPosInPaxel;
+
+    //!< GAIN_MODE_M DLSCCFG
+    OMX_TI_3ASKIP_ISIF_LSC_GAIN_MODE_MNTYPE ePaxHeight;
+    //!< GAIN_MODE_N DLSCCFG
+    OMX_TI_3ASKIP_ISIF_LSC_GAIN_MODE_MNTYPE ePaxLength;
+    //!< GAIN_FORMAT DLSCCFG
+    OMX_TI_3ASKIP_ISIF_LSC_GAIN_FORMATTYPE eGainFormat;
+    //!< offset scaling factor
+    OMX_U8 nOffsetScalingFactor;
+    //!< OFSTSFT DLSCOFST--offset shift value
+    OMX_TI_3ASKIP_ISIF_LSC_OFFSET_SHIFTTYPE eOffsetShiftVal;
+    //!< OFSTSFT DLSCOFST--offset enable value
+    OMX_TI_3ASKIP_ISIF_LSC_OFFSET_ENABLETYPE eOffsetEnable;
+    //!< gain table address--32 bit aligned
+    OMX_U32 pGainTableAddress[256];
+    //!< gain table length
+    OMX_U16 nGainTableLength;
+    //!< offset table address
+    OMX_U32 pOffsetTableAddress[256];
+    //!< offset table length
+    OMX_U16 nOffsetTableLength;
+} OMX_TI_3ASKIP_ISIF_2DLSC_CFGTYPE;
+
+typedef enum {
+    OMX_ISIF_HORIZONTAL_CLAMP_DISABLED             = 0,
+    OMX_ISIF_HORIZONTAL_CLAMP_ENABLED              = 1,
+    OMX_ISIF_PREVIOUS_HORIZONTAL_CLAMP_ENABLED     = 2,
+    OMX_ISIF_CLAMP_MAX                             = 0x7FFFFFFF
+} OMX_TI_3ASKIP_ISIF_HORIZONTAL_CLAMP_MODETYPE;
+
+typedef enum {
+    OMX_ISIF_ONE_COLOR_CLAMP    = 0,
+    OMX_ISIF_FOUR_COLOR_CLAMP   = 1,
+    OMX_ISIF_COLOR_CLAMP_MAX    = 0x7FFFFFFF
+} OMX_TI_3ASKIP_ISIF_BLACK_CLAMP_MODETYPE;
+
+typedef enum {
+    OMX_ISIF_HBLACK_2PIXEL_TALL    = 0,
+    OMX_ISIF_HBLACK_4PIXEL_TALL    = 1,
+    OMX_ISIF_HBLACK_8PIXEL_TALL    = 2,
+    OMX_ISIF_HBLACK_16PIXEL_TALL   = 3,
+    OMX_ISIF_HBLACK_PIXEL_TALL_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_ISIF_HBLACK_PIXEL_HEIGHTTYPE;
+
+typedef enum {
+    OMX_ISIF_HBLACK_32PIXEL_WIDE   = 0,
+    OMX_ISIF_HBLACK_64PIXEL_WIDE   = 1,
+    OMX_ISIF_HBLACK_128PIXEL_WIDE  = 2,
+    OMX_ISIF_HBLACK_256PIXEL_WIDE  = 3,
+    OMX_ISIF_HBLACK_PIXEL_WIDE_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_ISIF_HBLACK_PIXEL_WIDTHTYPE;
+
+typedef enum {
+    OMX_ISIF_VBLACK_PIXEL_NOT_LIMITED = 0,
+    OMX_ISIF_VBLACK_PIXEL_LIMITED     = 1,
+    OMX_ISIF_VBLACK_PIXEL_LIMITED_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_ISIF_HBLACK_PIXEL_VALUE_LIMTYPE;
+
+typedef enum {
+    OMX_ISIF_VBLACK_BASE_WINDOW_LEFT  = 0,
+    OMX_ISIF_VBLACK_BASE_WINDOW_RIGHT = 1,
+    OMX_ISIF_VBLACK_BASE_WINDOW_MAX   = 0x7FFFFFFF
+} OMX_TI_3ASKIP_ISIF_HBLACK_BASE_WINDOWTYPE;
+
+typedef struct {
+    //!< CLHSV CLHWIN2 12-0--Vertical black clamp.
+    //!< Window Start position (V).Range: 0 - 8191
+    OMX_U16 nVPos;
+    //!< CLHWN  CLHWIN0--[Horizontal Black clamp]
+    //!< Vertical dimension of a Window (2^N).
+    OMX_TI_3ASKIP_ISIF_HBLACK_PIXEL_HEIGHTTYPE eVSize;
+    //!< CLHSH CLHWIN1 12-0--Horizontal black clamp.
+    //!< Window Start position (H).Range: 0 - 8191
+    OMX_U16 nHPos;
+    //!< CLHWM  CLHWIN0--[Horizontal Black clamp]
+    //!< Horizontal dimension of a Window (2^M).
+    OMX_TI_3ASKIP_ISIF_HBLACK_PIXEL_WIDTHTYPE eHSize;
+    //!< CLHLMT CLHWIN0--Horizontal Black clamp. Pixel value
+    //!< limitation for the Horizontal clamp value calculation
+    OMX_TI_3ASKIP_ISIF_HBLACK_PIXEL_VALUE_LIMTYPE ePixelValueLimit;
+    //!< CLHWBS CLHWIN0--[Horizontal Black clamp] Base Window select
+    OMX_TI_3ASKIP_ISIF_HBLACK_BASE_WINDOWTYPE eRightWindow;
+    //!< CLHWC  CLHWIN0--[Horizontal Black clamp]
+    //!< Window count per color. Window count = CLHWC+1. Range: 1 - 32
+    OMX_U8 nWindowCountPerColor;
+} OMX_TI_3ASKIP_ISIFHBLACKPARAMSTYPE;
+
+typedef enum {
+    OMX_ISIF_VBLACK_2PIXEL_WIDE  = 0,
+    OMX_ISIF_VBLACK_4PIXEL_WIDE  = 1,
+    OMX_ISIF_VBLACK_8PIXEL_WIDE  = 2,
+    OMX_ISIF_VBLACK_16PIXEL_WIDE = 3,
+    OMX_ISIF_VBLACK_32PIXEL_WIDE = 4,
+    OMX_ISIF_VBLACK_64PIXEL_WIDE = 5,
+    OMX_ISIF_VBLACK_PIXEL_WIDE   = 0x7FFFFFFF
+} OMX_TI_3ASKIP_ISIF_VBLACK_PIXEL_WIDTHTYPE;
+
+typedef enum {
+    OMX_ISIF_VALUE_HORIZONTAL_DIRECTION = 0,
+    OMX_ISIF_VALUE_CONFIG_REGISTER      = 1,
+    OMX_ISIF_VALUE_NOUPDATE             = 2,
+    OMX_ISIF_VALUE_MAX                  = 0x7FFFFFFF
+} OMX_TI_3ASKIP_ISIF_VBLACK_RESET_MODETYPE;
+
+typedef struct {
+    //!< CLVSV CLVWIN2 12-0--Vertical black clamp.
+    //!< Window Start position (V).Range: 0 - 8191
+    OMX_U16 nVPos;
+    //!< CLVOBV CLVWIN3 12-0 range 0-8192-- Vertical black clamp.
+    //!< Optical black V valid (V).Range: 0 - 8191
+    OMX_U16 nVSize;
+    //!< CLVSH CLVWIN1 12-0--Vertical black clamp. Window Start
+    //!< position (H).Range: 0 - 8191
+    OMX_U16 nHPos;
+    //!< CLVOBH  CLVWIN0-- Vertical Black clamp. Optical Black H valid (2^L).
+    OMX_TI_3ASKIP_ISIF_VBLACK_PIXEL_WIDTHTYPE HSize;
+    //!< CLVCOEF CLVWIN0-- Vertical Black clamp .Line average coefficient (k).
+    OMX_U8 line_avg_coef;
+    //!< CLVRVSL CLVWIN0-- Vertical Black clamp. Select the reset value
+    //!< for the Clamp value of the Previous line
+    OMX_TI_3ASKIP_ISIF_VBLACK_RESET_MODETYPE reset_mode;
+    //!< CLVRV reset value U12--Vertical black clamp reset value
+    //!< (U12) Range: 0 to 4095
+    OMX_U16 reset_value;
+} OMX_TI_3ASKIP_ISIF_VERTICAL_BLACK_PARAMSTYPE;
+
+typedef struct {
+    //!< CLEN  CLAMPCFG-- clamp module enablement
+    OMX_U8 nEnable;
+    //!< CLMD  CLAMPCFG-- horizontal clamp mode
+    OMX_TI_3ASKIP_ISIF_HORIZONTAL_CLAMP_MODETYPE eHClampMode;
+    //!< CLHMD CLAMPCFG-- black clamp mode
+    OMX_TI_3ASKIP_ISIF_BLACK_CLAMP_MODETYPE eBlackClampMode;
+    //!< CLDCOFST CLDC s13-- clamp dc-offset value
+    OMX_U16 nDCOffsetClampVal;
+    //!< CLSV 12-0 (range 0-8191)--black clamp v-start position
+    OMX_U16 nBlackClampVStartPos;
+    //!< CLHWIN0-- horizontal black clamp parameters
+    OMX_TI_3ASKIP_ISIF_VERTICAL_BLACK_PARAMSTYPE tHorizontalBlack;
+    //!< CLVWIN0-- vertical black clamp parameters
+    OMX_TI_3ASKIP_ISIF_VERTICAL_BLACK_PARAMSTYPE tVerticalBlack;
+} OMX_TI_3ASKIP_ISIF_CLAMP_CFGTYPE;
+
+typedef struct {
+    //!< FLSHEN FLSHCFG0-- flash enable
+    OMX_U8 nEnable;
+    //!< SFLSH FLSHCFG1--Start line to set the FLASH timing signal.
+    OMX_U16 nFlashTimingStartLine;
+    //!< VFLSH FLSHCFG--Valid width of the FLASH timing signal.
+    //!< Valid width = Crystal-clock x 2 x (VFLSH + 1)
+    OMX_U16 nFlashTimingWidth;
+} OMX_TI_3ASKIP_ISIF_FLASH_CFGTYPE;
+
+typedef struct {
+    //!< gain offset feature-flag
+    OMX_U8 gain_offset_featureflag;
+    //!< CGR  CRGAIN-- gain R
+    OMX_U16 gain_r;
+    //!< CGGR CGRGAIN-- gain GR
+    OMX_U16 gain_gr;
+    //!< CGGB CGBGAIN-- gain GB
+    OMX_U16 gain_gb;
+    OMX_U16 gain_bg;
+    //!< COFT COFSTA--offset
+    OMX_U16 offset;
+} OMX_TI_3ASKIP_ISIF_GAINOFFSET_CFGTYPE;
+
+typedef enum {
+    OMX_ISIF_VDLC_WHOLE_LINE                = 0,
+    OMX_ISIF_VDLC_DISABLE_ABOVE_UPPER_PIXEL = 1,
+    OMX_ISIF_VDLC_MAX                       = 0x7FFFFFFF
+
+} OMX_TI_3ASKIP_ISIF_VDLC_PIXEL_DEPENDENCYTYPE;
+
+typedef enum {
+    OMX_ISIF_VLDC_FED_THRO_ONSATURATION                 = 0,
+    OMX_ISIF_VLDC_HORIZONTAL_INTERPOLATION_ONSATURATION = 1,
+    OMX_ISIF_VLDC_HORIZONTAL_INTERPOLATION              = 2,
+    OMX_ISIF_VLDC_MAX                                   = 0x7FFFFFFF
+} OMX_TI_3ASKIP_ISIF_VLDC_MODE_SELECTTYPE;
+
+typedef struct {
+    //!< DFCMEM0--Vertical Defect position
+    OMX_U16 nVerticalDefectPosition;
+    //!< DFCMEM1 12-0--horizontal defect position
+    OMX_U16 nHorizontalDefectPosition;
+    //!< DFCMEM2--Defect correction Memory 2
+    OMX_U8 nSub1ValueVldc;
+    //!< DFCMEM3--Defect correction Memory 3
+    OMX_U8 nSub2LessThanVldc;
+    //!< DFCMEM4--Defect correction Memory 4
+    OMX_U8 nSub3GreaterThanVldc;
+} OMX_TI_3ASKIP_ISIF_VLDCDEFECT_LINEPARAMSTYPE;
+
+typedef struct {
+    //!< VDFCEN  DFCCTL--enable VLDC module
+    OMX_U8 nEnable;
+    //!< VDFCUDA DFCCTL--pixel dependency
+    OMX_TI_3ASKIP_ISIF_VDLC_PIXEL_DEPENDENCYTYPE eDisableVldcUpperPixels;
+    //!< VDFLSFT DFCCTL-- VLDC shift values
+    OMX_U8 nVldcShiftVal;
+    //!< VDFCSL  DFCCTL--VLDC mode select
+    OMX_TI_3ASKIP_ISIF_VLDC_MODE_SELECTTYPE eVldcModeSelect;
+    //!< VDFSLV VDFSATLV OMX_U12 range 0 - 4095-- VLDC saturation level
+    OMX_U16 nVldcSaturationLvl;
+    //!< number of defect lines-maximum8
+    OMX_U8 nDefectLines;
+    //!< DFCMEM0 -8--  defect line paramaters
+    OMX_TI_3ASKIP_ISIF_VLDCDEFECT_LINEPARAMSTYPE tVldcDefectLineParams;
+} OMX_TI_3ASKIP_ISIF_VLDC_CFGTYPE;
+
+typedef enum {
+    OMX_NOISE_FILTER_1   = 1,
+    OMX_NOISE_FILTER_2   = 2,
+    OMX_NOISE_FILTER_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_NOISE_FILTERTYPE;
+
+typedef enum {
+    OMX_IPIPE_NF_SPR_SINGLE = 0,
+    OMX_IPIPE_NF_SPR_LUT    = 1,
+    OMX_IPIPE_NF_SPR_MAX    = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_NF_SELTYPE;
+
+typedef enum {
+    OMX_IPIPE_NF_LSC_GAIN_OFF  = 0,
+    OMX_IPIPE_NF_LSC_GAIN_ON   = 1,
+    OMX_IPIPE_NF_LSC_GAIN_MAX  = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_NF_LSC_GAINTYPE;
+
+typedef enum {
+    OMX_IPIPE_NF_SAMPLE_BOX     = 0,
+    OMX_IPIPE_NF_SAMPLE_DIAMOND = 1,
+    OMX_IPIPE_NF_SAMPLE_MAX     = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_NF_SAMPLE_METHODTYPE;
+
+typedef struct {
+    //!< Enable-disable for Noise filter in ipipe
+    OMX_U8 nEnable;
+    //!< Noise filter number
+    OMX_TI_3ASKIP_IPIPE_NOISE_FILTERTYPE eNFNum;
+    //!< Selecting the spread in NF
+    OMX_TI_3ASKIP_IPIPE_NF_SELTYPE eSel;
+    //!< Controling the lsc gain applied in Noise Filter
+    OMX_TI_3ASKIP_IPIPE_NF_LSC_GAINTYPE eLscGain;
+    //!< Selecting the sampling method
+    OMX_TI_3ASKIP_IPIPE_NF_SAMPLE_METHODTYPE eTyp;
+    OMX_U8                                   nDownShiftVal;
+    OMX_U8                                   nSpread;
+    OMX_U16                                  pThr[OMX_ISS_NF_THR_COUNT];
+    OMX_U8                                   pStr[OMX_ISS_NF_STR_COUNT];
+    OMX_U8                                   pSpr[OMX_ISS_NF_SPR_COUNT];
+    OMX_U16                                  nEdgeMin;
+    OMX_U16                                  nEdgeMax;
+} OMX_TI_3ASKIP_IPIPE_NOISE_FILTER_CFGTYPE;
+
+typedef enum {
+    OMX_IPIPE_GIC_LSC_GAIN_OFF = 0,
+    OMX_IPIPE_GIC_LSC_GAIN_ON  = 1,
+    OMX_IPIPE_GIC_LSC_GAIN_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_GIC_LSC_GAINTYPE;
+
+typedef enum {
+    OMX_IPIPE_GIC_GICTHR = 0,
+    OMX_IPIPE_GIC_NF2THR = 1,
+    OMX_IPIPE_GIC_MAX    = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_GIC_SELTYPE;
+
+typedef enum {
+    OMX_IPIPE_GIC_DIFF_INDEX = 0,
+    OMX_IPIPE_GIC_HPD_INDEX  = 1,
+    OMX_IPIPE_GIC_INDEX_MAX  = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_GIC_INDEXTYPE;
+
+typedef struct {
+    /* works only when data format is GR,GB */
+    //!< Enable-disable for diffrerent components in ipipe
+    OMX_U16 nEnable;
+    //!< Selecting LSC gain in GIC
+    OMX_TI_3ASKIP_IPIPE_GIC_LSC_GAINTYPE eLscGain;
+    //!< Slection of threshold vaue in GIC filter
+    OMX_TI_3ASKIP_IPIPE_GIC_SELTYPE eSel;
+    //!< Selecting the index in GIC
+    OMX_TI_3ASKIP_IPIPE_GIC_INDEXTYPE eTyp;
+    OMX_U8                            nGicGain;
+    OMX_U8                            nGicNfGain;
+    OMX_U16                           nGicThr;
+    OMX_U16                           nGicSlope;
+} OMX_TI_3ASKIP_IPIPE_GIC_CFGTYPE;
+
+typedef struct {
+    /*offseet after R,GR,GB,B*/
+    OMX_U16 pOffset[4];
+    /*gain for R gr gb B*/
+    OMX_U16 pGain[4];
+} OMX_TI_3ASKIP_IPIPE_WB_CFGTYPE;
+
+typedef enum {
+    OMX_IPIPE_CFA_MODE_2DIR    = 0,
+    OMX_IPIPE_CFA_MODE_2DIR_DA = 1,
+    OMX_IPIPE_CFA_MODE_DAA     = 2,
+    OMX_IPIPE_CFA_MODE_MAX     = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_CFA_MODETYPE;
+
+typedef struct {
+    OMX_U16 nHpfThr;
+    OMX_U16 nHpfSlope;
+    OMX_U16 nMixThr;
+    OMX_U16 nMixSlope;
+    OMX_U16 nDirThr;
+    OMX_U16 nDirSlope;
+    OMX_U16 nDirNdwt;
+} OMX_TI_3ASKIP_IPIPE_CFA_DIRTYPE;
+
+typedef struct {
+    OMX_U8  nMonoHueFra;
+    OMX_U8  nMonoEdgThr;
+    OMX_U16 nMonoThrMin;
+    OMX_U16 nMonoThrSlope;
+    OMX_U16 nMonoSlpMin;
+    OMX_U16 nMonoSlpSlp;
+    OMX_U16 nMonoLpwt;
+} OMX_TI_3ASKIP_IPIPE_CFA_DAATYPE;
+
+typedef struct {
+    OMX_U8                           nEnable;
+    OMX_TI_3ASKIP_IPIPE_CFA_MODETYPE eMode;
+    OMX_TI_3ASKIP_IPIPE_CFA_DIRTYPE  tDir;
+    OMX_TI_3ASKIP_IPIPE_CFA_DAATYPE  tDaa;
+} OMX_TI_3ASKIP_IPIPE_CFA_CFGTYPE;
+
+typedef enum {
+    OMX_IPIPE_GAMMA_TBL_64  = 0,
+    OMX_IPIPE_GAMMA_TBL_128 = 1,
+    OMX_IPIPE_GAMMA_TBL_256 = 2,
+    OMX_IPIPE_GAMMA_TBL_512 = 3,
+    OMX_IPIPE_GAMMA_TBL_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_GAMMA_TABLE_SIZETYPE;
+
+typedef enum {
+    OMX_IPIPE_GAMMA_BYPASS_ENABLE  = 1,
+    OMX_IPIPE_GAMMA_BYPASS_DISABLE = 0,
+    OMX_IPIPE_GAMMA_BYPASS_MAX     = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_GAMMA_BYPASSTYPE;
+
+typedef struct {
+    OMX_U8                                   nEnable;
+    OMX_TI_3ASKIP_IPIPE_GAMMA_TABLE_SIZETYPE eGammaTblSize;
+    //!< May not be needed, since table is always in RAM
+    OMX_U8 nTbl;
+    //!< o not bypassed
+    OMX_TI_3ASKIP_IPIPE_GAMMA_BYPASSTYPE eBypassB;
+    OMX_TI_3ASKIP_IPIPE_GAMMA_BYPASSTYPE eBypassG;
+    OMX_TI_3ASKIP_IPIPE_GAMMA_BYPASSTYPE eBypassR;
+    /*poOMX_Ser to red gamma table      Red gamma table -   (U8Q0)
+      *                                 Blue gamma table -  (U8Q0)
+      *                                 Green gamma table - (U8Q0)
+      */
+    OMX_S8 pRedTable[OMX_ISS_PREV_GAMMA_TABLE];
+    OMX_S8 pBlueTable[OMX_ISS_PREV_GAMMA_TABLE];
+    OMX_S8 pGreenTable[OMX_ISS_PREV_GAMMA_TABLE];
+} OMX_TI_3ASKIP_IPIPE_GAMMA_CFGTYPE;
+
+typedef struct {
+    /*      [RR] [GR] [BR]
+     *      [RG] [GG] [BG]
+     *      [RB] [GB] [BB]*/
+    /* Blending values(S12Q8 format) */
+    /*RR,GR,BR,RG,GG,BG,RB,GB,BB each 11 bits*/
+    OMX_U16 pMulOff[OMX_ISS_PREV_RGB2RGB_MATRIX][OMX_ISS_PREV_RGB2RGB_MATRIX];
+    /* Blending offset value for R,G,B - (S10Q0) */
+    /*R,G,B each 13 bits*/
+    OMX_U16 pOft[OMX_ISS_PREV_RGB2RGB_OFFSET];
+} OMX_TI_3ASKIP_IPIPE_RGBRGB_CFGTYPE;
+
+typedef struct {
+    OMX_U8 nBrightness;
+    OMX_U8 nContrast;
+    /*      [CSCRY]   [CSCGY]  [CSCBY]
+     *      [CSCRCB] [CSCGCB] [CSCBCB]
+     *      [CSCRCR] [CSCGCR] [CSCBCR] */
+    /* Color space conversion coefficients(S10Q8) */
+    /*RY,GY,BY,RCB,GCB,BCB ,RCR,GCR,BCR 12 bits*/
+    OMX_S16 pMulVal[OMX_ISS_PREV_RGB2YUV_MATRIX][OMX_ISS_PREV_RGB2YUV_MATRIX];
+    /* CSC offset values for Y offset, CB offset
+     *  and CR offset respectively (S8Q0) */
+    /*Y,CB,CR -11bits*/
+    OMX_S16 pOffset[OMX_ISS_PREV_RGB2YUV_OFFSET];
+} OMX_TI_3ASKIP_IPIPE_RGBYUV_CFGTYPE;
+
+typedef enum {
+    //!< Cr CB unmodified
+    OMX_IPIPE_GBCE_METHOD_Y_VALUE  = 0,
+    OMX_IPIPE_GBCE_METHOD_GAIN_TBL = 1,
+    OMX_IPIPE_GBCE_METHOD_MAX      = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_GBCE_METHODTYPE;
+
+typedef struct {
+    //!< Enable-disable for GBCE in ipipe
+    OMX_U16 nEnable;
+    //!< Selecting the type of GBCE method
+    OMX_TI_3ASKIP_IPIPE_GBCE_METHODTYPE nTyp;
+    //!< GBCE LookUp Tabale
+    OMX_U16 pLookupTable[OMX_ISS_GBCE_TABLE_SIZE];
+} OMX_TI_3ASKIP_IPIPE_GBCE_CFGTYPE;
+
+typedef enum {
+    OMX_IPIPE_PROC_COMPR_NO,
+    OMX_IPIPE_PROC_COMPR_DPCM,
+    OMX_IPIPE_PROC_COMPR_ALAW,
+    OMX_IPIPE_PROC_COMPR_PACK,
+    OMX_IPIPE_PROC_COMPR_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_PROC_COMPRESSIONTYPE;
+
+typedef enum {
+    OMX_IPIPE_YUV_PHS_POS_COSITED  = 0,
+    OMX_IPIPE_YUV_PHS_POS_CENTERED = 1,
+    OMX_IPIPE_YUV_PHS_POS_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_YUV_PHASE_POSTYPE;
+
+typedef enum  {
+    OMX_IPIPE_VP_DEV_CSIA,
+    OMX_IPIPE_VP_DEV_CSIB,
+    OMX_IPIPE_VP_DEV_CCP,
+    OMX_IPIPE_VP_DEV_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_VP_DEVICETYPE;
+
+//ISS configuration structure which controls the operation of yuv444 to yuv 422
+typedef struct {
+    OMX_TI_3ASKIP_IPIPE_YUV_PHASE_POSTYPE ePos;
+    OMX_U8                                nLpfEn;
+} OMX_TI_3ASKIP_IPIPE_YUV444YUV422_CFGTYPE;
+
+typedef enum {
+    OMX_IPIPE_HALO_REDUCTION_ENABLE  = 1,
+    OMX_IPIPE_HALO_REDUCTION_DISABLE = 0,
+    OMX_IPIPE_HALO_REDUCTION_MAX     = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_EE_HALO_CTRLTYPE;
+
+/* ISS configuration structure Edge enhancement */
+typedef struct {
+    /** Defect Correction Enable */
+    OMX_U16 nEnable;
+    //Enable-disable for halo reduction in Edge enhancement
+    OMX_TI_3ASKIP_IPIPE_EE_HALO_CTRLTYPE eHaloReduction;
+    // 9 coefficients
+    OMX_S16 pMulVal[OMX_ISS_COEFF];
+    OMX_U8  nSel;
+    OMX_U8  nShiftHp;
+    OMX_U16 nThreshold;
+    OMX_U16 nGain;
+    OMX_U16 nHpfLowThr;
+    OMX_U8  nHpfHighThr;
+    OMX_U8  nHpfGradientGain;
+    OMX_U8  nHpfgradientOffset;
+    OMX_S16 pEeTable[OMX_ISS_EE_TABLE_SIZE];
+} OMX_TI_3ASKIP_IPIPE_EE_CFGTYPE;
+
+// ISS configuration structure for CAR module in ipipe
+typedef struct {
+    // Enable-disable for CAR module in ipipe
+    OMX_U8  nEnable;
+    OMX_U8  nTyp;
+    OMX_U8  nSw0Thr;
+    OMX_U8  nSw1Thr;
+    OMX_U8  nHpfType;
+    OMX_U8  nHpfShift;
+    OMX_U8  nHpfThr;
+    OMX_U8  nGn1Gain;
+    OMX_U8  nGn1Shift;
+    OMX_U16 nGn1Min;
+    OMX_U8  nGn2Gain;
+    OMX_U8  nGn2Shift;
+    OMX_U16 nGn2Min;
+} OMX_TI_3ASKIP_IPIPE_CAR_CFGTYPE;
+
+//!< ISS configuration structure for LSC
+typedef struct {
+    OMX_U16 nVOffset;
+    //<! va1
+    OMX_S16 nVLinearCoeff;
+    //<! va2
+    OMX_S16 nVQuadraticCoeff;
+    //<! vs1
+    OMX_U8 nVLinearShift;
+    //<! vs2
+    OMX_U8  nVQuadraticShift;
+    OMX_U16 nHOffset;
+    //<! va1
+    OMX_S16 nHLinearCoeff;
+    //<! va2
+    OMX_S16 nHQuadraticCoeff;
+    //<! vs1
+    OMX_U8 nHLinearShift;
+    //<! vs2
+    OMX_U8 nHQuadraticShift;
+    //!< Gain value for R
+    OMX_U8 nGainR;
+    //!< Gain value for GR
+    OMX_U8 nGainGR;
+    //!< Gain value for GB
+    OMX_U8 nGainGB;
+    //!< Gain value for B
+    OMX_U8 nGainB;
+    //!< Offset value for R
+    OMX_U8 nOffR;
+    //!< Offset value for GR
+    OMX_U8 nOffGR;
+    //!< Offset value for GB
+    OMX_U8 nOffGB;
+    //!< Offset value for B
+    OMX_U8 nOffB;
+    //<! LSC_SHIFT
+    OMX_U8 nShift;
+    //<! LSC_MAX
+    OMX_U16 nMax;
+} OMX_TI_3ASKIP_IPIPE_LSC_CFGTYPE;
+
+typedef struct {
+    OMX_U16 nVPos;
+    OMX_U16 nVSize;
+    OMX_U16 nHPos;
+    OMX_U16 nHSize;
+} OMX_TI_3ASKIP_IPIPE_HIST_DIMTYPE;
+
+//!< ISS configuration structure for Histogram in ipipe
+typedef struct {
+    //!< Enable-disable for Histogram in ipipe
+    OMX_U8 nEnable;
+    OMX_U8 nOst;
+    OMX_U8 nSel;
+    OMX_U8 nType;
+    OMX_U8 nBins;
+    OMX_U8 nShift;
+    //!< Bits [3:0], 0 is disable
+    OMX_U8 nCol;
+    //!< [3:0], 0 is disable
+    OMX_U8 nRegions;
+    //!< Pointer to array of 4 structs
+    OMX_TI_3ASKIP_IPIPE_HIST_DIMTYPE pHistDim[OMX_ISS_HIST_DIMS_COUNT];
+    OMX_U8                           nClearTable;
+    OMX_U8                           nTableSel;
+    //!< r,gr,gb,b
+    OMX_U8 pGainTbl[OMX_ISS_HIST_GAIN_TBL];
+} OMX_TI_3ASKIP_IPIPE_HIST_CFGTYPE;
+
+typedef enum {
+    OMX_BOXCAR_DISABLED     = 0,
+    OMX_BOXCAR_ENABLED      = 1,
+    OMX_BOXCAR_ENB_DSB_MAX  = 0x7FFFFFFF
+} OMX_TI_3ASKIP_BOXCAR_ENABLETYPE;
+
+typedef enum {
+    OMX_BOXCAR_FREE_RUN     = 0,
+    OMX_BOXCAR_ONE_SHOT     = 1,
+    OMX_BOXCAR_FREE_ONE_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_BOXCAR_MODETYPE;
+
+typedef enum {
+    OMX_BOXCAR_8x8      = 0,
+    OMX_BOXCAR_16x16    = 1,
+    OMX_BOXCAR_SIZE_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_BOXCAR_SIZETYPE;
+
+typedef struct {
+    OMX_U8 nVectors;
+    OMX_U8 nShift;
+    //!< Vertical position
+    OMX_U16 nVPos;
+    //!< Horizontal position
+    OMX_U16 nHPos;
+    //!< Vertical number
+    OMX_U16 nVNum;
+    //!< Horizontal number
+    OMX_U16 nHNum;
+    //!< Horizontal skip
+    OMX_U8 nVSkip;
+    //!< Vertical skip
+    OMX_U8 nHSkip;
+} OMX_TI_3ASKIP_IPIPE_BSCPOS_PARAMSTYPE;
+
+typedef struct {
+    //!< Enable-disable for BSC in ipipe
+    OMX_U8 nEnable;
+    //!< BSC mode in ipipe
+    OMX_U8 nMode;
+    //!< BSC Color Sample
+    OMX_U8 nColSample;
+    //!< BSC Row Sample
+    OMX_U8 nRowSample;
+    //!< Y or CB or CR
+    OMX_U8 nElement;
+    //!< Color Position parameters
+    OMX_TI_3ASKIP_IPIPE_BSCPOS_PARAMSTYPE nColPos;
+    //!< Row Position parameters
+    OMX_TI_3ASKIP_IPIPE_BSCPOS_PARAMSTYPE nRowPos;
+} OMX_TI_3ASKIP_IPIPE_BSC_CFGTYPE;
+
+//!< Enable-disable enum for DFS in ipipeif
+typedef enum {
+    OMX_IPIPEIF_FEATURE_ENABLE  = 1,
+    OMX_IPIPEIF_FEATURE_DISABLE = 0,
+    OMX_IPIPEIF_FEATURE_MAX     = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPEIF_FEATURE_SELECTTYPE;
+
+typedef struct {
+    //!< Enable-disable for DFS in ipipeif
+    OMX_TI_3ASKIP_IPIPEIF_FEATURE_SELECTTYPE eDfsGainEn;
+    //!< Valid only if eDfsGainEn = OMX_IPIPEIF_FEATURE_ENABLE
+    OMX_U16 nDfsGainVal;
+    //!< Valid only if eDfsGainEn = OMX_IPIPEIF_FEATURE_ENABLE
+    OMX_U16 nDfsGainThr;
+    //!< Valid only if eDfsGainEn = OMX_IPIPEIF_FEATURE_ENABLE
+    OMX_U16 nOclip;
+    //!< Set to 0 if Sensor Parallel interface data is
+    //!< to be subtracted by DRK frm in SDRAM
+    OMX_U8 nDfsDir;
+} OMX_TI_3ASKIP_IPIPEIF_DFS_CFGTYPE;
+
+//!< ISS struct to control defect pixel corrction in ipipeif
+typedef struct {
+    //!< Enable-disable for DPC in ipipeif
+    OMX_TI_3ASKIP_IPIPEIF_FEATURE_SELECTTYPE eDpcEn;
+    OMX_U16                                  eDpcThr;
+} OMX_TI_3ASKIP_IPIPEIF_DPC_CFGTYPE;
+
+typedef enum {
+    OMX_IPIPEIF_DPCM_PREDICTION_SIMPLE   = 0,
+    OMX_IPIPEIF_DPCM_PREDICTION_ADVANCED = 1,
+    OMX_IPIPEIF_DPCM_PREDICTION_MAX      = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPEIF_DPCM_PRED_TYPTYPE;
+
+typedef enum {
+    OMX_IPIPEIF_DPCM_BIT_SIZE_8_10 = 0,
+    OMX_IPIPEIF_DPCM_BIT_SIZE_8_12 = 1,
+    OMX_IPIPEIF_DPCM_BIT_SIZE_MAX = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPEIF_DPCM_BIT_SIZETYPE;
+
+typedef struct {
+    //!< Enable-disable for DPCM in ipipeif
+    OMX_TI_3ASKIP_IPIPEIF_FEATURE_SELECTTYPE nDpcmEn;
+    //!< Valid only if DPCM is enabled; dpcm_en=1
+    OMX_TI_3ASKIP_IPIPEIF_DPCM_PRED_TYPTYPE nDpcmPredictor;
+    //!< Valid only if DPCM is enabled; dpcm_en=1
+    OMX_TI_3ASKIP_IPIPEIF_DPCM_BIT_SIZETYPE nDpcmBitSize;
+} OMX_TI_3ASKIP_IPIPEIF_DPCM_CFGTYPE;
+
+typedef enum {
+    OMX_RSZ_IP_IPIPE   = 0,
+    OMX_RSZ_IP_IPIPEIF = 1,
+    OMX_RSZ_IP_MAX     = 0x7FFFFFFF
+} OMX_TI_3ASKIP_RSZ_IP_PORT_SELTYPE;
+
+typedef enum {
+    OMX_MEM_INPUT_IPIPEIF,
+    OMX_MEM_INPUT_CCP,
+    OMX_MEM_INPUT_MAX     = 0x7FFFFFFF
+} OMX_TI_3ASKIP_MEM_PROC_INPUT_SELECTTYPE;
+
+//!< ISS low pass filter params for Horizontal resizing
+typedef struct {
+    OMX_U8 nCIntensity;
+    OMX_U8 nYIntensity;
+} OMX_TI_3ASKIP_RSZ_LPF_CFGTYPE;
+
+//!< Enable-Disable H3A Features
+typedef enum {
+    OMX_H3A_FEATURE_DISABLE = 0,
+    OMX_H3A_FEATURE_ENABLE  = 1,
+    OMX_H3A_FEATURE_MAX     = 0x7FFFFFFF
+} OMX_TI_3ASKIP_H3A_FEATURE_ENABLETYPE;
+
+typedef struct {
+    //!< AEWINBLK WINSV single row of black line vpos
+    OMX_U16 nVPos;
+    //!< AEWINBLK WINH  win height
+    OMX_U16 nHPos;
+} OMX_TI_3ASKIP_H3A_AEWB_BLKDIMSTYPE;
+
+typedef struct {
+    OMX_U8 pFirCoef[5];
+    OMX_U8 nVfvThres;
+} OMX_TI_3ASKIP_H3A_AF_FIRPARAMTYPE;
+
+typedef struct {
+    //!< Enable-disable for H3A AF Median engine
+    OMX_TI_3ASKIP_H3A_FEATURE_ENABLETYPE eAfMedianEn;
+    //!< Enable-disable for H3A AEWB Median engine
+    OMX_TI_3ASKIP_H3A_FEATURE_ENABLETYPE eAewbMedianEn;
+    //!< Valid only if eAfMedianEn is set to OMX_H3A_FEATURE_ENABLE
+    OMX_U8 nMedianFilterThreshold;
+    //!< Enable-disable for AFAlaw engine
+    OMX_TI_3ASKIP_H3A_FEATURE_ENABLETYPE eAfAlawEn;
+    //!< Enable-disable for AEWBAlaw engine
+    OMX_TI_3ASKIP_H3A_FEATURE_ENABLETYPE eAewbAlawEn;
+    //!< Enable-disable for IPIPEIFAve filter engine
+    OMX_TI_3ASKIP_H3A_FEATURE_ENABLETYPE eIpipeifAveFiltEn;
+    //!< Enable-disable for H3A decimation
+    OMX_TI_3ASKIP_H3A_FEATURE_ENABLETYPE eH3aDecimEnable;
+    //!< Reserved
+    OMX_U32 nReserved;
+} OMX_TI_3ASKIP_H3A_COMMON_CFGTYPE;
+
+typedef enum {
+    OMX_IPIPE_DPC_OTF_ALG_MINMAX2 = 0,
+    OMX_IPIPE_DPC_OTF_ALG_MINMAX3 = 1,
+    OMX_IPIPE_DPC_OTF_ALG_MAX     = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_DPC_ALGOTYPE;
+
+typedef enum {
+    OMX_IPIPE_DPC_OTF_MAX1_MIN1 = 0,
+    OMX_IPIPE_DPC_OTF_MAX2_MIN2 = 1,
+    OMX_IPIPE_DPC_OTF_MAX       = 0x7FFFFFFF
+} OMX_TI_3ASKIP_IPIPE_DPC_OTFTYPE;
+
+typedef struct {
+    OMX_U16 thr_cor_r;
+    OMX_U16 thr_cor_gr;
+    OMX_U16 thr_cor_gb;
+    OMX_U16 thr_cor_b;
+
+    OMX_U16 thr_det_r;
+    OMX_U16 thr_det_gr;
+    OMX_U16 thr_det_gb;
+    OMX_U16 thr_det_b;
+} OMX_TI_3ASKIP_IPIPE_DPCOTF_DPC2TYPE;
+
+typedef struct {
+    OMX_U8  nDThr;
+    OMX_U8  nDSlp;
+    OMX_U16 nDMin;
+    OMX_U16 nDMax;
+} OMX_TI_3ASKIP_IPIPE_DPCOFT_FILTERTYPE;
+
+typedef struct {
+    OMX_U8                                eShift;
+    OMX_TI_3ASKIP_IPIPE_DPCOFT_FILTERTYPE eOtfCorr;
+    OMX_TI_3ASKIP_IPIPE_DPCOFT_FILTERTYPE eOtfDett;
+} OMX_TI_3ASKIP_IPIPE_DPCOTF_DPC3TYPE;
+
+/* Union which helps selec either dpc2-dpc 3 params */
+typedef union {
+    OMX_TI_3ASKIP_IPIPE_DPCOTF_DPC2TYPE tDpc2Params;
+    OMX_TI_3ASKIP_IPIPE_DPCOTF_DPC3TYPE tDpc3Params;
+} OMX_TI_3ASKIP_IPIPE_DPCOTF_FILTER_PARAMSTYPE;
+
+typedef struct {
+    //!< Enable-disable for DPC
+    OMX_U8 nEnable;
+    //!< ISS dpc otf type
+    OMX_TI_3ASKIP_IPIPE_DPC_OTFTYPE eType;
+    //!< ISS dpc otf definitions
+    OMX_TI_3ASKIP_IPIPE_DPC_ALGOTYPE eAlgo;
+    //!< Union which helps selec either dpc2-dpc 3 params
+    OMX_TI_3ASKIP_IPIPE_DPCOTF_FILTER_PARAMSTYPE tDpcData;
+} OMX_TI_3ASKIP_IPIPE_DPCOTF_CFGTYPE;
+
+typedef struct {
+    OMX_U16 thr;
+    OMX_U16 gain;
+    OMX_U16 shift;
+    OMX_U16 min;
+} OMX_TI_3ASKIP_IPIPE_CHROMA_PARAMSTYPE;
+
+typedef struct {
+    //!< Enable-disable for CGC in ipipe
+    OMX_U16                               enable;
+    OMX_TI_3ASKIP_IPIPE_CHROMA_PARAMSTYPE y_chroma_low;
+    OMX_TI_3ASKIP_IPIPE_CHROMA_PARAMSTYPE y_chroma_high;
+    OMX_TI_3ASKIP_IPIPE_CHROMA_PARAMSTYPE c_chroma;
+} OMX_TI_3ASKIP_IPIPE_CGS_CFGTYPE;
+
+typedef enum {
+    OMX_TRANSFER_ONLINE  = 0,
+    OMX_TRANSFER_OFFLINE = 1,
+    OMX_TRANSFER_MAX     = 0x7FFFFFFF
+} OMX_TI_3ASKIP_CAM_TRANSFERTYPE;
+
+typedef struct {
+    OMX_U32 exp;
+    OMX_U32 a_gain;
+    OMX_U8  mask;
+    OMX_U32 nAgainErr;
+    OMX_U32 nDigitalISPGain;
+} OMX_TI_3ASKIP_CAM_CONTROL_EXPGAINTYPE;
+
+typedef enum {
+    /* IDs for L sensor and mono usecases */
+    OMX_TI_3aSkipIndexLLeftStart = 0,
+    OMX_TI_3aSkipIndexL_ColorPattern = OMX_TI_3aSkipIndexLLeftStart,    /**< 0x00000000 reference: OMX_TI_3ASKIP_IPIPE_BAYER_PATTERNTYPE */
+    OMX_TI_3aSkipIndexL_MsbPos,             /**< 0x00000001 reference: OMX_TI_3ASKIP_IPIPE_BAYER_MSB_POSTYPE */
+    OMX_TI_3aSkipIndexL_VpDevice,           /**< 0x00000002 reference: OMX_TI_3ASKIP_IPIPE_VP_DEVICETYPE */
+
+    OMX_TI_3aSkipIndexL_Lsc2D,              /**< 0x00000003 reference: OMX_TI_3ASKIP_ISIF_2DLSC_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Clamp,              /**< 0x00000004 reference: OMX_TI_3ASKIP_ISIF_CLAMP_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Flash,              /**< 0x00000005 reference: OMX_TI_3ASKIP_ISIF_FLASH_CFGTYPE */
+    OMX_TI_3aSkipIndexL_GainOffset,         /**< 0x00000006 reference: OMX_TI_3ASKIP_ISIF_GAINOFFSET_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Vlcd,               /**< 0x00000007 reference: OMX_TI_3ASKIP_ISIF_VLDC_CFGTYPE */
+
+    OMX_TI_3aSkipIndexL_Nf1,                /**< 0x00000008 reference: OMX_TI_3ASKIP_IPIPE_NOISE_FILTER_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Nf2,                /**< 0x00000009 reference: OMX_TI_3ASKIP_IPIPE_NOISE_FILTER_CFGTYPE */
+    OMX_TI_3aSkipIndexL_GIC,                /**< 0x0000000A reference: OMX_TI_3ASKIP_IPIPE_GIC_CFGTYPE */
+    OMX_TI_3aSkipIndexL_WB,                 /**< 0x0000000B reference: OMX_TI_3ASKIP_IPIPE_WB_CFGTYPE */
+    OMX_TI_3aSkipIndexL_CFA,                /**< 0x0000000C reference: OMX_TI_3ASKIP_IPIPE_CFA_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Gamma,              /**< 0x0000000D reference: OMX_TI_3ASKIP_IPIPE_GAMMA_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Rgb2Rgb1,           /**< 0x0000000E reference: OMX_TI_3ASKIP_IPIPE_RGBRGB_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Rgb2Rgb2,           /**< 0x0000000F reference: OMX_TI_3ASKIP_IPIPE_RGBRGB_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Rgb2Yuv,            /**< 0x00000010 reference: OMX_TI_3ASKIP_IPIPE_RGBYUV_CFGTYPE */
+    OMX_TI_3aSkipIndexL_GBCE,               /**< 0x00000011 reference: OMX_TI_3ASKIP_IPIPE_GBCE_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Yuv2Yuv,            /**< 0x00000012 reference: OMX_TI_3ASKIP_IPIPE_YUV444YUV422_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Ee,                 /**< 0x00000013 reference: OMX_TI_3ASKIP_IPIPE_EE_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Car,                /**< 0x00000014 reference: OMX_TI_3ASKIP_IPIPE_CAR_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Lsc,                /**< 0x00000015 reference: OMX_TI_3ASKIP_IPIPE_LSC_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Histogram,          /**< 0x00000016 reference: OMX_TI_3ASKIP_IPIPE_HIST_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Bsc,                /**< 0x00000017 reference: OMX_TI_3ASKIP_IPIPE_BSC_CFGTYPE */
+    OMX_TI_3aSkipIndexL_DpcOtf,             /**< 0x00000018 reference: OMX_TI_3ASKIP_IPIPE_DPCOTF_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Cgs,                /**< 0x00000019 reference: OMX_TI_3ASKIP_IPIPE_CGS_CFGTYPE */
+
+    OMX_TI_3aSkipIndexL_Dfs,                /**< 0x0000001A reference: OMX_TI_3ASKIP_IPIPEIF_DFS_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Dpc1,               /**< 0x0000001B reference: OMX_TI_3ASKIP_IPIPEIF_DPC_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Dpc2,               /**< 0x0000001C reference: OMX_TI_3ASKIP_IPIPEIF_DPC_CFGTYPE */
+    OMX_TI_3aSkipIndexL_Dpcm,               /**< 0x0000001D reference: OMX_TI_3ASKIP_IPIPEIF_DPCM_CFGTYPE */
+
+    OMX_TI_3aSkipIndexL_HLpf,               /**< 0x0000001E reference: OMX_TI_3ASKIP_RSZ_LPF_CFGTYPE */
+    OMX_TI_3aSkipIndexL_VLpf,               /**< 0x0000001F reference: OMX_TI_3ASKIP_RSZ_LPF_CFGTYPE */
+
+    OMX_TI_3aSkipIndexL_H3aCommonParams,    /**< 0x00000020 reference: OMX_TI_3ASKIP_H3A_COMMON_CFGTYPE */
+    OMX_TI_3aSkipIndexL_CamControlExpGain,  /**< 0x00000021 reference: OMX_TI_3ASKIP_CAM_CONTROL_EXPGAINTYPE */
+    OMX_TI_3aSkipIndexLLeftMax,             /**< 0x00000022 */
+
+    /* IDs for R sensor */
+    OMX_TI_3aSkipIndexRightStart = 0x01000000,
+    OMX_TI_3aSkipIndexR_ColorPattern = OMX_TI_3aSkipIndexRightStart,    /**< 0x01000000 reference: OMX_TI_3ASKIP_IPIPE_BAYER_PATTERNTYPE */
+    OMX_TI_3aSkipIndexR_MsbPos,             /**< 0x01000001 reference: OMX_TI_3ASKIP_IPIPE_BAYER_MSB_POSTYPE */
+    OMX_TI_3aSkipIndexR_VpDevice,           /**< 0x01000002 reference: OMX_TI_3ASKIP_IPIPE_VP_DEVICETYPE */
+
+    OMX_TI_3aSkipIndexR_Lsc2D,              /**< 0x01000003 reference: OMX_TI_3ASKIP_ISIF_2DLSC_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Clamp,              /**< 0x01000004 reference: OMX_TI_3ASKIP_ISIF_CLAMP_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Flash,              /**< 0x01000005 reference: OMX_TI_3ASKIP_ISIF_FLASH_CFGTYPE */
+    OMX_TI_3aSkipIndexR_GainOffset,         /**< 0x01000006 reference: OMX_TI_3ASKIP_ISIF_GAINOFFSET_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Vlcd,               /**< 0x01000007 reference: OMX_TI_3ASKIP_ISIF_VLDC_CFGTYPE */
+
+    OMX_TI_3aSkipIndexR_Nf1,                /**< 0x01000008 reference: OMX_TI_3ASKIP_IPIPE_NOISE_FILTER_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Nf2,                /**< 0x01000009 reference: OMX_TI_3ASKIP_IPIPE_NOISE_FILTER_CFGTYPE */
+    OMX_TI_3aSkipIndexR_GIC,                /**< 0x0100000A reference: OMX_TI_3ASKIP_IPIPE_GIC_CFGTYPE */
+    OMX_TI_3aSkipIndexR_WB,                 /**< 0x0100000B reference: OMX_TI_3ASKIP_IPIPE_WB_CFGTYPE */
+    OMX_TI_3aSkipIndexR_CFA,                /**< 0x0100000C reference: OMX_TI_3ASKIP_IPIPE_CFA_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Gamma,              /**< 0x0100000D reference: OMX_TI_3ASKIP_IPIPE_GAMMA_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Rgb2Rgb1,           /**< 0x0100000E reference: OMX_TI_3ASKIP_IPIPE_RGBRGB_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Rgb2Rgb2,           /**< 0x0100000F reference: OMX_TI_3ASKIP_IPIPE_RGBRGB_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Rgb2Yuv,            /**< 0x01000010 reference: OMX_TI_3ASKIP_IPIPE_RGBYUV_CFGTYPE */
+    OMX_TI_3aSkipIndexR_GBCE,               /**< 0x01000011 reference: OMX_TI_3ASKIP_IPIPE_GBCE_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Yuv2Yuv,            /**< 0x01000012 reference: OMX_TI_3ASKIP_IPIPE_YUV444YUV422_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Ee,                 /**< 0x01000013 reference: OMX_TI_3ASKIP_IPIPE_EE_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Car,                /**< 0x01000014 reference: OMX_TI_3ASKIP_IPIPE_CAR_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Lsc,                /**< 0x01000015 reference: OMX_TI_3ASKIP_IPIPE_LSC_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Histogram,          /**< 0x01000016 reference: OMX_TI_3ASKIP_IPIPE_HIST_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Bsc,                /**< 0x01000017 reference: OMX_TI_3ASKIP_IPIPE_BSC_CFGTYPE */
+    OMX_TI_3aSkipIndexR_DpcOtf,             /**< 0x01000018 reference: OMX_TI_3ASKIP_IPIPE_DPCOTF_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Cgs,                /**< 0x01000019 reference: OMX_TI_3ASKIP_IPIPE_CGS_CFGTYPE */
+
+    OMX_TI_3aSkipIndexR_Dfs,                /**< 0x0100001A reference: OMX_TI_3ASKIP_IPIPEIF_DFS_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Dpc1,               /**< 0x0100001B reference: OMX_TI_3ASKIP_IPIPEIF_DPC_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Dpc2,               /**< 0x0100001C reference: OMX_TI_3ASKIP_IPIPEIF_DPC_CFGTYPE */
+    OMX_TI_3aSkipIndexR_Dpcm,               /**< 0x0100001D reference: OMX_TI_3ASKIP_IPIPEIF_DPCM_CFGTYPE */
+
+    OMX_TI_3aSkipIndexR_HLpf,               /**< 0x0100001E reference: OMX_TI_3ASKIP_RSZ_LPF_CFGTYPE */
+    OMX_TI_3aSkipIndexR_VLpf,               /**< 0x0100001F reference: OMX_TI_3ASKIP_RSZ_LPF_CFGTYPE */
+
+    OMX_TI_3aSkipIndexR_H3aCommonParams,    /**< 0x01000020 reference: OMX_TI_3ASKIP_H3A_COMMON_CFGTYPE */
+    OMX_TI_3aSkipIndexR_CamControlExpGain,  /**< 0x01000021 reference: OMX_TI_3ASKIP_CAM_CONTROL_EXPGAINTYPE */
+    OMX_TI_Index3aSkipRightMax,             /**< 0x01000022 */
+    OMX_TI_Index3aSkip_MAX = 0x7FFFFFFF
+
+} OMX_TI_3ASKIP_TI_3ASKIPINDEXTYPE;
 
 #ifdef __cplusplus
 }
