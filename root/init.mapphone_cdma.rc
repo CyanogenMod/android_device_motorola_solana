@@ -36,6 +36,7 @@ on init
 
 on fs
     symlink /dev/block/mmcblk1p25 /dev/block/emstorage
+    symlink /dev/block/mmcblk1p7 /dev/block/pds
 # begin SS3 setup
     mount rootfs rootfs / rw remount
     mkdir /ss 0777 root root
