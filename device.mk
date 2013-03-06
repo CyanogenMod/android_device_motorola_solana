@@ -147,13 +147,6 @@ PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/firmware/ti-connectivity/wl128x-fw-4-sr.bin:system/etc/firmware/ti-connectivity/wl128x-fw-4-sr.bin \
     $(DEVICE_FOLDER)/firmware/ti-connectivity/wl1271-nvs.bin:system/etc/firmware/ti-connectivity/wl1271-nvs.bin
 
-# WPAN firmware
-PRODUCT_COPY_FILES += \
-    $(DEVICE_FOLDER)/firmware/wpan/bluetooth/TIInit_10.6.15.bts:system/etc/firmware/TIInit_10.6.15.bts \
-    $(DEVICE_FOLDER)/firmware/wpan/bluetooth/TIInit_7.2.31.bts:system/etc/firmware/TIInit_7.2.31.bts \
-    $(DEVICE_FOLDER)/firmware/wpan/bluetooth/TIInit_7.6.15.bts:system/etc/firmware/TIInit_7.6.15.bts \
-    $(DEVICE_FOLDER)/firmware/wpan/bluetooth/TIInit_12.7.27.bts:system/etc/firmware/TIInit_12.7.27.bts
-
 # Rootfs files
 PRODUCT_COPY_FILES += \
     $(DEVICE_FOLDER)/root/default.prop:/root/default.prop \
