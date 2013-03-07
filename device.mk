@@ -201,6 +201,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.hwc.sw_vsync=1
 
+# Define SDcard for use with CMUpdater
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.cm.updater.sdcard=sdcard-ext
+
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
 
