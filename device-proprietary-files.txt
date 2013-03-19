@@ -1,62 +1,10 @@
-# All files found on targa 6.7.246 ota except as noted
-# system/bin
+# system/bin (from targa ICS 6.7.246 ota)
 bin/akmd8975
-bin/batch
-bin/battd
-bin/chat-ril
-bin/dbvc_atvc_property_set
-bin/dumpe2fs
-bin/ecckeyd
-bin/enc_mgt_tool
-bin/ftmipcd
-bin/logcatd
-bin/logcatd-blan
-bin/mount_cdrom.sh
-bin/mount_ext3.sh
-bin/pppd-ril
-bin/secclkd
-bin/startup_smc.sh
-bin/testpppd
-bin/tty2ttyd
-bin/whisperd
 
-# system/etc
-etc/ecryptfs.tab
-etc/encrypt.tab
-etc/excluded-input-devices.xml
-etc/opl.dat.enc
-etc/smc_android_cfg.ini
-etc/smc_pa.ift
-etc/smc_pa_pk_4_8Mb_ipa.bin
-etc/smc_pa_pk_4_ipa.bin
-etc/firmware/ap_bt_data.bin
-system/etc/firmware/TIInit_10.6.15.bts
-etc/ppp/peers/pppd-ril.options
+# system/etc (from targa ICS 6.7.246 ota)
+etc/firmware/TIInit_10.6.15.bts
 
-# system/usr
-usr/bin/gki_pd_notifier
-usr/bin/panic_daemon
-
-# system/lib
-lib/libbattd.so
-lib/libbcbmsg.so
-lib/libdataencrypt.so
-lib/libdataencrypt_tpa.so
-lib/libdataencrypt_utils.so
-lib/libhdcp.so
-lib/libhdmi.so
-lib/libmot_led.so
-lib/libmss.so
-lib/libmss.so.sig
-lib/libnmea.so
-lib/libpkip.so
-lib/libsensorhub_jni.so
-lib/libsmapi.so
-lib/libtpa.so
-lib/libtpa_core.so
-lib/libui3d.so
-
-# RIL files from solana 5.7.906 ota
+# RIL files (from solana GB 5.7.906 ota)
 lib/libmot_atcmd.so
 lib/libmot_atcmd_mflex.so
 lib/libmotodbgutils.so
@@ -66,6 +14,3 @@ lib/libmoto_ril.so
 lib/libpppd_plugin-ril.so
 lib/librds_util.so
 lib/libril_rds.so
-
-# system/lib/hw from solana 5.7.906 ota
-lib/hw/gps.solana.so
