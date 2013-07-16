@@ -215,7 +215,6 @@ $(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 # stuff specific to ti OMAP4 hardware
 #$(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
 $(call inherit-product, hardware/ti/omap4xxx/security/Android.mk)
-$(call inherit-product-if-exists, $(DEVICE_FOLDER)/imgtec/sgx-imgtec-bins.mk)
-$(call inherit-product-if-exists, vendor/motorola/omap4-common/common-vendor.mk)
-$(call inherit-product-if-exists, vendor/motorola/solana/solana-vendor.mk)
+$(call inherit-product, $(DEVICE_FOLDER)/imgtec/sgx-imgtec-bins.mk)
+$(call inherit-product, vendor/motorola/solana/solana-vendor.mk)
 
