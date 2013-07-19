@@ -81,7 +81,6 @@ endef
 define cc-check
 $(shell \
 	CC_CHECK=$(patsubst @%,%,$(CC_CHECK)) && \
-	$(patsubst @%,%,$(DOS2UNIX)) $$CC_CHECK && \
 	$(patsubst @%,%,$(CHMOD)) +x $$CC_CHECK && \
 	$$CC_CHECK --cc "$(1)" --out "$(2)" $(3))
 endef

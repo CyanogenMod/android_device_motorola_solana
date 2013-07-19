@@ -174,8 +174,6 @@ override CC_CHECK	:= $(if $(V),,@)$(MAKE_TOP)/tools/cc-check.sh
 override CXX		:= $(if $(V),,@)$(CROSS_COMPILE)$(CXX)
 override CHMOD		:= $(if $(V),,@)chmod
 override CP			:= $(if $(V),,@)cp
-override DOS2UNIX	:= $(if $(V),,@)\
- $(shell if [ -z `which fromdos` ]; then echo dos2unix -f -q; else echo fromdos -f -p; fi)
 override ECHO		:= $(if $(V),,@)echo
 override FLEX		:= $(if $(V),,@)flex
 override GAWK		:= $(if $(V),,@)gawk

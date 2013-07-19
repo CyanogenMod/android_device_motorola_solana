@@ -110,10 +110,6 @@ endef
 
 ############################### END MACROS ##################################
 
-DOS2UNIX := $(shell \
- if [ -z `which fromdos` ]; then echo dos2unix -f -q; else echo fromdos -f -p; fi \
-)
-
 # Check we have a new enough version of GNU make.
 #
 need := 3.81
@@ -537,7 +533,6 @@ endif
 autogen:
 ifeq ($(INTERNAL_CLOBBER_ONLY),)
 	@$(MAKE) -s --no-print-directory -C $(EURASIAROOT) \
-		DOS2UNIX="$(DOS2UNIX)" \
 		-f eurasiacon/build/linux2/prepare_tree.mk
 else
 	@:
